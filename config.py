@@ -46,7 +46,7 @@ class DevelopmentConfig(Config):
         'mysql',
         'mysqlconnector',
         'root',
-        '199892.lw',
+        '',
         '127.0.0.1',
         '3306',
         'app_wechat'
@@ -63,7 +63,7 @@ class TestingConfig(Config):
         'mysql',
         'mysqlconnector',
         'root',
-        '199892.lw',
+        '',
         '127.0.0.1',
         '3306',
         'app_wechat'
