@@ -114,40 +114,40 @@ class MessageBuilder(object):
     def msg_base(self):
         return self.__msg_base
 
-    def build_text_msg(self, from_user, to_user, create_time, msg_id, content):
+    def build_text_msg(self, to_user, from_user, create_time, msg_id, content):
         msg = '<xml>'
-        msg += self.msg_base % (from_user, to_user, create_time, 'text', msg_id)
+        msg += self.msg_base % (to_user, from_user, create_time, 'text', msg_id)
         msg += '<Content><![CDATA[%s]]></Content>\n' % content
         msg += '</xml>'
         return msg
 
-    def build_image_msg(self, from_user, to_user, create_time, msg_id, pic_url, media_id):
+    def build_image_msg(self, to_user, from_user, create_time, msg_id, pic_url, media_id):
         msg = '<xml>'
-        msg += self.msg_base % (from_user, to_user, create_time, 'image', msg_id)
+        msg += self.msg_base % (to_user, from_user, create_time, 'image', msg_id)
         msg += '<PicUrl><![CDATA[%s]]></PicUrl>\n' % pic_url
         msg += '<MediaId><![CDATA[%s]]></MediaId>\n' % media_id
         msg += '</xml>'
         return msg
 
-    def build_voice_msg(self, from_user, to_user, create_time, msg_id, media_id):
+    def build_voice_msg(self, to_user, from_user, create_time, msg_id, media_id):
         msg = '<xml>'
-        msg += self.msg_base % (from_user, to_user, create_time, 'voice', msg_id)
+        msg += self.msg_base % (to_user, from_user, create_time, 'voice', msg_id)
         msg += '<PicUrl><![CDATA[%s]]></PicUrl>\n' % pic_url
         msg += '<MediaId><![CDATA[%s]]></MediaId>\n' % media_id
         msg += '</xml>'
         return msg
 
-    def build_video_msg(self, from_user, to_user, create_time, msg_id, media_id, thumb_media_id):
+    def build_video_msg(self, to_user, from_user, create_time, msg_id, media_id, thumb_media_id):
         msg = '<xml>'
-        msg += self.msg_base % (from_user, to_user, create_time, 'video', msg_id)
+        msg += self.msg_base % (to_user, from_user, create_time, 'video', msg_id)
         msg += '<MediaId><![CDATA[%s]]></MediaId>\n' % media_id
         msg += '<ThumbMediaId><![CDATA[%s]]></ThumbMediaId>\n' % thumb_media_id
         msg += '</xml>'
         return msg
 
-    def build_location_msg(self, from_user, to_user, create_time, msg_id, x, y, scale, label):
+    def build_location_msg(self, to_user, from_user, create_time, msg_id, x, y, scale, label):
         msg = '<xml>\n'
-        msg += self.msg_base % (from_user, to_user, create_time, 'location', msg_id)
+        msg += self.msg_base % (to_user, from_user, create_time, 'location', msg_id)
         msg += '<Location_X><![CDATA[%.6f]]></Location_X>\n' % x
         msg += '<Location_Y><![CDATA[%.6f]]></Location_Y>\n' % y
         msg += '<Scale>%d</Scale>\n' % scale
@@ -155,10 +155,10 @@ class MessageBuilder(object):
         msg += '</xml>'
         return msg
 
-    def build_link_msg(self, from_user, to_user, create_time, msg_id, title, description, url):
+    def build_link_msg(self, to_user, from_user, create_time, msg_id, title, description, url):
         msg = '<xml>'
         msg += self.msg_base
-        msg %= (from_user, to_user, create_time, 'link', msg_id)
+        msg %= (to_user, from_user, create_time, 'link', msg_id)
         msg += '<Title><![CDATA[%s]]></Title>\n' % title
         msg += '<Description><![CDATA[%s]]></Description>\n' % description
         msg += '<Url><![CDATA[%s]]></Url>\n' % url
