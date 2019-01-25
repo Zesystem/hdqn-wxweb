@@ -188,10 +188,9 @@ class MessageBuilder(object):
         return article
 
 class MessageProcessor(object):
-    __slots__ = ['mb', 'hbujwxt', 'xml_rec', 'to_user', 'from_user', 'msg_id', 'create_time', 'msg_type']
+    __slots__ = ['mb', 'xml_rec', 'to_user', 'from_user', 'msg_id', 'create_time', 'msg_type']
     def __init__(self):
         self.mb = MessageBuilder()
-        self.hbujwxt = 
 
     def check_reply(self, receieve):
         self.xml_rec = ET.fromstring(receieve)
