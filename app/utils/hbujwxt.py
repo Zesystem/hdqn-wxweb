@@ -89,7 +89,6 @@ class HbuJwxt(object):
         '''
         查询学籍
         '''
-        return 'rool'
         try:
             if not self.jw_login(userinfo):
                 return {'code': 404}
@@ -123,6 +122,7 @@ class HbuJwxt(object):
                     if infotds[index].text.strip().startswith(infokey):
                         baseinfo[infokey] = infotds[index + 1].text.strip()
                         break
+            print(baseinfo)
             return {'code': 200, 'data': baseinfo}
         except:
             return {'code': 404}

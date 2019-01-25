@@ -188,7 +188,7 @@ class MessageBuilder(object):
         return article
 
 class MessageProcessor(object):
-    __slots__ = ['mb', 'xml_rec', 'to_user', 'from_user', 'msg_id', 'create_time', 'msg_type']
+    __slots__ = ['mb', 'xml_rec', 'to_user', 'from_user', 'create_time', 'msg_id', 'msg_type']
     def __init__(self):
         self.mb = MessageBuilder()
 
@@ -226,7 +226,6 @@ class MessageProcessor(object):
         hbujwxt = HbuJwxt()
         data = ""
         if content.startswith('我的学籍'):
-            print(hbujwxt)
             data = hbujwxt.query_schoolrool(userinfo)
         elif content.startswith('我的成绩'):
             data = hbujwxt.query_this_term_score(userinfo)       
@@ -234,10 +233,7 @@ class MessageProcessor(object):
             data = hbujwxt.query_each_term_score(userinfo)
         else:
             data = "未知信息格式"
-        return self.mb.build_text_msg(self.to_user,
-            self.from_user,
-            self.create_time,
-            self.msg_id, data)            
+        return self.mb.build_text_msg(self.to_user, self.from_user, self.create_time, self.msg_id, data)            
 
     def image_reply(self):
         pass           
