@@ -224,7 +224,6 @@ class MessageProcessor(object):
     def text_reply(self):
         userinfo = {'username':'20171004113', 'password':'199892.lw'}
         content = self.xml_rec.find('Content').text
-        print(content)
         data = ""
         if content.startswith('我的学籍'):
             data = self.hbujwxt.query_schoolrool(userinfo)
@@ -233,7 +232,8 @@ class MessageProcessor(object):
         elif content.startswith('所有成绩'):
             data = self.hbujwxt.query_each_term_score(userinfo)
         else:
-            data = "未知信息格式"        
+            data = "未知信息格式"
+        print(data)
         return self.mb.build_text_msg(self.to_user,
             self.from_user,
             self.create_time,
