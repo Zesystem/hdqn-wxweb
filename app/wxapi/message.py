@@ -102,6 +102,10 @@
 # '''
 
 from app.utils.hbujwxt import HbuJwxt
+try:
+    import xml.etree.cElementTree as ET
+except:
+    import xml.etree.ElementTree as ET
 
 class MessageBuilder(object):
     __msg_base = '''

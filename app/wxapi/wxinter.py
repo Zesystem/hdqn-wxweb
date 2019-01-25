@@ -1,11 +1,7 @@
 from flask import request, make_response, render_template
 import time
 import hashlib
-try:
-    import xml.etree.cElementTree as ET
-except:
-    import xml.etree.ElementTree as ET
-from .message import MessageBuilder, MessageProcessor
+from .message import MessageProcessor
 
 mp = MessageProcessor()
 def wx_check():
