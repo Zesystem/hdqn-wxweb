@@ -188,20 +188,20 @@ class MessageBuilder(object):
         return article
 
 class MessageProcessor(object):
-    __slots__ = ['mb', 'hbujwxt', 'to_user', 'from_user', 'msg_id', 'create_time', 'msg_type']
+    __slots__ = ['mb', 'hbujwxt', 'xml_rec', 'to_user', 'from_user', 'msg_id', 'create_time', 'msg_type']
     def __init__(self):
         self.mb = MessageBuilder()
         self.hbujwxt = HbuJwxt()
 
     def check_reply(self, receieve):
-        xml_rec = ET.fromstring(receieve)
-        self.to_user = xml_rec.find('ToUserName').text
-        self.from_user = xml_rec.find('FromUserName').text
-        self.create_time = int(xml_rec.find('CreateTime').text)
-        self.msg_id = int(xml_rec.find('MsgId').text)
-        self.msg_type = xml_rec.find('MsgType').text
+        self.xml_rec = ET.fromstring(receieve)
+        self.to_user = self.xml_rec.find('ToUserName').text
+        self.from_user = self.xml_rec.find('FromUserName').text
+        self.create_time = int(self.xml_rec.find('CreateTime').text)
+        self.msg_id = int(self.xml_rec.find('MsgId').text)
+        self.msg_type = self.xml_rec.find('MsgType').text
         if self.msg_type == 'text':
-            return self.text_reply(xml_rec)
+            return self.text_reply()
         elif self.msg_type == 'image':
             pass
         elif self.msg_type == 'voice':
@@ -214,16 +214,16 @@ class MessageProcessor(object):
             pass
         else:
             return '欢迎使用河大青年!'
-        
+
         if self.msg_type != 'text':
             return '欢迎使用河大青年!'
         response = make_response(xml_msg)
         response.content_type = 'application/xml'
         return response
 
-    def text_reply(self, xml_rec):
+    def text_reply(self):
         userinfo = {'username':'20171004113', 'password':'199892.lw'}
-        content = xml_rec.find('content').text
+        content = xml_rec.find('Content').text
         data = ""
         if content.startswith('我的学籍'):
             data = self.hbujwxt.query_schoolrool(userinfo)
@@ -238,18 +238,18 @@ class MessageProcessor(object):
             self.create_time,
             self.msg_id, data)            
 
-    def image_reply(self, xml_rec):
+    def image_reply(self):
         pass           
 
-    def voice_reply(self, xml_rec):
+    def voice_reply(self):
         pass
 
-    def video_reply(self, xml_rec): 
+    def video_reply(self): 
         pass 
 
-    def music_reply(self, xml_rec):
+    def music_reply(self):
         pass
 
-    def news_reply(self, xml_rec):
+    def news_reply(self):
         pass
 
