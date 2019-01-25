@@ -1,105 +1,107 @@
-msg_text_type_module = '''
-<xml>
-    <ToUserName>< ![CDATA[%s] ]>
-    </ToUserName>
-    <FromUserName>< ![CDATA[%s] ]>
-    </FromUserName>
-    <CreateTime>%d</CreateTime>
-    <MsgType>< ![CDATA[text] ]>
-    </MsgType>
-    <Content>< ![CDATA[%s] ]>
-    </Content>
-    <MsgId>%s</MsgId>
-</xml>
-'''
+# msg_text_type_module = '''
+# <xml>
+#     <ToUserName>< ![CDATA[%s] ]>
+#     </ToUserName>
+#     <FromUserName>< ![CDATA[%s] ]>
+#     </FromUserName>
+#     <CreateTime>%d</CreateTime>
+#     <MsgType>< ![CDATA[text] ]>
+#     </MsgType>
+#     <Content>< ![CDATA[%s] ]>
+#     </Content>
+#     <MsgId>%s</MsgId>
+# </xml>
+# '''
 
-msg_image_type_module = '''
-<xml>
-    <ToUserName>< ![CDATA[%s] ]>
-    </ToUserName>
-    <FromUserName>< ![CDATA[%s] ]>
-    </FromUserName>
-    <CreateTime>%d</CreateTime>
-    <MsgType>< ![CDATA[image] ]>
-    </MsgType>
-    <PicUrl>< ![CDATA[%s] ]>
-    </PicUrl>
-    <MediaId>< ![CDATA[%s] ]>
-    </MediaId>
-    <MsgId>%d</MsgId>
-</xml>
-'''
+# msg_image_type_module = '''
+# <xml>
+#     <ToUserName>< ![CDATA[%s] ]>
+#     </ToUserName>
+#     <FromUserName>< ![CDATA[%s] ]>
+#     </FromUserName>
+#     <CreateTime>%d</CreateTime>
+#     <MsgType>< ![CDATA[image] ]>
+#     </MsgType>
+#     <PicUrl>< ![CDATA[%s] ]>
+#     </PicUrl>
+#     <MediaId>< ![CDATA[%s] ]>
+#     </MediaId>
+#     <MsgId>%d</MsgId>
+# </xml>
+# '''
 
-msg_voice_type_module = '''
-<xml>
-    <ToUserName>< ![CDATA[%s] ]>
-    </ToUserName>
-    <FromUserName>< ![CDATA[%s] ]>
-    </FromUserName>
-    <CreateTime>%d</CreateTime>
-    <MsgType>< ![CDATA[voice] ]>
-    </MsgType>
-    <MediaId>< ![CDATA[%s] ]>
-    </MediaId>
-    <Format>< ![CDATA[%s] ]>
-    </Format>
-    <MsgId>%d</MsgId>
-</xml>
-'''
+# msg_voice_type_module = '''
+# <xml>
+#     <ToUserName>< ![CDATA[%s] ]>
+#     </ToUserName>
+#     <FromUserName>< ![CDATA[%s] ]>
+#     </FromUserName>
+#     <CreateTime>%d</CreateTime>
+#     <MsgType>< ![CDATA[voice] ]>
+#     </MsgType>
+#     <MediaId>< ![CDATA[%s] ]>
+#     </MediaId>
+#     <Format>< ![CDATA[%s] ]>
+#     </Format>
+#     <MsgId>%d</MsgId>
+# </xml>
+# '''
 
-msg_video_type_module = '''
-<xml>
-    <ToUserName>< ![CDATA[%s] ]>
-    </ToUserName>
-    <FromUserName>< ![CDATA[%s] ]>
-    </FromUserName>
-    <CreateTime>%d</CreateTime>
-    <MsgType>< ![CDATA[video] ]>
-    </MsgType>
-    <MediaId>< ![CDATA[%s] ]>
-    </MediaId>
-    <ThumbMediaId>< ![CDATA[%s] ]>
-    </ThumbMediaId>
-    <MsgId>%d</MsgId>
-</xml>
-'''
+# msg_video_type_module = '''
+# <xml>
+#     <ToUserName>< ![CDATA[%s] ]>
+#     </ToUserName>
+#     <FromUserName>< ![CDATA[%s] ]>
+#     </FromUserName>
+#     <CreateTime>%d</CreateTime>
+#     <MsgType>< ![CDATA[video] ]>
+#     </MsgType>
+#     <MediaId>< ![CDATA[%s] ]>
+#     </MediaId>
+#     <ThumbMediaId>< ![CDATA[%s] ]>
+#     </ThumbMediaId>
+#     <MsgId>%d</MsgId>
+# </xml>
+# '''
 
-msg_location_type_module = '''
-<xml>
-    <ToUserName>< ![CDATA[%s] ]>
-    </ToUserName>
-    <FromUserName>< ![CDATA[%s] ]>
-    </FromUserName>
-    <CreateTime>%d</CreateTime>
-    <MsgType>< ![CDATA[location] ]>
-    </MsgType>
-    <Location_X>%.6f</Location_X>
-    <Location_Y>%.6f</Location_Y>
-    <Scale>%d</Scale>
-    <Label>< ![CDATA[%s] ]>
-    </Label>
-    <MsgId>%d</MsgId>
-</xml>
-'''
+# msg_location_type_module = '''
+# <xml>
+#     <ToUserName>< ![CDATA[%s] ]>
+#     </ToUserName>
+#     <FromUserName>< ![CDATA[%s] ]>
+#     </FromUserName>
+#     <CreateTime>%d</CreateTime>
+#     <MsgType>< ![CDATA[location] ]>
+#     </MsgType>
+#     <Location_X>%.6f</Location_X>
+#     <Location_Y>%.6f</Location_Y>
+#     <Scale>%d</Scale>
+#     <Label>< ![CDATA[%s] ]>
+#     </Label>
+#     <MsgId>%d</MsgId>
+# </xml>
+# '''
 
-msg_link_type_module = '''
-<xml>
-    <ToUserName>< ![CDATA[%s] ]>
-    </ToUserName>
-    <FromUserName>< ![CDATA[%s] ]>
-    </FromUserName>
-    <CreateTime>%d</CreateTime>
-    <MsgType>< ![CDATA[link] ]>
-    </MsgType>
-    <Title>< ![CDATA[%s] ]>
-    </Title>
-    <Description>< ![CDATA[%s] ]>
-    </Description>
-    <Url>< ![CDATA[%s] ]>
-    </Url>
-    <MsgId>%d</MsgId>
-</xml>
-'''
+# msg_link_type_module = '''
+# <xml>
+#     <ToUserName>< ![CDATA[%s] ]>
+#     </ToUserName>
+#     <FromUserName>< ![CDATA[%s] ]>
+#     </FromUserName>
+#     <CreateTime>%d</CreateTime>
+#     <MsgType>< ![CDATA[link] ]>
+#     </MsgType>
+#     <Title>< ![CDATA[%s] ]>
+#     </Title>
+#     <Description>< ![CDATA[%s] ]>
+#     </Description>
+#     <Url>< ![CDATA[%s] ]>
+#     </Url>
+#     <MsgId>%d</MsgId>
+# </xml>
+# '''
+
+from app.utils.hbujwxt import HbuJwxt
 
 class MessageBuilder(object):
     __msg_base = '''
@@ -181,5 +183,69 @@ class MessageBuilder(object):
         article += '</item>\n'
         return article
 
-def get_media_id():
-	return "HSA4OYQ0UbqWJ1gJIRaneuTdehHLu046qROUKH98ueMBz1-fK9Off4vYZ43gdUbH"
+class MessageProcessor(object):
+    __slots__ = ['mb', 'hbujwxt', 'to_user', 'from_user', 'msg_id', 'create_time', 'msg_type']
+    def __init__(self):
+        self.mb = MessageBuilder()
+        self.hbujwxt = HbuJwxt()
+
+    def check_reply(self, receieve):
+        xml_rec = ET.fromstring(receieve)
+        self.to_user = xml_rec.find('ToUserName').text
+        self.from_user = xml_rec.find('FromUserName').text
+        self.create_time = int(xml_rec.find('CreateTime').text)
+        self.msg_id = int(xml_rec.find('MsgId').text)
+        self.msg_type = xml_rec.find('MsgType').text
+        if self.msg_type == 'text':
+            return self.text_reply(xml_rec)
+        elif self.msg_type == 'image':
+            pass
+        elif self.msg_type == 'voice':
+            pass
+        elif self.msg_type == 'video':
+            pass
+        elif self.msg_type == 'location':
+            pass
+        elif self.msg_type == 'link':
+            pass
+        else:
+            return '欢迎使用河大青年!'
+        
+        if self.msg_type != 'text':
+            return '欢迎使用河大青年!'
+        response = make_response(xml_msg)
+        response.content_type = 'application/xml'
+        return response
+
+    def text_reply(self, xml_rec):
+        userinfo = {'username':'20171004113', 'password':'199892.lw'}
+        content = xml_rec.find('content').text
+        data = ""
+        if content.startswith('我的学籍'):
+            data = self.hbujwxt.query_schoolrool(userinfo)
+        elif content.startswith('我的成绩'):
+            data = self.hbujwxt.query_this_term_score(userinfo)       
+        elif content.startswith('我的成绩'):
+            data = self.hbujwxt.query_each_term_score(userinfo)
+        else:
+            data = "未知信息格式"        
+        return self.mb.build_text_msg(self.to_user,
+            self.from_user,
+            self.create_time,
+            self.msg_id, data)            
+
+    def image_reply(self, xml_rec):
+        pass           
+
+    def voice_reply(self, xml_rec):
+        pass
+
+    def video_reply(self, xml_rec): 
+        pass 
+
+    def music_reply(self, xml_rec):
+        pass
+
+    def news_reply(self, xml_rec):
+        pass
+

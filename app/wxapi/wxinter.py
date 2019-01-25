@@ -5,9 +5,9 @@ try:
     import xml.etree.cElementTree as ET
 except:
     import xml.etree.ElementTree as ET
-from .message import MessageBuilder, get_media_id
+from .message import MessageBuilder, MessageProcessor
 
-mb = MessageBuilder()
+mp = MessageProcessor()
 def wx_check():
     """微信token接口验证"""
     if request.method == 'GET':
@@ -29,30 +29,7 @@ def wx_check():
             return make_response(echostr)
     else:
         rec = request.stream.read()
-        xml_rec = ET.fromstring(rec)          
-        to_user = xml_rec.find('ToUserName').text
-        from_user = xml_rec.find('FromUserName').text
-        msg_id = xml_rec.find('MsgId').text
-        msg_type = xml_rec.find('MsgType').text
-
-        if msg_type == 'text':
-            xml_msg = mb.build_news_msg(from_user, to_user, int(time.time()), int(msg_id), 'test', 'this is a test!','http://files.jb51.net/file_images/article/201602/201621691400759.jpg?20161169148', 'https://mp.weixin.qq.com/s/AordeDsPR5u9xAp0CoHkow')
-            # xml_msg = mb.build_text_msg(from_user, to_user, int(time.time()), int(msg_id), "get text message")
-        elif msg_type == 'image':
-            xml_msg = mb.build_text_msg(from_user, to_user, int(time.time()), int(msg_id), "get image message")
-        elif msg_type == 'voice':
-            xml_msg = mb.build_text_msg(from_user, to_user, int(time.time()), int(msg_id), "get voice message")
-        elif msg_type == 'video':
-            xml_msg = mb.build_text_msg(from_user, to_user, int(time.time()), int(msg_id), "get video message")
-        elif msg_type == 'location':
-            xml_msg = mb.build_text_msg(from_user, to_user, int(time.time()), int(msg_id), "get location message")
-        elif msg_type == 'link':
-            xml_msg = mb.build_text_msg(from_user, to_user, int(time.time()), int(msg_id), "get link message")
-        else:
-            return '欢迎使用河大青年!'
-        response = make_response(xml_msg)
-        response.content_type = 'application/xml'
-        return response
+        return mp.check_reply(rec)
 
         # print(rec)
         # xml_msg = mb.build_text_msg(from_user, to_user, int(time.time()), int(msg_id), content)
