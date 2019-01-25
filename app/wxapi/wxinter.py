@@ -33,20 +33,20 @@ def wx_check():
         to_user = xml_rec.find('ToUserName').text
         from_user = xml_rec.find('FromUserName').text
         msg_id = xml_rec.find('MsgId').text
-        msg_type = xml_rec.find('MsgType')
+        msg_type = xml_rec.find('MsgType').text
 
         if msg_type == 'text':
-            xml_msg = mb.build_text_msg(from_user, to_user, int(time.time()), int(msg_id), content)
+            xml_msg = mb.build_text_msg(from_user, to_user, int(time.time()), int(msg_id), "get text message")
         elif msg_type == 'image':
-            xml_msg = mb.build_text_msg(from_user, to_user, int(time.time()), int(msg_id), content)
+            xml_msg = mb.build_text_msg(from_user, to_user, int(time.time()), int(msg_id), "get image message")
         elif msg_type == 'voice':
-            xml_msg = mb.build_text_msg(from_user, to_user, int(time.time()), int(msg_id), content)
+            xml_msg = mb.build_text_msg(from_user, to_user, int(time.time()), int(msg_id), "get voice message")
         elif msg_type == 'video':
-            xml_msg = mb.build_text_msg(from_user, to_user, int(time.time()), int(msg_id), content)
+            xml_msg = mb.build_text_msg(from_user, to_user, int(time.time()), int(msg_id), "get video message")
         elif msg_type == 'location':
-            xml_msg = mb.build_text_msg(from_user, to_user, int(time.time()), int(msg_id), content)
+            xml_msg = mb.build_text_msg(from_user, to_user, int(time.time()), int(msg_id), "get location message")
         elif msg_type == 'link':
-            xml_msg = mb.build_text_msg(from_user, to_user, int(time.time()), int(msg_id), content)
+            xml_msg = mb.build_text_msg(from_user, to_user, int(time.time()), int(msg_id), "get link message")
         else:
             return '欢迎使用河大青年!'
         response = make_response(xml_msg)
