@@ -226,6 +226,7 @@ class MessageProcessor(object):
         hbujwxt = HbuJwxt()
         data = ""
         if content.startswith('我的学籍'):
+            print(hbujwxt)
             data = hbujwxt.query_schoolrool(userinfo)
         elif content.startswith('我的成绩'):
             data = hbujwxt.query_this_term_score(userinfo)       
@@ -233,7 +234,6 @@ class MessageProcessor(object):
             data = hbujwxt.query_each_term_score(userinfo)
         else:
             data = "未知信息格式"
-        print(data)
         return self.mb.build_text_msg(self.to_user,
             self.from_user,
             self.create_time,
