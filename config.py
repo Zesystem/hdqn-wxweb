@@ -1,0 +1,2 @@
+CSRF_ENABLED = True
+SECRET_KEY = "40kZeLpuPnfXtnCDATvfeKY2JSvqCmiKgquCWEE5Arh"
