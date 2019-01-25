@@ -21,7 +21,7 @@ def index():
 
 ###########################
 #                         #
-# weixin user web         #
+# weixin micro web        #
 #                         #
 ###########################
 
@@ -47,3 +47,16 @@ def admin_index():
 @app.route('/admin/login')
 def admin_login():
     return '<div>admin login here!</div>'
+
+
+###########################
+#                         #
+# weixin test html        #
+#                         #
+###########################
+
+@app.route('/test')
+def test():
+	return render_template('test/test.html')
+
+
