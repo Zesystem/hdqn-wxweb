@@ -191,7 +191,7 @@ class MessageProcessor(object):
     __slots__ = ['mb', 'hbujwxt', 'xml_rec', 'to_user', 'from_user', 'msg_id', 'create_time', 'msg_type']
     def __init__(self):
         self.mb = MessageBuilder()
-        self.hbujwxt = HbuJwxt()
+        self.hbujwxt = 
 
     def check_reply(self, receieve):
         self.xml_rec = ET.fromstring(receieve)
@@ -224,13 +224,14 @@ class MessageProcessor(object):
     def text_reply(self):
         userinfo = {'username':'20171004113', 'password':'199892.lw'}
         content = self.xml_rec.find('Content').text
+        hbujwxt = HbuJwxt()
         data = ""
         if content.startswith('我的学籍'):
-            data = self.hbujwxt.query_schoolrool(userinfo)
+            data = hbujwxt.query_schoolrool(userinfo)
         elif content.startswith('我的成绩'):
-            data = self.hbujwxt.query_this_term_score(userinfo)       
+            data = hbujwxt.query_this_term_score(userinfo)       
         elif content.startswith('所有成绩'):
-            data = self.hbujwxt.query_each_term_score(userinfo)
+            data = hbujwxt.query_each_term_score(userinfo)
         else:
             data = "未知信息格式"
         print(data)
