@@ -89,6 +89,7 @@ class HbuJwxt(object):
         '''
         查询学籍
         '''
+        return 'rool'
         try:
             if not self.jw_login(userinfo):
                 return {'code': 404}
@@ -127,6 +128,9 @@ class HbuJwxt(object):
             return {'code': 404}
 
     def query_this_term_score(self, userinfo):
+        '''
+        本学期成绩
+        '''
         try:
             if not self.jw_login(userinfo):
                 return {'code': 404}
@@ -151,6 +155,9 @@ class HbuJwxt(object):
             return {'code': 404}
 
     def query_each_term_score(self, userinfo):
+        '''
+        所有成绩
+        '''
         try:
             if not self.jw_login(userinfo):
                 return {'code': 404}
