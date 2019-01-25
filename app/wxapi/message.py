@@ -223,7 +223,7 @@ class MessageProcessor(object):
 
     def text_reply(self):
         userinfo = {'username':'20171004113', 'password':'199892.lw'}
-        content = xml_rec.find('Content').text
+        content = self.xml_rec.find('Content').text
         data = ""
         if content.startswith('我的学籍'):
             data = self.hbujwxt.query_schoolrool(userinfo)
