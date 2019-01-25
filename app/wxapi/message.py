@@ -146,7 +146,7 @@ class MessageBuilder(object):
         msg += '</xml>'
         return msg
 
-    def build_music_msg(self, to_user, from_user, create_time, msg_id, thumb_media_id, title, description, music_url, hq_music_url=None):
+    def build_music_msg(self, to_user, from_user, create_time, msg_id, thumb_media_id, title, description, music_url, hq_music_url):
         msg = '<xml>'
         msg += self.msg_base % (to_user, from_user, create_time, 'music', msg_id)
         msg += '<Music>\n'

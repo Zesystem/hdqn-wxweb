@@ -36,7 +36,8 @@ def wx_check():
         msg_type = xml_rec.find('MsgType').text
 
         if msg_type == 'text':
-            xml_msg = mb.build_text_msg(from_user, to_user, int(time.time()), int(msg_id), "get text message")
+            xml_msg = mb.build_news_msg(from_user, to_user, int(time.time()), int(msg_id), 'test', 'this is a test!','http://files.jb51.net/file_images/article/201602/201621691400759.jpg?20161169148', 'http://files.jb51.net/file_images/article/201602/201621691400759.jpg?20161169148')
+            # xml_msg = mb.build_text_msg(from_user, to_user, int(time.time()), int(msg_id), "get text message")
         elif msg_type == 'image':
             xml_msg = mb.build_text_msg(from_user, to_user, int(time.time()), int(msg_id), "get image message")
         elif msg_type == 'voice':
