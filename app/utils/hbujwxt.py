@@ -117,12 +117,12 @@ class HbuJwxt(object):
             soup = BeautifulSoup(res.text, 'lxml')
             infotbl = soup.find("table", class_="titleTop3")
             infotds = infotbl.find_all("td")
+            infotds.pop(0)
             for infokey in baseinfo.keys():
-                for index in range(len(infotds)):
-                    if infotds[index].text.strip().startswith(infokey):
-                        baseinfo[infokey] = infotds[index + 1].text.strip()
+                for infotd in infotds:
+                    if infotd.text.strip().startswith(infokey):
+                        baseinfo[infokey] = infotds[infotds.index(infotd) + 1].text.strip()
                         break
-            print(baseinfo)
             return {'code': 200, 'data': baseinfo}
         except:
             return {'code': 404}
@@ -173,12 +173,9 @@ class HbuJwxt(object):
             soup = BeautifulSoup(res.text, 'lxml')
             term_names = []
             terms = soup.find_all('a')
-
             for term in terms:
                 term_names.append(term.get('name').strip())
-
             infotbls = soup.find_all('table', 'titleTop2')
-
             grade = 1
             name_idx = 0
             all_scores = []
@@ -198,6 +195,9 @@ class HbuJwxt(object):
             return {'code': 200, 'data': all_scores}
         except:
             return {'code': 404}
+
+    def query_course_table(self, userinfo):
+        pass
 
 if __name__ == '__main__':
     hbujwxt = HbuJwxt()

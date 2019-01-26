@@ -1,106 +1,3 @@
-# msg_text_type_module = '''
-# <xml>
-#     <ToUserName>< ![CDATA[%s] ]>
-#     </ToUserName>
-#     <FromUserName>< ![CDATA[%s] ]>
-#     </FromUserName>
-#     <CreateTime>%d</CreateTime>
-#     <MsgType>< ![CDATA[text] ]>
-#     </MsgType>
-#     <Content>< ![CDATA[%s] ]>
-#     </Content>
-#     <MsgId>%s</MsgId>
-# </xml>
-# '''
-
-# msg_image_type_module = '''
-# <xml>
-#     <ToUserName>< ![CDATA[%s] ]>
-#     </ToUserName>
-#     <FromUserName>< ![CDATA[%s] ]>
-#     </FromUserName>
-#     <CreateTime>%d</CreateTime>
-#     <MsgType>< ![CDATA[image] ]>
-#     </MsgType>
-#     <PicUrl>< ![CDATA[%s] ]>
-#     </PicUrl>
-#     <MediaId>< ![CDATA[%s] ]>
-#     </MediaId>
-#     <MsgId>%d</MsgId>
-# </xml>
-# '''
-
-# msg_voice_type_module = '''
-# <xml>
-#     <ToUserName>< ![CDATA[%s] ]>
-#     </ToUserName>
-#     <FromUserName>< ![CDATA[%s] ]>
-#     </FromUserName>
-#     <CreateTime>%d</CreateTime>
-#     <MsgType>< ![CDATA[voice] ]>
-#     </MsgType>
-#     <MediaId>< ![CDATA[%s] ]>
-#     </MediaId>
-#     <Format>< ![CDATA[%s] ]>
-#     </Format>
-#     <MsgId>%d</MsgId>
-# </xml>
-# '''
-
-# msg_video_type_module = '''
-# <xml>
-#     <ToUserName>< ![CDATA[%s] ]>
-#     </ToUserName>
-#     <FromUserName>< ![CDATA[%s] ]>
-#     </FromUserName>
-#     <CreateTime>%d</CreateTime>
-#     <MsgType>< ![CDATA[video] ]>
-#     </MsgType>
-#     <MediaId>< ![CDATA[%s] ]>
-#     </MediaId>
-#     <ThumbMediaId>< ![CDATA[%s] ]>
-#     </ThumbMediaId>
-#     <MsgId>%d</MsgId>
-# </xml>
-# '''
-
-# msg_location_type_module = '''
-# <xml>
-#     <ToUserName>< ![CDATA[%s] ]>
-#     </ToUserName>
-#     <FromUserName>< ![CDATA[%s] ]>
-#     </FromUserName>
-#     <CreateTime>%d</CreateTime>
-#     <MsgType>< ![CDATA[location] ]>
-#     </MsgType>
-#     <Location_X>%.6f</Location_X>
-#     <Location_Y>%.6f</Location_Y>
-#     <Scale>%d</Scale>
-#     <Label>< ![CDATA[%s] ]>
-#     </Label>
-#     <MsgId>%d</MsgId>
-# </xml>
-# '''
-
-# msg_link_type_module = '''
-# <xml>
-#     <ToUserName>< ![CDATA[%s] ]>
-#     </ToUserName>
-#     <FromUserName>< ![CDATA[%s] ]>
-#     </FromUserName>
-#     <CreateTime>%d</CreateTime>
-#     <MsgType>< ![CDATA[link] ]>
-#     </MsgType>
-#     <Title>< ![CDATA[%s] ]>
-#     </Title>
-#     <Description>< ![CDATA[%s] ]>
-#     </Description>
-#     <Url>< ![CDATA[%s] ]>
-#     </Url>
-#     <MsgId>%d</MsgId>
-# </xml>
-# '''
-
 from app.utils.hbujwxt import HbuJwxt
 try:
     import xml.etree.cElementTree as ET
@@ -171,9 +68,6 @@ class MessageBuilder(object):
         msg += '<ArticleCount>%d</ArticleCount>\n' % 1
         msg += '<Articles>\n'
         msg += self._build_article(title, description, pic_url, url)
-        # weixin adjust!!!
-        # for title, description, pic_url, url in zip(titles, descriptions, pic_urls, urls):
-        #     msg += self._build_article(title, description, pic_url, url)
         msg += '</Articles>\n' 
         msg += '</xml>'
         return msg
@@ -224,16 +118,38 @@ class MessageProcessor(object):
         userinfo = {'username':'20171004113', 'password':'199892.lw'}
         content = self.xml_rec.find('Content').text
         hbujwxt = HbuJwxt()
-        data = ""
+        reply = '学号: {}\n'.format(userinfo['username'])
         if content.startswith('我的学籍'):
-            data = hbujwxt.query_schoolrool(userinfo)
+            reply = ''
+            res = hbujwxt.query_schoolrool(userinfo)
+            if res['code'] == 200:
+                data = res['data']      
+                for k,v in data.items():
+                    reply += '{} {}\n'.format(k, v)
         elif content.startswith('我的成绩'):
-            data = hbujwxt.query_this_term_score(userinfo)       
+            res = hbujwxt.query_this_term_score(userinfo)
+            reply += '课程名************成绩************排名\n'
+            if res['code'] == 200:
+                data = res['data']   
+                for courseinfo in data:
+                    reply += '-'*40 + '\n'
+                    reply += '{} {} {}\n'.format(*courseinfo)
+                    reply += '-'*40 + '\n'    
         elif content.startswith('所有成绩'):
-            data = hbujwxt.query_each_term_score(userinfo)
+            res = hbujwxt.query_each_term_score(userinfo)
+            if res['code'] == 200:
+                data = res['data']
+                for term in data:
+                    reply += '-'*40 + '\n'
+                    reply += term['term_name'] + '\n'
+                    for courseinfo in term['scores']:
+                        reply += '{} {}\n'.format(*courseinfo)
+                    reply += '-'*40 + '\n\n'
         else:
-            data = "未知信息格式"
-        return self.mb.build_text_msg(self.to_user, self.from_user, self.create_time, self.msg_id, data)            
+            reply = "未知信息格式"
+        if reply == "":
+            reply = "系统错误，请联系管理员修复！"
+        return self.mb.build_text_msg(self.from_user, self.to_user, self.create_time, self.msg_id, reply)            
 
     def image_reply(self):
         pass           
