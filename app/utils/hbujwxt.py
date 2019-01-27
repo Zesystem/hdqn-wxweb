@@ -19,10 +19,11 @@ class HbuJwxt(object):
         self.ip = '202.206.1.160'
         self.headers = {
             'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/70.0.3538.77 Safari/537.36',
+            'Connection' : 'keep-alive',
             'Upgrade-Insecure-Requests': '1'  # important data
         }
 
-    def jw_login(self, userinfo):
+    def jw_login(self, userinfo, until=True):
         '''
         登陆教务系统
         '''
@@ -74,15 +75,18 @@ class HbuJwxt(object):
             data = urllib.parse.urlencode(data)  # 需要from-urlencode
             res = self.session.request(
                 'POST', url, headers=self.headers, data=data)
-            return res.text
+            return res.content.decode('GBK', 'ignore')
         self.headers['Referer'] = 'http://{ip}/'.format(ip=self.ip)
-        while True:
+        cnt = 0
+        while cnt < 6:
             captcha = get_captcha()
             retcode = login(captcha)
             if '学分制综合教务' in retcode:
-                print('[+]Succes to login zhjw')
+                # print('[+]Succes to login zhjw')
                 return True
-        print('[-]Failed to login zhjw')
+            if not until:
+                cnt += 1
+        # print('[-]Failed to login zhjw')
         return False
 
     def query_schoolrool(self, userinfo):
@@ -114,7 +118,7 @@ class HbuJwxt(object):
                 '培养方式': '',
                 '培养层次': ''
             }
-            soup = BeautifulSoup(res.text, 'lxml')
+            soup = BeautifulSoup(res.content.decode('GBK', 'ignore'), 'lxml')
             infotbl = soup.find("table", class_="titleTop3")
             infotds = infotbl.find_all("td")
             infotds.pop(0)
@@ -138,7 +142,7 @@ class HbuJwxt(object):
             self.headers['Referer'] = 'http://{ip}/menu/menu.jsp?action1=0&index=6'.format(ip=self.ip)
             url = 'http://{ip}/bxqcjcxAction.do'.format(ip=self.ip)
             res = self.session.request('GET', url, headers=self.headers)
-            soup = BeautifulSoup(res.text, 'lxml')
+            soup = BeautifulSoup(res.content.decode('GBK', 'ignore'), 'lxml')
             infotbl = soup.find("table", class_="displayTag")
             infotds = infotbl.find_all("td")
             scores = []
@@ -165,12 +169,12 @@ class HbuJwxt(object):
             self.headers['Referer'] = 'http://{ip}/menu/menu.jsp?action1=0&index=6'.format(ip=self.ip)
             url = 'http://{ip}/gradeLnAllAction.do?type=ln&oper=qb'.format(ip=self.ip)
             res = self.session.request('GET', url, headers=self.headers)
-            soup = BeautifulSoup(res.text, 'lxml')
+            soup = BeautifulSoup(res.content.decode('GBK'), 'lxml')
             iframe = soup.find("iframe")
             url = 'http://{ip}/'.format(ip=self.ip) + iframe.get('src')
             self.headers['Referer'] = 'http://{ip}/gradeLnAllAction.do?type=ln&oper=qb'.format(ip=self.ip)
             res = self.session.request('GET', url, headers=self.headers)
-            soup = BeautifulSoup(res.text, 'lxml')
+            soup = BeautifulSoup(res.content.decode('GBK', 'ignore'), 'lxml')
             term_names = []
             terms = soup.find_all('a')
             for term in terms:
@@ -197,12 +201,41 @@ class HbuJwxt(object):
             return {'code': 404}
 
     def query_course_table(self, userinfo):
-        pass
+        '''
+        本学期课表
+        '''
+        try:
+            if not self.jw_login(userinfo):
+                return {'code':404}
+            self.headers['Referer'] = 'http://{ip}/menu/menu.jsp?action1=0&index=2'.format(ip=self.ip)
+            url = 'http://{ip}/xkAction.do?actionType=6'.format(ip=self.ip)
+            res = self.session.request('GET', url, headers=self.headers)
+            soup = BeautifulSoup(res.content.decode('GBK', 'ignore'), 'lxml')
+            infotds = soup.find('table', class_='displayTag').find_all('td')
+            s, e = 9, 9+8*4
+            swtds = infotds[s:e]
+            s, e = e+2, e+2+8*4
+            zwtds = infotds[s:e]
+            s, e = e+2, e+2+8*4
+            xwtds = infotds[s:e]
+            infotds = swtds + zwtds + xwtds
+            table = []
+            for cnt in range(7):
+                courses = []
+                idx = cnt + 1
+                while len(courses) < 11:
+                    courses.append(infotds[idx].text.strip())
+                    idx += 8
+                table.append(courses)
+            return {'code' : 200, 'data' : table}
+        except:
+            return {'code':404}
 
 if __name__ == '__main__':
     hbujwxt = HbuJwxt()
     userinfo = {'username':'20171004113', 'password':'199892.lw'}
-    print(hbujwxt.query_schoolrool(userinfo))
-    print(hbujwxt.query_this_term_score(userinfo))
-    print(hbujwxt.query_each_term_score(userinfo))
+    # print(hbujwxt.query_schoolrool(userinfo))
+    # print(hbujwxt.query_this_term_score(userinfo))
+    # print(hbujwxt.query_each_term_score(userinfo))
+    # print(hbujwxt.query_course_table(userinfo))
 

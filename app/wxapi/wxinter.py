@@ -1,9 +1,8 @@
-from flask import request, make_response, render_template
 import time
 import hashlib
-from .message import MessageProcessor
+from app.exts import mp
+from flask import request, make_response, render_template
 
-mp = MessageProcessor()
 def wx_check():
     """微信token接口验证"""
     if request.method == 'GET':
@@ -23,9 +22,11 @@ def wx_check():
         print("handle/GET func: hashcode, signature:", hashcode, signature)
         if hashcode == signature:
             return make_response(echostr)
+        return render_template('wxinter.html')
     else:
         rec = request.stream.read()
-        return mp.check_reply(rec)
+        rep = mp.check_reply(rec)
+        return rep
 
         # print(rec)
         # xml_msg = mb.build_text_msg(from_user, to_user, int(time.time()), int(msg_id), content)
