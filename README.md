@@ -1,5 +1,8 @@
 # hdqn-wxweb
 
-## 安装需求文件依赖
-- 安装python3环境或者安装python3虚拟环境
-- 在该项目中运行`pip3 install -r requirements.txt`
+## 河大青年微信公众号开发与管理项目
+- 初步支持各种消息类型回复
+- 后期增加微站web网站
+- 后期增加微信内容管理后台
+
+## 安装见docs文档
