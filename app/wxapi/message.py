@@ -1,5 +1,6 @@
 from flask import g
 from app import db
+from app import hbujwxt
 
 from app.utils import status
 from app.utils.userprocess import UserProcessor 
@@ -230,10 +231,18 @@ class MessageProcessor(object):
                             reply += '-'*40 + '\n\n'
                 else:
                     reply = text_process['绑定学号']
+            ##############################
+            # 查询课表处理
+            ##############################
+            elif content.startswith('课表查询'):
+                user = UserProcessor.get_user()
+                if user is not None:
+                    reply = 'http://newtorn.tk/curriculum/' + g.openid
+                else:
+                    reply = text_process['绑定学号']               
         if reply == "":
             reply = text_process['留言']
         return self.mb.build_text_msg(self.from_user, self.to_user, self.create_time, self.msg_id, reply)            
-
     def event_reply(self):
         event = self.xml_rec.find('Event').text
         if event == 'subscribe':
