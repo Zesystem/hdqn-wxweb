@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>{% block title %}{% endblock %}</title> 
+	<link rel="stylesheet" href="{{url_for('static',filename='admin/css/base.css')}}">
+	<script src="{{url_for('static',filename='admin/js/base.js')}}"></script>
+</head>
+<body onload="startTime()">
+	<div class="container">
+		<div class="nav">
+			<!-- logo -->
+			<div class="left">
+				<span class="logo">河&nbsp;大&nbsp;青&nbsp;年&nbsp;后&nbsp;台&nbsp;管&nbsp;理</span>
+			</div>
+			<!-- 系统时间 -->
+			<div class="middle">
+				<div>
+						<span">当前时间：</span>
+						<span class="times"></span>	
+				</div>
+			</div>
+			<!-- 用户 -->
+			<div class="right">
+				<div>
+					<span>admin</span>
+					<span style="margin-left: 70px;">
+						<a href="{{ url_for('admin.login') }}">退出系统</a>
+					</span>
+				</div>
+			</div>
+		</div>
+		<div class="bottom">
+			<div class="left">
+				<div class="index">
+					<a href="{{ url_for('admin.index') }}"><span>首页</span></a></div>
+				<div class="demo">
+					<img src="{{url_for('static',filename='admin/images/7.png')}}" alt="">
+					<span>查看反馈</span>
+				</div>
+				{% block function1 %}
+					<div class="demo_demo">
+				{% endblock %}
+						<a href="{{url_for('admin.hxb')}}"><div><span>河小博</span></div></a>	
+						<a href="{{url_for('admin.hxz')}}"><div><span>河小知</span></div></a>
+						<a href="{{url_for('admin.hzg')}}"><div><span>河掌柜</span></div></a>
+					</div>
+				<div class="demo">
+					<img src="{{url_for('static',filename='admin/images/17.png')}}" alt="">
+					<span>添加回复</span>
+				</div>
+				{% block function2 %}
+					<div class="demo_demo">
+				{% endblock %}
+						<a href="{{url_for('admin.addTextAn')}}"><div><span>添加文本回复</span></div></a>	
+						<a href="{{url_for('admin.addImageContent')}}"><div><span>添加图文回复</span></div></a>
+						<a href="{{url_for('admin.addVoice')}}"><div><span>添加语音回复</span></div></a>
+						<a href="{{url_for('admin.addVideo')}}"><div><span>添加视频回复</span></div></a>
+						<a href="{{url_for('admin.addMusic')}}"><div><span>添加音乐回复</span></div></a>
+						<a href="{{url_for('admin.addImageAn')}}"><div><span>添加图片回复</span></div></a>
+					</div>
+				<div class="demo">
+					<img src="{{url_for('static',filename='admin/images/2.png')}}" alt="">
+					<span>回复管理</span>
+				</div>
+				{% block function3 %}
+					<div class="demo_demo">
+				{% endblock %}
+						<a href="{{url_for('admin.lookText')}}"><div><span>查看文本回复</span></div></a>	
+						<a href="{{url_for('admin.lookImageContent')}}"><div><span>查看图文回复</span></div></a>
+						<a href="{{url_for('admin.lookVoice')}}"><div><span>查看语音回复</span></div></a>
+						<a href="{{url_for('admin.lookVideo')}}"><div><span>查看视频回复</span></div></a>
+						<a href="{{url_for('admin.lookMusic')}}"><div><span>查看音乐回复</span></div></a>
+						<a href="{{url_for('admin.lookImage')}}"><div><span>查看图片回复</span></div></a>
+					</div>
+				<div class="demo">
+					<img src="{{url_for('static',filename='admin/images/4.png')}}" alt="">
+					<span>数据统计</span>
+					<span></span>
+				</div>
+				{% block function4 %}
+					<div class="demo_demo">
+				{% endblock %}
+						<a href="{{url_for('admin.keyWord')}}"><div><span>关键词次数统计</span></div></a>	
+						<a href="{{url_for('admin.jieKou')}}"><div><span>接口次数统计</span></div></a>
+					</div>
+			</div>
+			<div class="right">
+				<div>
+					{% block main %}
+					123
+					{% endblock %}
+				</div>
+			</div>
+		</div>
+	</div>
+<script src="{{url_for('static',filename='admin/js/jquery.js')}}"></script>
+
+<script>
+	$(function(){
+		//页面初始化
+		function fun(){
+			var $n_h = $('.nav').height();
+			var $w_h = $(window).height();
+			$('.bottom').css('height',$w_h - $n_h + 'px');
+
+			var $b_l_w = $('.bottom .left').width();
+			var $w_w = $(window).width();
+			$('.bottom .right').css('width',$w_w - $b_l_w -12 + 'px');
+			$('.bottom .right').css('height',$w_h - $n_h - 14 + 'px');
+
+			var $n_l_w = $('.nav .left').width();
+			var $n_r_w = $('.nav .right').width();
+			$('.nav .middle').css('width',$w_w - $n_l_w - $n_r_w + 'px');
+
+			var $n_m_w = $('.nav .middle').width();
+			$('.nav .right').css('left',$n_l_w + $n_m_w + 'px');
+		}
+		fun();
+		$(window).on('resize',function(){
+			// $('.nav').css('width',$(window).width());
+			fun();
+		
+		})
+
+		//实现导航功能
+		var demo = document.getElementsByClassName('demo');
+		var function_demo = document.getElementsByClassName('demo_demo');
+
+		var arr = [1,1,1,1];
+		for(var i = 0;i < 4;i++){
+			
+			var temp = function_demo[i].style.display;
+			if(temp == 'block')
+				arr[i] = 1;
+			else
+				arr[i] = 0;
+		}
+		// console.log(arr);
+		for(var i = 0;i < 4;i++){
+			(function(j){
+				demo[j].onclick=function(){
+					if(arr[j] == 1){
+						$(function_demo[j]).slideDown('fast');
+						arr[j] = 0;
+					}else{
+						$(function_demo[j]).slideUp('fast');
+						arr[j] = 1;
+					}
+				}
+			}(i))
+		}
+	})
+</script>
+</body>
+</html>

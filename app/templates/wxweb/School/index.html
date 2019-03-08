@@ -1,0 +1,122 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+	<meta name="apple-mobile-web-app-capable" content="yes">
+	<meta name="apple-mobile-web-app-status-bar-style" content="black">
+	<meta name="format-detection" content="telephone=no">
+
+<link rel="stylesheet" href="{{url_for('static',filename='wxweb/css/jquery.mobile-1.3.2.min.css')}}">
+<script src="{{url_for('static',filename='wxweb/js/jquery-1.8.3.min.js')}}"> </script>
+<script src="{{url_for('static',filename='wxweb/js/jquery.mobile-1.3.2.min.js')}}"> </script>
+<title>校园漫步</title>
+<style>
+	.error{
+		display:block;
+		top:50%;
+		position: relative;
+		z-index: 1000;
+		width:100%;
+		text-align:center;
+		height:auto;
+		cursor: pointer;
+	}
+	img{max-width: 100%;height:auto;}
+	#ifMap{
+		width:100%;
+		height:800px;
+		max-height: 100%;
+	}
+	#contTwo{
+		padding:0px;
+	}
+	.demo{
+		position: absolute;
+		display: none;
+	}
+</style>
+<link rel="stylesheet" href="{{url_for('static',filename='wxweb/css/slideMenu.css')}}" />
+</head>
+
+<body>
+
+    <div data-role="page" id="pageone">  
+        <nav class="slideMenu" id="slideMenu">
+        	<ul>
+        		<li><h3><img id="hideMenu" src="{{url_for('static',filename='wxweb/images/menu.png')}}">选择项目</h3></li>
+        		<li><a class="slideItem menu1" name="" href="{{url_for('wxweb.school')}}">河大全景</a></li>
+        		<li><a class="slideItem menu" name="0" href="javascript:">洗衣服务</a></li>
+        		<li><a class="slideItem menu" name="1" href="javascript:">培训信息</a></li>
+        		<li><a class="slideItem menu" name="2" href="javascript:">河大驾校</a></li>
+        		<li><a class="slideItem menu" name="3" href="javascript:">图书订购</a></li>
+        		<li><a class="slideItem menu" name="4" href="javascript:">易百超市</a></li>
+        	</ul>
+        </nav>
+        <div data-role="header">
+            <h1>校园漫步</h1>
+            <span id="showMenu" class="ui-btn-right"><img src="{{url_for('static',filename='wxweb/images/menu.png')}}"></span>
+        </div>
+        <div data-role="content" id="contOne" style="margin-top: 10px;">
+
+        	<div id="nav">
+				<select name="campus" id="campus" data-native-menu="false" onchange="getBuild();">
+	        		<option value="">请选择校区</option>
+	        		<option value="本部">本部</option>
+	        		<option value="新校区">新校区</option>
+	       		</select>
+	        	<div id="build">
+		    		<select name="build" id="build" data-native-menu="false" onchange="getUrl();">
+		   				{% for key in user.ch %}
+		   					<option value="">{{key}}</option>
+		   				{% endfor %}
+		    		</select></div>
+	        		<a href="#" id="butForward" data-role="button" data-icon="forward" data-iconpos="right">查看</a>
+	        	</div>
+        	</div>
+			
+			<div  class="ui-content">
+				<div class="demo" id="">洗衣服务
+					{{user.content}}
+	        	</div>
+	        	<div class="demo" id="">培训信息
+					{{user.content}}
+	        	</div>
+	        	<div class="demo" id="">河大驾校
+	        		{{user.content}}
+	        	</div>
+	        	<div class="demo" id="">图书订购
+					{{user.content}}
+	        	</div>
+	        	<div class="demo" id="">易百超市
+					{{user.content}}
+	        	</div>
+			</div>
+
+        </div>
+        {% include "wxweb/footnav.html" %}
+    </div>
+<script>
+var showmenu = document.getElementById('showMenu');
+var hidemenu = document.getElementById('hideMenu');
+
+showmenu.addEventListener('touchstart',function(){
+	$('#slideMenu').addClass('slideMenu_on');
+},false)
+hidemenu.addEventListener('touchstart',function(){
+	$('#slideMenu').removeClass('slideMenu_on');
+},false)
+$(function(){
+	$('.menu').click(function(){
+		$('#nav').css('display','none');
+		$('.demo').css('display','none');
+		$('.demo')[this.name].style.display = 'block';
+	})
+	$('.menu1').click(function(){
+		$('.demo').css('display','none');
+		$('#nav').css('display','block');
+	})
+})
+</script>
+</body>
+</html>

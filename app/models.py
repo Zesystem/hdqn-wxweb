@@ -31,25 +31,17 @@ class User(db.Model):
     leftTime = db.Column(db.Date, default=datetime.now, nullable=False)
 
 
-# class Material(db.Model):
-#     """素材模型"""
-#     __tablename__ = 'materials'
-#     mid = db.Column(db.Integer, primary_key=True, autoincrement=True)
-#     mtype = db.Column(db.String(10), nullable=False)
-#     content = db.Column(db.Text, nullable=False)
-#     media_id = db.Column(db.String(50), nullable=False)
-#     title = db.Column(db.String(60), nullable=False)
-#     description = db.Column(db.String(100), nullable=False)
-#     music_url = db.Column(db.String(2000), nullable=False)
-#     hqmusic_url = db.Column(db.String(2000), nullable=False)
-#     pic_url = db.Column(db.String(2000), nullable=False)
-#     url = db.Column(db.String(2000), nullable=False)
-
-# class KeyWord(db.Model):
-#     """关键字模型"""
-#     __tablename__ = 'keywords'
-#     kid = db.Column(db.Integer, primary_key=True, autoincrement=True)
-#     word = db.Column(db.String(20), unique=True, nullable=False)
-#     mid = db.Column(db.Integer, db.ForeignKey('materials.mid'))
-#     material = db.relationship('Material', backref=db.backref('keywords'))
-
+class Material(db.Model):
+    """关键字回复素材模型"""
+    __tablename__ = 'materials'
+    mid = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    mtype = db.Column(db.String(10), nullable=False)
+    keyword = db.Column(db.String(20), unique=True, nullable=False)
+    content = db.Column(db.Text)
+    media_id = db.Column(db.String(50))
+    title = db.Column(db.String(60))
+    description = db.Column(db.String(100))
+    music_url = db.Column(db.String(2000))
+    hqmusic_url = db.Column(db.String(2000))
+    pic_url = db.Column(db.String(2000))
+    url = db.Column(db.String(2000))

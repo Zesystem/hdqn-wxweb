@@ -3,6 +3,9 @@ import requests
 APPID = 'wxc0eb1bc035f33f2e'
 APPSECRET = 'e7d864d5a694045387bad0b77321b17b'
 
+# APPID = 'wxc26075c6f39886a3'
+# APPSECRET = 'c135f9a637faf20aebf705b7f6ce43f6'
+
 def get_access_token():
     url = 'https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid={appid}&secret={appsecret}'.format(
         appid = APPID,

@@ -1,0 +1,29 @@
+{% extends 'admin/base.html' %}
+
+{% block title %}
+	管理中心
+{% endblock %}
+{% block main %}
+<script src="{{url_for('static',filename='admin/js/index.js')}}"></script>
+<link rel="stylesheet" href="{{url_for('static',filename='admin/css/index.css')}}">
+	<div class="index_demo">
+		<img class="img" src="{{url_for('static',filename='admin/images/logo.jpg')}}" alt="">
+		<div class="user_demo">
+			<div style="margin-top: 25px;">
+				<span style="">当前时间：</span>
+				<span id="demo"></span>
+			</div>
+			<br>
+			<span><strong>{{user.name}}</strong></span>
+			<br>
+			<br>
+			<span>欢迎来到管理中心!</span>
+		</div>
+	</div>
+	<hr>
+	<div class="info">
+		<span>您的权限:</span>
+		<span>{{user.info}}</span>
+	</div>
+	<br>
+{% endblock %}

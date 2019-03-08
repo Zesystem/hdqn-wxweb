@@ -1,0 +1,25 @@
+index.html为网站的主页
+base.html为所有网页的母模板
+login.html为登陆页面
+
++查看反馈-feedback
+	·河小博-hxb.html
+	·河小知-hxz.html
+	·河掌柜-hzg.html
++添加回复-addanswer
+	·添加图文回复-addImageContent.html
+	·添加图片回复-addImageAnswear.html
+	·添加音乐回复-addMusic.html
+	·添加视频回复-addVideo.html
+	·添加语音回复-addVoice.html
+	·添加文本回复-addTextAnswear.html
++查看回复-answer
+	·查看图文回复-lookImageContent.html
+	·查看图片回复-lookImageAnswear.html
+	·查看音乐回复-lookMusic.html
+	·查看视频回复-lookVideo.html
+	·查看语音回复-lookVoice.html
+	·查看文本回复-lookTextAnswear.html
++统计-statistics
+	·查看接口次数-jieKou.html
+	·查看关键字-keyWords.html

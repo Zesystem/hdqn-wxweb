@@ -1,0 +1,121 @@
+*{
+	margin: 0;
+	padding:0;
+	text-decoration: none;
+	list-style: none;
+}
+
+body,html{
+	height:100%;
+	width: 100%;
+}
+
+html{
+	font-size: 62.5%;
+}
+
+.body{
+	background: url(../images/timg.jpg) no-repeat fixed center / cover;
+}
+
+.menu{
+	width: 96%;
+	height: 98%;
+	max-width: 400px;
+	max-height: 800px;
+	position: absolute;
+}
+
+.top{
+	width:100%;
+	height:85%;
+}
+
+.bottom{
+	width:100%;
+	height:13%;
+	background: blue;
+	position: absolute;
+	bottom: 0;
+	background: rgba(0, 0, 0, 0.7);
+}
+
+.c_top{
+	width:100%;
+	background:#438eb9;
+	color:#fff;
+	border-top-right-radius: 10px;
+	border-top-left-radius: 10px;
+	font-family: KaiTi;
+	font-weight: bold;
+}
+
+.left,.middle,.right{
+	flex:1;
+	height:100%;
+	font-size: 2.5rem;
+	text-align: center;
+}
+
+.left{
+	border-bottom:3px solid #4876FF;
+}
+
+.middle,.right{
+	border-bottom:3px solid #fff;
+}
+
+.c_bottom{
+	width:100%;
+	background: blue;
+	background: rgba(255,255,255,0.7);
+	border-bottom-right-radius: 10px;
+	border-bottom-left-radius: 10px;
+}
+
+.content{
+	display: none;
+	width:100%;
+	height:100%;
+	overflow-y:auto;
+}
+
+.bottom>p{
+	color: #fff;
+	text-align: center;
+	font-size: 1.2rem;
+}
+
+.content>.content_x,.content_span{
+	width:100%;
+	display: flex;
+}
+
+.content>.content_x>div{
+	flex:1;
+	height:100%;
+	position: relative;
+}
+
+.content>.content_span{
+	display: flex;
+	text-align: center;
+	font-size: 1.5rem;
+}
+
+.content_span>div{
+	flex:1;
+}
+
+img{
+	width:80%;
+	height:80%S;
+	position: absolute;
+	top: 10%;
+	left: 10%;
+}
+
+.kong{
+	width:100%;
+	height:2%;
+}

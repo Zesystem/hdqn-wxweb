@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+	<meta name="apple-mobile-web-app-capable" content="yes">
+	<meta name="apple-mobile-web-app-status-bar-style" content="black">
+	<meta name="format-detection" content="telephone=no">
+	<title>微站</title>
+	<link rel="stylesheet" href="{{url_for('static',filename='wxweb/css/css.css')}}">
+</head>
+<body class="body">
+	<div class="menu">
+		<div class="top">
+			<div class="c_top">
+				<div id="0" class="he left">河&nbsp;大&nbsp;青&nbsp;年&nbsp;微&nbsp;站</div>
+			</div>
+			<div class="c_bottom">
+				<div class="content" style="display: block;">
+					<div class="content_x">
+						<div>
+							<a href="{{url_for('wxweb.score')}}"><img src="{{url_for('static',filename='wxweb/images/1.png')}}" alt=""></a>
+						</div>
+						<div>
+							<a href="{{url_for('wxweb.course')}}"><img src="{{url_for('static',filename='wxweb/images/2.png')}}" alt=""></a>
+						</div>
+						<div>
+							<a href="{{url_for('wxweb.book')}}"><img src="{{url_for('static',filename='wxweb/images/3.png')}}" alt=""></a>
+						</div>
+						<div>
+							<a href="{{url_for('wxweb.evaluate')}}"><img src="{{url_for('static',filename='wxweb/images/4.png')}}" alt=""></a>
+						</div>
+					</div>
+					<div class="content_span">
+						<div><a href="{{url_for('wxweb.score')}}">我的成绩</a></div>
+						<div><a href="{{url_for('wxweb.course')}}">我的课表</a></div>
+						<div><a href="{{url_for('wxweb.book')}}">图书信息</a></div>
+						<div><a href="{{url_for('wxweb.evaluate')}}">网上评教</a></div>
+					</div>
+					<div class="kong"></div>
+					<div class="content_x">
+						<div>
+							<a href="{{url_for('wxweb.phone')}}"><img src="{{url_for('static',filename='wxweb/images/5.png')}}" alt=""></a>
+						</div>
+						<div>
+							<a href="{{url_for('wxweb.bus')}}"><img src="{{url_for('static',filename='wxweb/images/6.png')}}" alt=""></a>
+						</div>
+						<div>
+							<a href="http://mobile.myouth.net/html/activeDetial.html?ids=1551601903035001&ver=1.3&build=2018053101"><img src="{{url_for('static',filename='wxweb/images/7.png')}}" alt=""></a>
+						</div>
+						<div>
+						    <a href="http://ciee.hbu.edu.cn/""><img src="{{url_for('static',filename='wxweb/images/8.png')}}" alt=""></a>
+						</div>
+						
+					</div>
+					<div class="content_span">
+						
+						<div><a href="{{url_for('wxweb.phone')}}">办公电话</a></div>
+						<div><a href="{{url_for('wxweb.bus')}}">公交信息</a></div>
+						<div><a href="http://mobile.myouth.net/html/activeDetial.html?ids=1551601903035001&ver=1.3&build=2018053101">公共服务</a></div>
+						<div><a href="http://ciee.hbu.edu.cn/"">国际交流</a></div>
+					</div>
+					<div class="kong"></div>
+					<div class="content_x">
+						<div>
+							<a href="{{url_for('wxweb.seat')}}"><img src="{{url_for('static',filename='wxweb/images/21.png')}}" alt=""></a>
+						</div>
+						<div>
+							<a href="{{url_for('wxweb.welfare')}}"><img src="{{url_for('static',filename='wxweb/images/10.png')}}" alt=""></a>
+						</div>
+						<div>
+							<a href="http://msite.eol.cn/918/index.shtml"><img src="{{url_for('static',filename='wxweb/images/11.png')}}" alt=""></a>
+						</div>
+						<div>
+							<a href="{{url_for('wxweb.express')}}"><img src="{{url_for('static',filename='wxweb/images/20.png')}}" alt=""></a>
+						</div>
+					</div>
+					<div class="content_span">
+						<div><a href="{{url_for('wxweb.seat')}}">座位预约</a></div>
+						<div><a href="{{url_for('wxweb.welfare')}}">公益河大</a></div>
+						<div><a href="http://msite.eol.cn/918/index.shtml">高考招生</a></div>
+						<div><a href="{{url_for('wxweb.express')}}">快递查询</a></div>
+					</div>
+					<div class="content_x">
+						<div>
+							<a href="{{url_for('wxweb.wether')}}"><img src="{{url_for('static',filename='wxweb/images/19.png')}}" alt=""></a>
+						</div>	
+						<div>
+							<a href="{{url_for('wxweb.famliy')}}"><img src="{{url_for('static',filename='wxweb/images/13.png')}}" alt=""></a>
+						</div>
+						<div>
+							<a href="{{url_for('wxweb.food')}}"><img src="{{url_for('static',filename='wxweb/images/14.png')}}" alt=""></a>
+						</div>
+						<div>
+							<a href="{{url_for('wxweb.school')}}"><img src="{{url_for('static',filename='wxweb/images/15.png')}}" alt=""></a>
+						</div>
+					</div>
+					<div class="content_span">
+						<div><a href="{{url_for('wxweb.wether')}}">天气查询</a></div>
+						<div><a href="{{url_for('wxweb.famliy')}}">温馨家园</a></div>
+						<div><a href="{{url_for('wxweb.food')}}">校园美食</a></div>
+						<div><a href="{{url_for('wxweb.school')}}">校园漫步</a></div>
+					</div>
+					<div class="kong"></div>
+					<div class="content_x">
+						<div>
+							<a href="#"><img src="{{url_for('static',filename='wxweb/images/12.png')}}" alt=""></a>
+						</div>
+						<div>
+							<a href="{{url_for('wxweb.wether')}}"><img src="{{url_for('static',filename='wxweb/images/19.png')}}" alt=""></a>
+						</div>
+						<div>
+							<a href="#"><img src="{{url_for('static',filename='wxweb/images/17.png')}}" alt=""></a>
+						</div>
+						<div>
+							<a href="{{url_for('wxweb.job')}}"><img src="{{url_for('static',filename='wxweb/images/9.png')}}" alt=""></a>
+						</div>
+					</div>
+					<div class="content_span">
+						<div><a href="#">视频上传</a></div>
+						<div><a href="{{url_for('wxweb.wether')}}">天气查询</a></div>
+						<div><a href="#">语音上传</a></div>
+						<div><a href="{{url_for('wxweb.job')}}">创业就业</a></div>
+					</div>
+					<div class="kong"></div>
+					<div class="content_x">
+						<div>
+							<a href="{{url_for('wxweb.job')}}"><img src="{{url_for('static',filename='wxweb/images/18.png')}}" alt=""></a>
+						</div>
+						<div>
+							<a href=""><img src="" alt=""></a>
+						</div>
+						<div><a href=""><img src="" alt=""></a></div>
+						<div>
+							<a href=""><img src="" alt=""></a>
+						</div>
+					</div>
+					<div class="content_span">
+						<div><a href="{{url_for('wxweb.feedback')}}">意见反馈</a></div>
+						<div><a href=""></a></div>
+						<div><a href=""></a></div>
+						<div><a href=""></a></div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="bottom">
+			<p>©河北大学青年</p>
+			<p>技术支持：河大青年技术部</p>
+		</div>
+	</div>
+<script src="{{url_for('static',filename='wxweb/js/jquery.js')}}"></script>
+<script>
+	$(function (){
+		//页面初始化
+		$(window).on('resize load',function(){
+			var $win_h = $(window).height(),
+				$win_w = $(window).width();
+			var $menu_h = $('.menu').height(),
+				$menu_w = $('.menu').width();
+			$('.menu').css('top',($win_h - $menu_h) / 2);
+			$('.menu').css('left',($win_w - $menu_w) / 2);
+
+			var $c_w = $('.c_top').width();
+			$('.c_top').css('height',$c_w / 6);
+			var $top_h = $('.top').height();
+			$('.c_bottom').css('height',$top_h - $c_w / 6);
+			$('.he').css('line-height',$('.c_top').height() + 'px');
+			
+			var $b_h = $('.bottom').height();
+			$('.bottom>p').css('margin-top',$b_h / 5);
+
+			var $content_w = $('.content>.content_x').width();
+			$('.content>.content_x').css('height',$content_w / 4);
+		})
+		$('.he').on('touchstart',function(){
+			$('.content').css('display','none');
+			$('.he').css('border-bottom-color','#fff');
+			$($('.content')[this.id]).css('display','block');
+			$($('.he')[this.id]).css('border-bottom-color','#4876FF');
+
+		})
+	})
+</script>
+</body>
+</html>

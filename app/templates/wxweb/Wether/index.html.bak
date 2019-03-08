@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+	<meta name="apple-mobile-web-app-capable" content="yes">
+	<meta name="apple-mobile-web-app-status-bar-style" content="black">
+	<meta name="format-detection" content="telephone=no">
+
+<link rel="stylesheet" href="http://code.jquery.com/mobile/1.3.2/jquery.mobile-1.3.2.min.css">
+<script src="http://code.jquery.com/jquery-1.8.3.min.js"></script>
+<script src="http://code.jquery.com/mobile/1.3.2/jquery.mobile-1.3.2.min.js"></script>
+<link rel="stylesheet" href="../Public/Css/slideMenu.css" />
+<title>天气查询</title>
+<style>
+	.error{
+		display:block;
+		top:50%;
+		position: relative;
+		z-index: 1000;
+		width:100%;
+		text-align:center;
+		height:auto;
+		cursor: pointer;
+	}
+</style>
+</head>
+
+<body>
+
+    <div data-role="page" id="pageone">  
+        <nav class="slideMenu" id="slideMenu">
+	    	<ul>
+	    		<li><h3><img id="hideMenu" src="../Public/Img/menu.png">选择项目</h3></li>
+	    		<li><a class="slideItem" data-ajax="false" href="{:U('Index/findPhone')}">办公电话</a></li>
+	    		<li><a class="slideItem" data-ajax="false" href="{:U('Wether/index')}">天气查询</a></li>
+	    		<li><a class="slideItem" data-ajax="false" href="{:U('Express/index')}">快递查询</a></li>
+	    		<li><a class="slideItem" data-ajax="false" href="{:U('Bus/index')}">公交线路</a></li>
+	    	</ul>
+	    </nav>
+	    <div data-role="header">
+	        <h1>天气查询</h1>
+	        <span id="showMenu" class="ui-btn-right"><img src="../Public/Img/menu.png"></span>
+	    </div>
+        <div data-role="content">
+        	<div id="search" data-role="fieldcontain">
+				<input type="search" name="weth" data-inline="true" value="保定">
+				<input type="button" data-inline="true" value="搜索" />
+			</div>
+			<div id="result" style="margin-top: 40px;">
+				
+			</div>
+        </div>
+	    
+	    <link rel="stylesheet" href="../Public/Css/menu.css" />
+	    <div data-role="widget" data-widget="nav4" class="nav4">
+			<nav>
+				<div id="nav4_ul" class="nav_4">
+					<ul class="box">
+						<li><a href="javascript:;" class=""><span>河小博</span></a>
+							<dl>
+								<dd><a data-ajax="false" href="{:U('Score/index')}"><span>我的成绩</span></a></dd>
+								<dd><a data-ajax="false" href="{:U('Course/index')}"><span>我的课表</span></a></dd>
+								<dd><a data-ajax="false" href="{:U('Book/index')}"><span>图书信息</span></a></dd>
+								<dd><a data-ajax="false" href="#"><span>网上评教</span></a></dd>
+							</dl>
+						</li>
+						<li><a href="javascript:;" class=""><span>河小知</span></a>
+							<dl>
+								<dd><a data-ajax="false" href="{:U('Index/findPhone')}"><span>公共服务</span></a></dd>
+								<dd><a data-ajax="false" href="http://ciee.hbu.edu.cn/"><span>国际交流</span></a></dd>
+								<dd><a data-ajax="false" href="#"><span>创业就业</span></a></dd>
+								<dd><a data-ajax="false" href="{:U('Index/welfare')}"><span>公益河大</span></a></dd>
+								<dd><a data-ajax="false" href="http://msite.eol.cn/918/index.shtml"><span>高考招生</span></a></dd>
+							</dl>
+						</li>
+						<li><a href="javascript:;" class=""><span>河掌柜</span></a>
+							<dl>
+								<dd><a data-ajax="false" href="{:U('Manager/scene')}"><span>温馨家园</span></a></dd>
+								<dd><a data-ajax="false" href="{:U('Manager/food')}"><span>校园美食</span></a></dd>
+								<dd><a data-ajax="false" href="{:U('Manager/scene')}"><span>校园漫步</span></a></dd>
+								<dd><a data-ajax="false" href="{:U('Manager/mobile')}"><span>移动校园</span></a></dd>
+								<dd><a data-ajax="false" href="#"><span>意见反馈</span></a></dd>
+							</dl>
+						</li>
+					</ul>			
+				</div>
+			</nav>
+			<div id="nav4_masklayer" class="masklayer_div on">&nbsp;</div>
+			<script src="../Public/Js/nav4.js"></script>
+			<script type="text/javascript">
+				nav4.bindClick(document.getElementById("nav4_ul").querySelectorAll("li>a"), document.getElementById("nav4_masklayer"));
+			</script>
+		</div> 
+        </div>
+    </div>
+<div data-role="dialog" id="pagetwo">
+	<div data-role="header">
+		<h1>提示信息</h1>
+	</div>
+	<div data-role="content">
+		<p id="tipMsg"></p>
+		<a href="#pageone" data-inline="true" data-role="button">确定</a>
+	</div>
+	<div data-role="footer">
+		<h1>河大青年</h1>
+	</div>	
+</div>
+<script src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
+<script src="../Public/Js/wxShare.js"></script>
+<script>
+	 wx.config({
+      debug: false,
+      appId: "{$jsSign['appId']}",
+      timestamp: '{$jsSign["timestamp"]}',
+      nonceStr: '{$jsSign["nonceStr"]}',
+      signature: '{$jsSign["signature"]}',
+      jsApiList: [
+        'checkJsApi',
+        'onMenuShareTimeline',
+        'onMenuShareAppMessage',
+        'onMenuShareQQ',
+        'onMenuShareWeibo',
+        'hideMenuItems',
+        'showMenuItemOAs',
+        'hideAllNonBaseMenuItem',
+        'showAllNonBaseMenuItem',
+        'getNetworkType',
+        'openLocation',
+        'getLocation',
+        'hideOptionMenu',
+        'showOptionMenu',
+        'closeWindow'
+      ]
+  });
+  shareLink = 'http://twwx.hbu.edu.cn/wxWeb.php/Wether.html';
+$(document).ready(function(){
+	$('input[type=button]').click(function(){
+		var wether = $('input[name=weth]').val();
+		//alert(wether);
+		getWether(wether);
+	});
+	getWether('保定');
+});
+$('#showMenu').click(function(){
+	$('#slideMenu').addClass('slideMenu_on');
+})
+$('#hideMenu').click(function(){
+	$('#slideMenu').removeClass('slideMenu_on');
+})
+function loadError(){
+	var wether = $('input[name=weth]').val();
+	getWether(wether);
+	$('div .error').remove();
+}
+function getWether(city){
+	showLoader();
+	//var wether = $('input[name=weth]').val();
+	if(city==''){
+		$('#tipMsg').html('要查询的城市不能为空');
+		$.mobile.changePage('#pagetwo', 'pop', true, true);return;
+	}
+	$.ajax({
+		url:"{:U('Wether/getWether')}",
+		data:'location='+city,
+		type:"get",
+		success:function(msg){
+			hideLoader();
+			if(msg.status==1){
+				html = '<ul data-role="listview">';
+				html += '<li>'+msg.res.city+'</li>';
+				html += '<li>'+msg.res.time+'</li>';
+				html += '<li>'+msg.res.tempture+'</li>';
+				html += '<li>'+msg.res.wether+'</li>';
+				html += '<li>'+msg.res.wind+'</li>';
+				html += '<li>'+msg.res.clothes+'</li>';
+				html += '<li>'+msg.res.flud+'</li>';
+				html += '<li>'+msg.res.rays+'</li>';
+				html += '</ul>';
+				$('#result').html(html).trigger('create');
+			}else if(msg.status==0){
+				$('#tipMsg').html(msg.res);
+				$.mobile.changePage('#pagetwo', 'pop', true, true);return;
+			}else{
+				$('#pageone div[data-role=content]').html('<div class="error" onclick="loadError();"><p>Error</p><h5>点击重新加载...</h5></div>');
+			}
+		}
+	})
+}
+function showLoader(){
+	$.mobile.loadingMessageTextVisible = true;
+	$.mobile.loadingMessageTheme = 'a';
+	$.mobile.loadingMessage = '加载中。。。';
+	$.mobile.showPageLoadingMsg();
+}
+function hideLoader(){
+	$.mobile.hidePageLoadingMsg();
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+	<meta name="apple-mobile-web-app-capable" content="yes">
+	<meta name="apple-mobile-web-app-status-bar-style" content="black">
+	<meta name="format-detection" content="telephone=no">
+
+<link rel="stylesheet" href="{{url_for('static',filename='wxweb/css/jquery.mobile-1.3.2.min.css')}}">
+<script src="{{url_for('static',filename='wxweb/js/jquery-1.8.3.min.js')}}"> </script>
+<script src="{{url_for('static',filename='wxweb/js/jquery.mobile-1.3.2.min.js')}}"> </script>
+<title>温馨家园</title>
+<link rel="stylesheet" href="{{url_for('static',filename='wxweb/css/slideMenu.css')}}" />
+<style>
+	.demo{
+		position: absolute;
+		display: none;
+	}
+
+	#demo1{
+		display: block;	
+	}
+</style>
+</head>
+
+<body>
+<div data-role="page" id="pageone">  
+    <nav class="slideMenu" id="slideMenu">
+    	<ul>
+    		<li><h3><img id="hideMenu" src="{{url_for('static',filename='wxweb/images/menu.png')}}">选择项目</h3></li>
+    		<li><a class="slideItem"  msg="学生公寓" href="javascript:void(0);">学生公寓</a></li>
+    		<li><a class="slideItem"  msg="国交中心服务" href="javascript:void(0);">国交中心服务</a></li>
+    		<li><a class="slideItem"  msg="后勤保修" href="javascript:void(0);">后勤保修</a></li>
+    	</ul>
+    </nav>
+    <div data-role="header">
+        <h1>温馨家园</h1>
+        <span id="showMenu" class="ui-btn-right"><img src="{{url_for('static',filename='wxweb/images/menu.png')}}"></span>
+    </div>
+    <div data-role="content">
+        <div data-role="navbar">
+        	<ul>
+        		<li><a class="btn" name="0" href="#" class="ui-btn-active">公寓电话</a></li>
+        		<li><a class="btn" name="1" href="#" >调宿服务</a></li>
+        		<li><a class="btn" name="2" href="#" >退宿服务</a></li>
+        	</ul>
+       	</div>
+       	<br>
+       	<div>
+			<div class="demo" id="demo1">公寓电话
+				{{user.content}}
+        	</div>
+        	<div class="demo">调宿服务
+				{{user.content}}
+        	</div>
+        	<div class="demo">退宿服务
+        		{{user.content}}
+        	</div>
+       	</div>
+    </div> 
+     
+    {% include "wxweb/footnav.html" %}
+</div>
+<script>
+var showmenu = document.getElementById('showMenu');
+var hidemenu = document.getElementById('hideMenu');
+
+showmenu.addEventListener('touchstart',function(){
+    $('#slideMenu').addClass('slideMenu_on');
+},false)
+
+hidemenu.addEventListener('touchstart',function(){
+    $('#slideMenu').removeClass('slideMenu_on');
+},false)
+
+$(function(){
+	$('.btn').click(function(){
+		$('.demo').attr('id',' ');
+		$('.demo')[this.name].id = 'demo1';
+	})
+})
+</script>
+</body>
+</html>

@@ -1,6 +1,6 @@
 from flask import g
 from app import db
-from app import hbujwxt
+from app.exts import hbujwxt
 
 from app.utils import status
 from app.utils.userprocess import UserProcessor 
@@ -25,6 +25,10 @@ class MessageBuilder(object):
         return self.__msg_base
 
     def build_text_msg(self, to_user, from_user, create_time, msg_id, content):
+        """
+        文本消息回复
+        content: 文本内容
+        """
         msg = '<xml>'
         msg += self.msg_base % (to_user, from_user, create_time, 'text', msg_id)
         msg += '<Content><![CDATA[%s]]></Content>\n' % content
@@ -32,6 +36,10 @@ class MessageBuilder(object):
         return msg
 
     def build_image_msg(self, to_user, from_user, create_time, msg_id, media_id):
+        """
+        图片消息回复
+        media_id: 多媒体图片文件id
+        """
         msg = '<xml>'
         msg += self.msg_base % (to_user, from_user, create_time, 'image', msg_id)
         msg += '<Image><MediaId><![CDATA[%s]]></MediaId></Image>\n' % media_id
@@ -39,6 +47,10 @@ class MessageBuilder(object):
         return msg
 
     def build_voice_msg(self, to_user, from_user, create_time, msg_id, media_id):
+        """
+        语音消息回复
+        media_id: 多媒体语音文件id
+        """
         msg = '<xml>'
         msg += self.msg_base % (to_user, from_user, create_time, 'voice', msg_id)
         msg += '<Voice><MediaId><![CDATA[%s]]></MediaId></Voice>\n' % media_id
@@ -46,6 +58,12 @@ class MessageBuilder(object):
         return msg
 
     def build_video_msg(self, to_user, from_user, create_time, msg_id, media_id, title, description):
+        """
+        视频消息回复
+        media_id： 多媒体视频文件id
+        title: 标题
+        description: 简介
+        """
         msg = '<xml>'
         msg += self.msg_base % (to_user, from_user, create_time, 'video', msg_id)
         msg += '<Video>\n'
@@ -57,6 +75,14 @@ class MessageBuilder(object):
         return msg
 
     def build_music_msg(self, to_user, from_user, create_time, msg_id, thumb_media_id, title, description, music_url, hq_music_url):
+        """
+        音乐消息回复
+        thumb_media_id: 多媒体缩略图文件id
+        title: 标题
+        description: 简介
+        music_url: 普通音质音乐链接
+        hq_music_url: 高清音质音乐链接
+        """
         msg = '<xml>'
         msg += self.msg_base % (to_user, from_user, create_time, 'music', msg_id)
         msg += '<Music>\n'
@@ -70,6 +96,13 @@ class MessageBuilder(object):
         return msg
 
     def build_news_msg(self, to_user, from_user, create_time, msg_id, title, description, pic_url, url):
+        """
+        图文消息回复
+        title: 标题
+        description: 简介
+        pic_url: 封面图片链接
+        url: 图文链接
+        """
         msg = '<xml>'
         msg += self.msg_base % (to_user, from_user, create_time, 'news', msg_id)
         msg += '<ArticleCount>%d</ArticleCount>\n' % 1
@@ -95,6 +128,7 @@ class MessageProcessor(object):
         self.mb = mb
 
     def check_reply(self, receieve):
+        """消息内容验证回复处理"""
         self.xml_rec = ET.fromstring(receieve)
         self.to_user = self.xml_rec.find('ToUserName').text
         g.openid = self.from_user = self.xml_rec.find('FromUserName').text
@@ -131,6 +165,7 @@ class MessageProcessor(object):
         return response
 
     def text_reply(self):
+        """处理文本内容回复"""
         content = self.xml_rec.find('Content').text
         reply = ''
         for item in text_process:
@@ -203,12 +238,12 @@ class MessageProcessor(object):
                     g.userinfo = {'username':user.studentID, 'password':user.studentPWD}
                     reply = '学号: {}\n'.format(g.userinfo['username'])
                     res = hbujwxt.query_this_term_score(g.userinfo)
-                    reply += '课程名************成绩************排名\n'
+                    reply += '课程名********成绩********排名\n'
                     if res['code'] == 200:
                         data = res['data']   
                         for courseinfo in data:
                             reply += '-'*40 + '\n'
-                            reply += '{} {} {}\n'.format(*courseinfo)
+                            reply += '{}**{}**{}\n'.format(*courseinfo)
                             reply += '-'*40 + '\n'
                 else:
                     reply = text_process['绑定学号']  
@@ -237,13 +272,15 @@ class MessageProcessor(object):
             elif content.startswith('课表查询'):
                 user = UserProcessor.get_user()
                 if user is not None:
-                    reply = 'http://newtorn.tk/curriculum/' + g.openid
+                    reply = 'http://newtorn.fastfuck.me/curriculum/' + g.openid
                 else:
                     reply = text_process['绑定学号']               
         if reply == "":
             reply = text_process['留言']
         return self.mb.build_text_msg(self.from_user, self.to_user, self.create_time, self.msg_id, reply)            
+
     def event_reply(self):
+        """处理事件内容回复"""
         event = self.xml_rec.find('Event').text
         if event == 'subscribe':
             reply = text_process['关注']
@@ -257,17 +294,22 @@ class MessageProcessor(object):
         return 'success'
 
     def image_reply(self):
+        """处理图片内容回复"""
         pass           
 
     def voice_reply(self):
+        """处理语音内容回复"""
         pass
 
-    def video_reply(self): 
+    def video_reply(self):
+        """处理视频内容回复"""
         pass 
 
     def music_reply(self):
+        """处理音乐内容回复"""
         pass
 
     def news_reply(self):
+        """处理图文内容回复"""
         pass
 

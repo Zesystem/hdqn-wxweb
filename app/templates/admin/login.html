@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>Qingcheng</title>
+<link rel="stylesheet" href="{{url_for('static',filename='admin/css/mystyle.css')}}" />
+<script src="{{url_for('static',filename='admin/js/jquery.js')}}"></script>
+</head>
+<body class="body_bg">
+	<div class="whole">
+		<div class="title">Please Login Your Account</div>
+		<form id="form1" action="" method="post" class="form_box">
+			<div class="input_tit">Account</div>
+			<div class="input_box">
+				<input class="input_self" type="text" name="account" id="account" />
+			</div>
+			<div class='blank_30'></div>
+			<div class="input_tit">Password</div>
+			<div class="input_box">
+				<input class="input_self" type="text" name="password" id="password" />
+			</div>
+			<div class="finish_box">
+				<input class="finish_btn" type="button" id="finish" name="login" value="Login" />
+			</div>
+		</form>
+	</div>
+</body>
+<script type="text/javascript">
+	$(function(){
+		$(window).on('resize load',function(){
+			var win_height = $(window).height();
+			var whole_height = $(".whole").height();
+			$(".whole").css('top',win_height/2 - whole_height/2 - 40 + 'px')
+			
+		})
+	})
+</script>
+</html>

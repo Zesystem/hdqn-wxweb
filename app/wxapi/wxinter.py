@@ -8,7 +8,7 @@ def wx_check():
     if request.method == 'GET':
         data = request.args
         if len(data) == 0:
-            return render_template('wxinter.html')
+            return render_template('public/wxinter.html')
         signature = data.get('signature')
         timestamp = data.get('timestamp')
         nonce = data.get('nonce')
@@ -22,7 +22,7 @@ def wx_check():
         print("handle/GET func: hashcode, signature:", hashcode, signature)
         if hashcode == signature:
             return make_response(echostr)
-        return render_template('wxinter.html')
+        return render_template('public/wxinter.html')
     else:
         rec = request.stream.read()
         rep = mp.check_reply(rec)

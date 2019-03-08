@@ -1,0 +1,58 @@
+
+{% extends 'base.html' %}
+
+		{% block title %}我的课表{% endblock %}
+
+		{% block link %}
+		<link href="{{ url_for('static', filename='css/phone.css') }}" rel="stylesheet" type="text/css" />
+		<link href="{{ url_for('static', filename='css/common.css') }}" rel="stylesheet" type="text/css" />
+		{% endblock %}
+
+		{% block style %}
+		<style>
+			body{
+				/*background-color:#C7C4EC;*/
+				background-color:#f7f7f7;
+				}
+			#class{
+				/*border-color:#A5A4B3;*/
+				border-color:#e0e0e0;
+				width:100%;}
+			#class tr td{
+				font-size:12px;
+				color:#fff;
+				height:50px;
+				width:13%;
+				text-align:center;
+				font-weight:bold;}
+			#class tr th{
+				text-align:center;
+				color:#5A6AAC;
+				font-weight:bold;}
+			#class tr th:first-child{
+				width:7%;}
+			#class tr td span{
+				}
+		</style>
+		{% endblock %}
+
+		{% block body %}
+		<div id="all">
+			<table id="class" border="1">
+				<tr>
+					<th>{{ timeinfo['month'] }}</th>
+					{% for week in timeinfo['weekinfo'] %}
+						<th>{{week['num']}}日<br />{{week['ch']}}</th>
+					{% endfor %}
+				</tr>
+				{% for col in range(11) %}
+				<tr>
+					<th height="50">{{ col+1 }}</th>
+					{% for row in curriculuminfo[col] %}
+						<td {% if row[0] != 0 %} rowspan="{{ row[0] }}" {% endif %} style="background-color:#{{row[2]}}">{{row[1]}}</td>
+					{% endfor %}
+				</tr>
+				{% endfor %}
+			</table>
+		</div>
+		{% endblock %}
