@@ -6,6 +6,7 @@
 from app.wxapi import wxinter
 from app.models import User
 from app.exts import hbujwxt
+from app.utils import status
 from flask import render_template, Blueprint
 from app.utils.formatutil import get_course_table
 from app.utils.userprocess import UserProcessor
@@ -28,7 +29,7 @@ def curriculum(openid):
     user = UserProcessor.get_user(openid)
     if user is not None:
         res = hbujwxt.query_course_table(userinfo = {'username':user.studentID, 'password':user.studentPWD})
-        if res['code'] == 200:
+        if res['code'] == status.CODE_SUCCESS:
             curArr = res['data']
     timeinfo = {'month' : month_now(), 'weekinfo' : get_week_day()}
     curriculuminfo = get_course_table(curArr)

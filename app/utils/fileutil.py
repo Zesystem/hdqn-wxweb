@@ -1,5 +1,6 @@
 import os
 from datetime import datetime
+from app.utils import status
 
 HOSTNAME = 'localhost'
 FILE_PATH = "/Users/torn/Desktop/hdqn-wxweb"
@@ -12,7 +13,7 @@ def allowed_file(filename):
 
 def create_file(file):
     if not allowed_file(file.filename):
-        return {'code' : 404}
+        return {'code' : status.CODE_FAILED}
     sub_path = ""
     file_type = file.filename.rsplit('.', 1)[1]
     if file_type in ("png", "jpg", "jpeg"):
@@ -28,8 +29,8 @@ def create_file(file):
     print(filepath) 
     try:
         file.save(filepath)
-        return {'code' : 200, 'filename': '{}/static/{}'.format(HOSTNAME, fixpath)}
+        return {'code' : status.CODE_SUCCESS, 'filename': '{}/static/{}'.format(HOSTNAME, fixpath)}
     except:
         if os.path.exists(filepath):
             os.remove(filepath)
-        return {'code' : 404}
+        return {'code' : status.CODE_FAILED}

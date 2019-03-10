@@ -57,17 +57,17 @@
             <span id="showMenu" class="ui-btn-right"><img src="{{url_for('static',filename='wxweb/images/menu.png')}}"></span>
         </div>
         <div data-role="content">
-        	<div class="demo" id="demo1">创业基地简介
-				{{user.content}}
+        	<div class="demo" id="demo1">
+				{{ business.introduce | safe }}
         	</div>
-        	<div class="demo">入驻条件
-				{{user.content}}
+        	<div class="demo">
+				{{ business.requirement | safe }}
         	</div>
-        	<div class="demo">入驻程序
-        		{{user.content}}
+        	<div class="demo">
+        		{{ business.process | safe }}
         	</div>
-        	<div class="demo">创业优惠政策
-				{{user.content}}
+        	<div class="demo">
+				{{ business.preferential | safe }}
         	</div>
         </div>
        {% include "wxweb/footnav.html" %}

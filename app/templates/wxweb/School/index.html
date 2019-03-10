@@ -66,8 +66,9 @@
 	        		<option value="新校区">新校区</option>
 	       		</select>
 	        	<div id="build">
-		    		<select name="build" id="build" data-native-menu="false" onchange="getUrl();">
-		   				{% for key in user.ch %}
+                    <select name="build" id="build" data-native-menu="false" onchange="getUrl();">
+                        <option value="">请选择年级</option>>
+		   				{% for grade in info.grades %}
 		   					<option value="">{{key}}</option>
 		   				{% endfor %}
 		    		</select></div>
@@ -77,19 +78,19 @@
 			
 			<div  class="ui-content">
 				<div class="demo" id="">洗衣服务
-					{{user.content}}
+					{{info.wish}}
 	        	</div>
 	        	<div class="demo" id="">培训信息
-					{{user.content}}
+					{{info.train}}
 	        	</div>
 	        	<div class="demo" id="">河大驾校
-	        		{{user.content}}
+	        		{{info.drive}}
 	        	</div>
 	        	<div class="demo" id="">图书订购
-					{{user.content}}
+					{{info.bookorder}}
 	        	</div>
 	        	<div class="demo" id="">易百超市
-					{{user.content}}
+					{{info.yibaimarket}}
 	        	</div>
 			</div>
 

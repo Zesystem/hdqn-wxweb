@@ -12,6 +12,13 @@
 <script src="{{url_for('static',filename='wxweb/js/jquery.mobile-1.3.2.min.js')}}"> </script>
 <title>快递查询</title>
 <link rel="stylesheet" href="{{url_for('static',filename='wxweb/css/slideMenu.css')}}" />
+<style>
+    .btn{
+        width: 100px;
+        margin-left: 50%;
+        left: -50px;
+    }
+</style>
 </head>
 
 <body>
@@ -47,7 +54,7 @@
 	</div>
 	<div data-role="content">
 		<p id="tipMsg">{{user.content}}</p>
-		<a href="#pageone" data-inline="true" data-role="button">确定</a>
+		<a class="btn" href="#pageone" data-inline="true" data-role="button">确定</a>
 	</div>
 	<div data-role="footer">
 	<h1>河大青年</h1>

@@ -23,9 +23,9 @@
 			<!-- 用户 -->
 			<div class="right">
 				<div>
-					<span>admin</span>
+					<span>{{ user.name }}</span>
 					<span style="margin-left: 70px;">
-						<a href="{{ url_for('admin.login') }}">退出系统</a>
+						<a href="{{ url_for('admin.logout') }}">退出系统</a>
 					</span>
 				</div>
 			</div>
@@ -41,9 +41,9 @@
 				{% block function1 %}
 					<div class="demo_demo">
 				{% endblock %}
-						<a href="{{url_for('admin.hxb')}}"><div><span>河小博</span></div></a>	
-						<a href="{{url_for('admin.hxz')}}"><div><span>河小知</span></div></a>
-						<a href="{{url_for('admin.hzg')}}"><div><span>河掌柜</span></div></a>
+						<a href="{{url_for('admin.hxb_feedback')}}"><div><span>河小博</span></div></a>	
+						<a href="{{url_for('admin.hxz_feedback')}}"><div><span>河小知</span></div></a>
+						<a href="{{url_for('admin.hzg_feedback')}}"><div><span>河掌柜</span></div></a>
 					</div>
 				<div class="demo">
 					<img src="{{url_for('static',filename='admin/images/17.png')}}" alt="">
@@ -52,12 +52,12 @@
 				{% block function2 %}
 					<div class="demo_demo">
 				{% endblock %}
-						<a href="{{url_for('admin.addTextAn')}}"><div><span>添加文本回复</span></div></a>	
-						<a href="{{url_for('admin.addImageContent')}}"><div><span>添加图文回复</span></div></a>
-						<a href="{{url_for('admin.addVoice')}}"><div><span>添加语音回复</span></div></a>
-						<a href="{{url_for('admin.addVideo')}}"><div><span>添加视频回复</span></div></a>
-						<a href="{{url_for('admin.addMusic')}}"><div><span>添加音乐回复</span></div></a>
-						<a href="{{url_for('admin.addImageAn')}}"><div><span>添加图片回复</span></div></a>
+						<a href="{{url_for('admin.text_reply')}}"><div><span>添加文本回复</span></div></a>	
+						<a href="{{url_for('admin.news_reply')}}"><div><span>添加图文回复</span></div></a>
+						<a href="{{url_for('admin.image_reply')}}"><div><span>添加图片回复</span></div></a>
+                        <a href="{{url_for('admin.voice_reply')}}"><div><span>添加语音回复</span></div></a>
+						<a href="{{url_for('admin.video_reply')}}"><div><span>添加视频回复</span></div></a>
+						<a href="{{url_for('admin.music_reply')}}"><div><span>添加音乐回复</span></div></a>
 					</div>
 				<div class="demo">
 					<img src="{{url_for('static',filename='admin/images/2.png')}}" alt="">
@@ -66,12 +66,12 @@
 				{% block function3 %}
 					<div class="demo_demo">
 				{% endblock %}
-						<a href="{{url_for('admin.lookText')}}"><div><span>查看文本回复</span></div></a>	
-						<a href="{{url_for('admin.lookImageContent')}}"><div><span>查看图文回复</span></div></a>
-						<a href="{{url_for('admin.lookVoice')}}"><div><span>查看语音回复</span></div></a>
-						<a href="{{url_for('admin.lookVideo')}}"><div><span>查看视频回复</span></div></a>
-						<a href="{{url_for('admin.lookMusic')}}"><div><span>查看音乐回复</span></div></a>
-						<a href="{{url_for('admin.lookImage')}}"><div><span>查看图片回复</span></div></a>
+						<a href="{{url_for('admin.text_view')}}"><div><span>查看文本回复</span></div></a>	
+						<a href="{{url_for('admin.news_view')}}"><div><span>查看图文回复</span></div></a>
+						<a href="{{url_for('admin.image_view')}}"><div><span>查看图片回复</span></div></a>
+                        <a href="{{url_for('admin.voice_view')}}"><div><span>查看语音回复</span></div></a>
+						<a href="{{url_for('admin.video_view')}}"><div><span>查看视频回复</span></div></a>
+						<a href="{{url_for('admin.music_view')}}"><div><span>查看音乐回复</span></div></a>
 					</div>
 				<div class="demo">
 					<img src="{{url_for('static',filename='admin/images/4.png')}}" alt="">
@@ -81,14 +81,14 @@
 				{% block function4 %}
 					<div class="demo_demo">
 				{% endblock %}
-						<a href="{{url_for('admin.keyWord')}}"><div><span>关键词次数统计</span></div></a>	
-						<a href="{{url_for('admin.jieKou')}}"><div><span>接口次数统计</span></div></a>
+						<a href="{{url_for('admin.keyword_data')}}"><div><span>关键词次数统计</span></div></a>	
+						<a href="{{url_for('admin.interface_data')}}"><div><span>接口次数统计</span></div></a>
 					</div>
 			</div>
 			<div class="right">
 				<div>
 					{% block main %}
-					123
+					
 					{% endblock %}
 				</div>
 			</div>

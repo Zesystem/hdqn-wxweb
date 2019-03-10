@@ -48,14 +48,14 @@
        	</div>
        	<br>
        	<div>
-			<div class="demo" id="demo1">公寓电话
-				{{user.content}}
+			<div class="demo" id="demo1">
+				{{apartment.phone | safe }}
         	</div>
-        	<div class="demo">调宿服务
-				{{user.content}}
+        	<div class="demo">
+				{{apartment.adjustment | safe }}
         	</div>
-        	<div class="demo">退宿服务
-        		{{user.content}}
+        	<div class="demo">
+        		{{apartment.checkout | safe }}
         	</div>
        	</div>
     </div> 

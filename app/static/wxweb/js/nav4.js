@@ -10,7 +10,7 @@ var nav4 =(function(){
 			ci =this;
 			for(var j=0,cj; cj = els[j]; j++){
 				if(cj != ci){
-					console.log(cj);
+					// console.log(cj);
 					cj.classList.remove("on");
 				}
 			}

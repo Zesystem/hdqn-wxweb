@@ -16,7 +16,7 @@
 <link href="{{url_for('static',filename='wxweb/css/common.css')}}" rel="stylesheet" type="text/css" />
 
 
-<title>{{user.name}}</title>
+<title>意见反馈</title>
 </head>
 
 <body>
@@ -35,7 +35,7 @@
               		<option value="河掌柜">河掌柜</option>
             	</select>
             
-		    	<label for="phone">联系方式（选填）：</label>
+		    	<label for="phone">联系方式：</label>
 		   		<input type="tel" maxlength="11" name="phone" id="phone" placeholder="请填写您的手机号码">
 		
 		    	<label for="content">反馈内容：</label>
@@ -48,32 +48,39 @@
 	
 	</div>
 	
-	<div data-role="dialog" id="success">
+	<div data-role="dialog" id="subtip">
 	  	<div data-role="header">
-	    	<h1>反馈成功</h1>
+	    	<h1 id="tipStatus">反馈成功</h1>
 	  	</div>
-	  		<div data-role="content" id="tipMsg"></div>
+	  	<div data-role="content" id="tipMsg"></div>
 		<div data-role="footer">
-			<a href="" data-role="button"  class="ui-btn-right">确定</a>
-	  
+		    <a href="#home" data-role="button"  class="ui-btn-right">确定</a>
 	 	</div>
-	</div>
+    </div>
 <script>
 	function subForm(){
 		var token = $('input[name=token]').val();
-		var tel = $('input[name=phone]').val();
+		var tel = $('input[name=phone]').val().replace(/^\s+|\s+$/gm,'');
 		var content = $('textarea[name=content]').val();
 		var type = $('select[name=type]').val();
-		if(tel==''||tel.length!=11){
-			$('#tipMsg').html('<p>联系方式不能为空或者联系方式格式不正确</p><br/>');
-			$.mobile.changePage('#success','pop',true,true);
+		if(tel=='' || tel.length!=11 || tel%1!=0){
+            $('#tipStatus').html('反馈失败')
+            $('#tipMsg').html('<p>联系方式不能为空或者联系方式格式不正确</p><br/>');
+            $.mobile.changePage('#subtip','pop',true,true);
 			return;
 		}
-		if(content==''){
+		else if(content==''){
+            $('#tipStatus').html('反馈失败')
 			$('#tipMsg').html('<p>反馈意见不能为空</p><br/>');
-			$.mobile.changePage('#success','pop',true,true);
+			$.mobile.changePage('#subtip','pop',true,true);
 			return;
-		}
+        }
+        else {
+            $('#tipStatus').html('反馈成功')
+            $('#tipMsg').html('<p>消息收到咯，管理员会尽快处理。</p><br/>')
+            $.mobile.changePage('#subtip','pop',true,true);
+            return;
+        }
 	}
 </script>
 </body>

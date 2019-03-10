@@ -51,7 +51,7 @@
         	<div id="all">
 				<table id="class" border="1">
 					<thead>
-						<th>{{user.month}}月</th>
+						<th>{{ courseinfo.month }}月</th>
 						<th>周一</th>
 						<th>周二</th>
 						<th>周三</th>
@@ -61,6 +61,15 @@
 						<th>周日</th>
 					</thead>
 					<tbody>
+                        {% for col in range(11) %}
+                        <tr>
+                            <th height="50">{{ col+1 }}</th>
+                            {% for row in courseinfo.curriculuminfo[col] %}
+                                <td {% if row[0] != 0 %} rowspan="{{ row[0] }}" {% endif %} >{{row[1]}}</td>
+                                <!-- style="background-color:#{{row[2]}}" -->
+                            {% endfor %}
+                        </tr>
+                        {% endfor %}                   
 					</tbody>
 				</table>
 			</div>

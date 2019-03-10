@@ -1,24 +1,6 @@
 from app import db
 from datetime import datetime
 
-# create table user (
-# 	uid int primary key autoincrement,
-# 	openid varchar(50) not null,
-# 	studentID varchar(11) not null,
-# 	studentPWD varchar(50) not null
-# )
-
-# class User(db.model):
-# 	"""创建用户类型"""
-# 	uid = db.Column(db.Integer, primary_key=True, autoincrement=True, nullable=False)
-# 	nickname = db.Column(db.String(50), nullable=False)
-# 	openid = db.Column(db.String(50), nullable=False)
-# 	studentID = db.Column(db.String(11), nullable=False)
-# 	studentPWD = db.Column(db.String(50), nullable=False)
-# 	bindingTime = db.Column(db.Date, default=datetime.now, nullable=False)
-# 	leftTime = db.Column(db.Date, default=datetime.now, nullable=False)
-# 	__table__ = 'hbu_user'
-
 
 class User(db.Model):
     """用户模型"""
@@ -30,18 +12,175 @@ class User(db.Model):
     bindingTime = db.Column(db.Date, default=datetime.now, nullable=False)
     leftTime = db.Column(db.Date, default=datetime.now, nullable=False)
 
+    def __repr__(self):
+        return '<User %r>' % self.openid
 
-class Material(db.Model):
-    """关键字回复素材模型"""
-    __tablename__ = 'materials'
-    mid = db.Column(db.Integer, primary_key=True, autoincrement=True)
-    mtype = db.Column(db.String(10), nullable=False)
-    keyword = db.Column(db.String(20), unique=True, nullable=False)
+
+class TextMaterial(db.Model):
+    """回复文本素材模型"""
+    __tablename__ = 'textmaterials'
+    tmid = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    add_time = db.Column(db.DateTime, index=True, default=datetime.now)
+    keyword = db.Column(db.String(50), unique=True, nullable=False)
     content = db.Column(db.Text)
+
+    def __repr__(self):
+        return '<TextMaterial %r>' % self.tmid
+        
+
+class NewsMaterial(db.Model):
+    """回复图文素材模型"""
+    __tablename__ = 'newsmaterials'
+    nmid = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    add_time = db.Column(db.DateTime, index=True, default=datetime.now)
+    keyword = db.Column(db.String(50), unique=True, nullable=False)
+    title = db.Column(db.String(60))
+    description = db.Column(db.String(100))
+    pic_url = db.Column(db.String(2000))
+    url = db.Column(db.String(2000))
+
+    def __repr__(self):
+        return '<NewsMaterial %r>' % self.nmid
+
+
+class VoiceMaterial(db.Model):
+    """回复语音素材模型"""
+    __tablename__ = 'voicematerials'
+    vomid = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    add_time = db.Column(db.DateTime, index=True, default=datetime.now)
+    keyword = db.Column(db.String(50), unique=True, nullable=False)
     media_id = db.Column(db.String(50))
+
+    def __repr__(self):
+        return '<VoiceMaterial %r>' % self.vomid
+
+
+class VideoMaterial(db.Model):
+    """回复视频素材模型"""
+    __tablename__ = 'videomaterials'
+    vimid = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    add_time = db.Column(db.DateTime, index=True, default=datetime.now)
+    keyword = db.Column(db.String(50), unique=True, nullable=False)
+    media_id = db.Column(db.String(50))
+    title = db.Column(db.String(60))
+    description = db.Column(db.String(100))
+
+    def __repr__(self):
+        return '<VideoMaterial %r>' % self.vimid
+
+
+class MusicMaterial(db.Model):
+    """回复音乐素材模型"""
+    __tablename__ = 'musicmaterials'
+    mmid = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    add_time = db.Column(db.DateTime, index=True, default=datetime.now)
+    keyword = db.Column(db.String(50), unique=True, nullable=False)
     title = db.Column(db.String(60))
     description = db.Column(db.String(100))
     music_url = db.Column(db.String(2000))
     hqmusic_url = db.Column(db.String(2000))
-    pic_url = db.Column(db.String(2000))
-    url = db.Column(db.String(2000))
+
+    def __repr__(self):
+        return '<MusicMaterial %r>' % self.mmid
+
+
+
+class ImageMaterial(db.Model):
+    """回复图片素材模型"""
+    __tablename__ = 'imagematerials'
+    imid = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    add_time = db.Column(db.DateTime, index=True, default=datetime.now)
+    keyword = db.Column(db.String(50), unique=True, nullable=False)
+    media_id = db.Column(db.String(50))
+
+    def __repr__(self):
+        return '<ImageMaterial %r>' % self.imid
+
+
+class Auth(db.Model):
+    """权限模型"""
+    __tablename__ = 'auths'
+    auid = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    name = db.Column(db.String(100), unique=True, nullable=False)
+    url = db.Column(db.String(255), unique=True)
+    add_time = db.Column(db.DateTime, index=True, default=datetime.now)
+
+    def __repr__(self):
+        return '<Auth %r>' % self.name
+
+
+class Role(db.Model):
+    """"角色模型"""
+    __tablename__ = "roles"
+    rid = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    name = db.Column(db.String(100), unique=True, nullable=False)
+    auths = db.Column(db.String(600))
+    add_time = db.Column(db.DateTime, index=True, default=datetime.now)
+    admins = db.relationship('Admin', backref='role')
+
+    def __repr__(self):
+        return '<Role %r>' % self.name
+
+
+class Admin(db.Model):
+    """管理员模型"""
+    __tablename__ = 'admins'
+    aid = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    account = db.Column(db.String(100), unique=True, nullable=False)
+    password = db.Column(db.String(100), nullable=False)
+    is_super = db.Column(db.SmallInteger)
+    rid = db.Column(db.Integer, db.ForeignKey('roles.rid'))
+    add_time = db.Column(db.DateTime, index=True, default=datetime.now)
+    adminlogs = db.relationship('AdminLog', backref='admin')
+    operatelogs = db.relationship('OperateLog', backref='operate')
+
+    def __repr__(self):
+        return '<Admin %r>' % self.account
+
+    def check_password(self, input_password):
+        from werkzeug.security import check_password_hash
+        return check_password_hash(self.password, input_password)
+
+class AdminLog(db.Model):
+    """管理员日志模型"""
+    __tablename__ = 'adminlogs'
+    alid = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    aid = db.Column(db.Integer, db.ForeignKey('admins.aid'))
+    ip =  db.Column(db.String(100))
+    add_time = db.Column(db.DateTime, index=True, default=datetime.now)
+
+    def __repr__(self):
+        return '<AdminLog %r>' % self.alid
+
+class OperateLog(db.Model):
+    """操作日志模型"""
+    __tablename__ = "operatelogs"
+    oid = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    aid = db.Column(db.Integer, db.ForeignKey('admins.aid'))
+    ip = db.Column(db.String(100))
+    reason = db.Column(db.String(600))
+    add_time = db.Column(db.DateTime, index=True, default=datetime.now)
+
+    def __repr__(self):
+        return '<OperateLog %r>' % self.oid
+
+def create_admin():
+    # 添加角色
+    role = Role(
+        name="超级管理员",
+        auths="",
+    )
+    db.session.add(role)
+    db.session.commit()
+
+    # 添加管理员
+    from werkzeug.security import generate_password_hash
+
+    admin = Admin(
+        account = 'admin',
+        password = generate_password_hash('hbutwwx,,,'),
+        is_super = 0,
+        rid = role.rid,
+    )
+    db.session.add(admin)
+    db.session.commit()

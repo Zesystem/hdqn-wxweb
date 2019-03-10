@@ -25,7 +25,45 @@
 	.ui-grid-a{
 		text-align: center;
 		
-	}
+    }
+    .course{
+        width: 100%;
+        height: 30px;
+    }
+
+    .course-nav{
+        width: 100%;
+        height: 50px;
+    }
+
+    .ui-course-name-nav{
+        width: 50%;
+        height: 100%;
+        line-height: 50px;
+        float: left;
+        text-align: left;
+    }
+    .ui-course-name{
+        width: 50%;
+        height: 100%;
+        line-height: 30px;
+        float: left;
+        text-align: left;
+    }
+    .ui-course-score-nav{
+        width: 50%;
+        height: 100%;
+        line-height: 50px;
+        float: right;
+        text-align: right;
+    }
+    .ui-course-score{
+        width: 50%;
+        height: 100%;
+        line-height: 30px;
+        float: right;
+        text-align: right;
+    }
 </style>
 </head>
 
@@ -33,16 +71,25 @@
 	<div data-role="page" id="pageone">
         <div data-role="navbar">
 		    <ul>
-		    	{% for dgree in user.degree %}
-					<li class="btn"><a href="">{{dgree}}</a></li>
+		    	{% for grade in user.grades %}
+					<li class="btn"><a href="">{{ grade }}</a></li>
 				{% endfor %}
 		    </ul>
 		  </div>
         <div data-role="content">
-        	{% for key in user.ch %}
-
-        		<div class="demo">{{key}}</div>
-    
+        	{% for score in user.scores %}
+        		<div class="demo">
+                    <div class="course-nav">
+                        <p class='ui-course-name-nav'>课程名</p>
+                        <p class="ui-course-score-nav">成绩</p>
+                    </div>
+                    {% for course in score %}
+                        <div class="course">
+                            <p class='ui-course-name'>{{ course[0] }}</p>
+                            <p class="ui-course-score">{{ course[1] }}</p>
+                        </div>
+                    {% endfor %}
+                </div>
         	{% endfor %}
         </div> 
         <input type="hidden" name="openid" value="">
@@ -50,7 +97,8 @@
     </div>
 <script>
 	$(function(){
-		$($('.btn')[0]).addClass('ui-btn-active');
+        $($('.btn')[0]).addClass('ui-btn-active');
+        if($('.demo').length == 0) return;
 		$('.demo').css('display','none');
 		$('.demo')[0].style.display = 'block';
 		$('.btn').click(function(){
@@ -58,7 +106,7 @@
 			for(var i = 0;i < $('.btn').length;i++){
 				if(this == $('.btn')[i]){
 					$('.demo')[i].style.display = 'block';
-					console.log($('.demo')[i]);
+					// console.log($('.demo')[i]);
 				}
 			}
 		})

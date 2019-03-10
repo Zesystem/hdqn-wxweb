@@ -21,7 +21,12 @@
 		text-align:center;
 		height:auto;
 		cursor: pointer;
-	}
+    }
+    .btn{
+        width: 100px;
+        margin-left: 50%;
+        left: -50px;
+    }    
 </style>
 <link rel="stylesheet" href="{{url_for('static',filename='wxweb/css/slideMenu.css')}}">
 </head>
@@ -73,7 +78,7 @@
 	</div>
 	<div data-role="content">
 		<p id="tipMsg"></p>
-	<a href="#pageone" data-inline="true" data-role="button">确定</a>
+	<a class="btn" href="#pageone" data-inline="true" data-role="button">确定</a>
 	</div>
 	<div data-role="footer">
 		<h1>河大青年</h1>

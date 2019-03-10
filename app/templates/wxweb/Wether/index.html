@@ -22,7 +22,12 @@
 		text-align:center;
 		height:auto;
 		cursor: pointer;
-	}
+    }
+    .btn{
+        width: 100px;
+        margin-left: 50%;
+        left: -50px;
+    }
 </style>
 </head>
 
@@ -58,8 +63,8 @@
 		<h1>提示信息</h1>
 	</div>
 	<div data-role="content">
-		<p id="tipMsg">{{user.content}}</p>
-		<a href="#pageone" data-inline="true" data-role="button">确定</a>
+		<p id="tipMsg">查询失败</p>
+		<a class="btn" href="#pageone" data-inline="true" data-role="button">确定</a>
 	</div>
 	<div data-role="footer">
 		<h1>河大青年</h1>

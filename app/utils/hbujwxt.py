@@ -7,6 +7,7 @@ import requests
 import pytesseract
 from bs4 import BeautifulSoup
 from requests.adapters import HTTPAdapter
+from app.utils import status
 
 class HbuJwxt(object):
     '''
@@ -95,7 +96,7 @@ class HbuJwxt(object):
         '''
         try:
             if not self.jw_login(userinfo):
-                return {'code': 404}
+                return {'code': status.CODE_FAILED}
             self.headers['Referer'] = 'http://{ip}/menu/menu.jsp?action1=0&index=1'.format(ip=self.ip)
             url = 'http://{ip}/xjInfoAction.do?oper=xjxx'.format(ip=self.ip)
             res = self.session.request('GET', url, headers=self.headers)
@@ -127,9 +128,9 @@ class HbuJwxt(object):
                     if infotd.text.strip().startswith(infokey):
                         baseinfo[infokey] = infotds[infotds.index(infotd) + 1].text.strip()
                         break
-            return {'code': 200, 'data': baseinfo}
+            return {'code': status.CODE_SUCCESS, 'data': baseinfo}
         except:
-            return {'code': 404}
+            return {'code': status.CODE_FAILED}
 
     def query_this_term_score(self, userinfo):
         '''
@@ -137,7 +138,7 @@ class HbuJwxt(object):
         '''
         try:
             if not self.jw_login(userinfo):
-                return {'code': 404}
+                return {'code': status.CODE_FAILED}
             self.headers.pop('Content-Type')
             self.headers['Referer'] = 'http://{ip}/menu/menu.jsp?action1=0&index=6'.format(ip=self.ip)
             url = 'http://{ip}/bxqcjcxAction.do'.format(ip=self.ip)
@@ -154,9 +155,9 @@ class HbuJwxt(object):
                     if offset in (2, 9, 10):
                         score.append(infotds[base+offset].text.strip())
                 scores.append(score)
-            return {'code': 200, 'data': scores}
+            return {'code': status.CODE_SUCCESS, 'data': scores}
         except:
-            return {'code': 404}
+            return {'code': status.CODE_FAILED}
 
     def query_each_term_score(self, userinfo):
         '''
@@ -164,7 +165,7 @@ class HbuJwxt(object):
         '''
         try:
             if not self.jw_login(userinfo):
-                return {'code': 404}
+                return {'code': status.CODE_FAILED}
             self.headers.pop('Content-Type')
             self.headers['Referer'] = 'http://{ip}/menu/menu.jsp?action1=0&index=6'.format(ip=self.ip)
             url = 'http://{ip}/gradeLnAllAction.do?type=ln&oper=qb'.format(ip=self.ip)
@@ -196,9 +197,9 @@ class HbuJwxt(object):
                             score.append(scoretds[base+offset].text.strip())
                     scores.append(score)
                 all_scores.append({'term_name': term_names[name_idx], 'scores': scores})
-            return {'code': 200, 'data': all_scores}
+            return {'code': status.CODE_SUCCESS, 'data': all_scores}
         except:
-            return {'code': 404}
+            return {'code': status.CODE_FAILED}
 
     def query_course_table(self, userinfo):
         '''
@@ -206,7 +207,7 @@ class HbuJwxt(object):
         '''
         try:
             if not self.jw_login(userinfo):
-                return {'code':404}
+                return {'code': status.CODE_FAILED}
             self.headers['Referer'] = 'http://{ip}/menu/menu.jsp?action1=0&index=2'.format(ip=self.ip)
             url = 'http://{ip}/xkAction.do?actionType=6'.format(ip=self.ip)
             res = self.session.request('GET', url, headers=self.headers)
@@ -227,9 +228,9 @@ class HbuJwxt(object):
                     courses.append(infotds[idx].text.strip())
                     idx += 8
                 table.append(courses)
-            return {'code' : 200, 'data' : table}
+            return {'code' : status.CODE_SUCCESS, 'data' : table}
         except:
-            return {'code':404}
+            return {'code': status.CODE_FAILED}
 
 if __name__ == '__main__':
     hbujwxt = HbuJwxt()

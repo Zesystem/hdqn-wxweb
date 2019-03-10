@@ -2,28 +2,44 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>Qingcheng</title>
+<title>Login</title>
 <link rel="stylesheet" href="{{url_for('static',filename='admin/css/mystyle.css')}}" />
 <script src="{{url_for('static',filename='admin/js/jquery.js')}}"></script>
 </head>
-<body class="body_bg">
-	<div class="whole">
-		<div class="title">Please Login Your Account</div>
-		<form id="form1" action="" method="post" class="form_box">
-			<div class="input_tit">Account</div>
-			<div class="input_box">
-				<input class="input_self" type="text" name="account" id="account" />
-			</div>
-			<div class='blank_30'></div>
-			<div class="input_tit">Password</div>
-			<div class="input_box">
-				<input class="input_self" type="text" name="password" id="password" />
-			</div>
-			<div class="finish_box">
-				<input class="finish_btn" type="button" id="finish" name="login" value="Login" />
-			</div>
-		</form>
-	</div>
+<body>
+    <div class="body_bg">
+            <img src="{{url_for('static',filename='admin/images/login_bg.jpg')}}" height="100%" width="100%"/> 
+    </div>
+    <div class="whole">
+        <div class="title">Please Login Your Account</div>
+        {% for msg in get_flashed_messages() %}
+            <p class="login_box_msg">{{ msg }}</p>
+        {% endfor %}
+        <form id="form1" action="" method="post" class="form_box">
+            <div class="input_tit">Account</div>
+            <div class="input_box">
+                {{ form.account }}
+                {% for err in form.account.errors %}
+                    <div class="account_error" id="input_user">{{ err }}</div>
+                {% endfor %}
+                <!-- <input class="input_self" type="text" name="account" id="account" /> -->
+            </div>
+            <div class='blank_30'></div>
+            <div class="input_tit">Password</div>
+            <div class="input_box">
+                {{ form.password }}
+                {% for err in form.password.errors %}
+                    <div class="password_error" id="input_pwd">{{ err }}</div>
+                {% endfor %}
+                <!-- <input class="input_self" type="text" name="password" id="password" /> -->
+            </div>
+            {{ form.csrf_token }}
+            <div class="finish_box">
+                {{ form.submit }}
+                <!-- <input class="finish_btn" type="button" id="finish" name="login" value="Login" /> -->
+            </div>
+        </form>
+    </div>     
 </body>
 <script type="text/javascript">
 	$(function(){

@@ -9,6 +9,9 @@ db = SQLAlchemy(app)
 from app import models
 db.create_all()
 
+# from app.models import create_admin
+# create_admin()
+
 from app import views
 
 from flask_session import Session
