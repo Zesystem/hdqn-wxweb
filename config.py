@@ -10,7 +10,7 @@ USERNAME = 'root'
 PASSWORD = '199892.lw'
 MYSQL_HOST = '127.0.0.1'
 MYSQL_PORT = '3306'
-DATABASE = 'app_hbuhelp'
+DATABASE = 'app_wechat'
 DB_URI = "{}+{}://{}:{}@{}:{}/{}?charset=utf8".format(DIALECT, DRIVER, USERNAME, PASSWORD, MYSQL_HOST, MYSQL_PORT, DATABASE)
 
 # SQLALCHEMY_DATABASE_URI = DB_URI
@@ -24,8 +24,8 @@ class Config:
     SQLALCHEMY_DATABASE_URI = DB_URI
 
     SESSION_TYPE = 'redis'
-    SESSION_KEY_PREFIX = 'session:' 
-    SESSION_REDIS = redis.Redis(host='127.0.0.1', port='6379')
+    SESSION_KEY_PREFIX = 'app_wechat:' 
+    SESSION_REDIS = redis.StrictRedis(host='127.0.0.1', port='6379')
 
     @staticmethod
     def init_app(app):
@@ -33,12 +33,21 @@ class Config:
 
 class DevelopmentConfig(Config):
     DEBUG = True
+    APP_DOMAIN = 'http://newtorn.fastfuck.me/'
+    APPID = 'wxc26075c6f39886a3'
+    APPSECRET = 'c135f9a637faf20aebf705b7f6ce43f6'
 
 class ProductionConfig(Config):
     DEBUG = False
+    APP_DOMAIN = 'http://twwx.hbu.edu.cn/'
+    APPID = 'wxc0eb1bc035f33f2e'
+    APPSECRET = 'e7d864d5a694045387bad0b77321b17b'
 
 class TestingConfig(Config):
     DEBUG = False
+    APP_DOMAIN = 'http://newtorn.fastfuck.me/'
+    APPID = 'wxc26075c6f39886a3'
+    APPSECRET = 'c135f9a637faf20aebf705b7f6ce43f6'
 
 config = {
     'development' : DevelopmentConfig,

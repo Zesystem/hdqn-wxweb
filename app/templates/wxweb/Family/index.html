@@ -13,14 +13,13 @@
 <title>温馨家园</title>
 <link rel="stylesheet" href="{{url_for('static',filename='wxweb/css/slideMenu.css')}}" />
 <style>
-	.demo{
+	.demo, .ui-demo{
 		position: absolute;
 		display: none;
 	}
-
 	#demo1{
 		display: block;	
-	}
+    }
 </style>
 </head>
 
@@ -29,16 +28,16 @@
     <nav class="slideMenu" id="slideMenu">
     	<ul>
     		<li><h3><img id="hideMenu" src="{{url_for('static',filename='wxweb/images/menu.png')}}">选择项目</h3></li>
-    		<li><a class="slideItem"  msg="学生公寓" href="javascript:void(0);">学生公寓</a></li>
-    		<li><a class="slideItem"  msg="国交中心服务" href="javascript:void(0);">国交中心服务</a></li>
-    		<li><a class="slideItem"  msg="后勤保修" href="javascript:void(0);">后勤保修</a></li>
+    		<li><a class="slideItem menu1" name="" href="{{url_for('wxweb.family')}}">学生公寓</a></li>
+    		<li><a class="slideItem menu" name="0" msg="国交中心服务" href="javascript:void(0);">国交中心服务</a></li>
+    		<li><a class="slideItem menu" name="1" msg="后勤报修" href="javascript:void(0);">后勤报修</a></li>
     	</ul>
     </nav>
     <div data-role="header">
         <h1>温馨家园</h1>
         <span id="showMenu" class="ui-btn-right"><img src="{{url_for('static',filename='wxweb/images/menu.png')}}"></span>
     </div>
-    <div data-role="content">
+    <div id="nav" data-role="content">
         <div data-role="navbar">
         	<ul>
         		<li><a class="btn" name="0" href="#" class="ui-btn-active">公寓电话</a></li>
@@ -49,20 +48,28 @@
        	<br>
        	<div>
 			<div class="demo" id="demo1">
-				{{apartment.phone | safe }}
+				{{info.apartment.phone | safe }} <br/>
         	</div>
         	<div class="demo">
-				{{apartment.adjustment | safe }}
+				{{info.apartment.adjustment | safe }} <br/>
         	</div>
         	<div class="demo">
-        		{{apartment.checkout | safe }}
+        		{{info.apartment.checkout | safe }} <br/>
         	</div>
        	</div>
     </div> 
-     
+    <div  class="ui-content">
+        <div class="ui-demo">
+            {{ info.international | safe }}<br/>
+        </div>
+        <div class="ui-demo">
+            {{ info.logistics | safe }} <br/>
+        </div>
+    </div>    
     {% include "wxweb/footnav.html" %}
 </div>
 <script>
+
 var showmenu = document.getElementById('showMenu');
 var hidemenu = document.getElementById('hideMenu');
 
@@ -75,6 +82,15 @@ hidemenu.addEventListener('touchstart',function(){
 },false)
 
 $(function(){
+    $('.menu').click(function(){
+		$('#nav').css('display','none');
+		$('.ui-demo').css('display','none');
+		$('.ui-demo')[this.name].style.display = 'block';
+    })
+    $('.menu1').click(function(){
+		$('.ui-demo').css('display','none');
+		$('#nav').css('display','block');
+    })
 	$('.btn').click(function(){
 		$('.demo').attr('id',' ');
 		$('.demo')[this.name].id = 'demo1';

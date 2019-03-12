@@ -1,8 +1,11 @@
 import os
 from flask import Flask
 from config import config
+
+app_config = config[os.getenv('FLASK_CONFIG') or 'default']
+
 app = Flask(__name__)
-app.config.from_object(config[os.getenv('FLASK_CONFIG') or 'default'])
+app.config.from_object(app_config)
 
 from flask_sqlalchemy import SQLAlchemy
 db = SQLAlchemy(app)

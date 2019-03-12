@@ -28,7 +28,7 @@
 	    	<ul>
 	    		<li><h3><img id="hideMenu" src="{{url_for('static',filename='wxweb/images/menu.png')}}">选择项目</h3></li>
 	    		<li><a class="slideItem" data-ajax="false" href="{{url_for('wxweb.phone')}}">办公电话</a></li>
-	    		<li><a class="slideItem" data-ajax="false" href="{{url_for('wxweb.wether')}}">天气查询</a></li>
+	    		<li><a class="slideItem" data-ajax="false" href="{{url_for('wxweb.weather')}}">天气查询</a></li>
 	    		<li><a class="slideItem" data-ajax="false" href="{{url_for('wxweb.express')}}">快递查询</a></li>
 	    		<li><a class="slideItem" data-ajax="false" href="{{url_for('wxweb.bus')}}">公交线路</a></li>
 	    	</ul>
@@ -53,7 +53,7 @@
 		<h1>提示信息</h1>
 	</div>
 	<div data-role="content">
-		<p id="tipMsg">{{user.content}}</p>
+		<p id="tipMsg"></p>
 		<a class="btn" href="#pageone" data-inline="true" data-role="button">确定</a>
 	</div>
 	<div data-role="footer">
@@ -73,8 +73,51 @@ hidemenu.addEventListener('touchstart',function(){
 },false)
 
 $('input[type=button]').click(function(){
-	$.mobile.changePage('#pagetwo', 'pop', true, true);
+    var express_number = $('input[name=expNum]').val();
+    if (express_number.trim() == ''){
+        $('#tipMsg').html('快递单号输入不能为空')
+        $.mobile.changePage('#pagetwo', 'pop', true, true);
+    }
+    showLoader();
+	$.ajax({
+        url: "{{ url_for('wxweb.express') }}",
+        data: {"express_number": express_number},
+        type: 'post',
+        success: function(data){
+            hideLoader();
+            if(data['code'] == 4007) {
+                $('#tipMsg').html('快递单号可能不存在')
+                $.mobile.changePage('#pagetwo', 'pop', true, true);                
+            }
+            else if(data['code'] == 4010) {
+                $('#tipMsg').html('快递单号输入不能为空')
+                $.mobile.changePage('#pagetwo', 'pop', true, true);                
+            }
+            else if(data['code'] != 200){
+                $('#tipMsg').html('服务器资源错误')
+                $.mobile.changePage('#pagetwo', 'pop', true, true);                  
+            }
+            else {
+                var html = '<ul data-role="listview">';
+                html += '<li><h3>订单号：' + express_number + '</h3></li>';
+                for(var i = 0;i < data['data'].length; ++i) {
+                    html += '<li>' + data['data'][i].time+' : ' + data['data'][i].context + '</li>';
+                }
+                $('#result').html(html).trigger('create');
+            }  
+        }
+    })
 })
+
+function showLoader(){
+	$.mobile.loadingMessageTextVisible = true;
+	$.mobile.loadingMessageTheme = 'a';
+	$.mobile.loadingMessage = '加载中。。。';
+	$.mobile.showPageLoadingMsg();
+}
+function hideLoader(){
+	$.mobile.hidePageLoadingMsg();
+}
 </script>
 </body>
 </html>

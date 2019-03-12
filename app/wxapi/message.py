@@ -1,9 +1,12 @@
-from flask import g, make_response
-from app import db
+from flask import g, make_response, session
+from app import db, app_config
 from app.exts import hbujwxt
 from app.utils import status
+from app.utils.weatherutil import getWeather
+from app.utils.bookutil import book_query
+from app.utils.expressutil import express_query
 from app.utils.userprocess import UserProcessor 
-from app.models import User, TextMaterial
+from app.models import User, TextMaterial, PhoneList
 try:
     import xml.etree.cElementTree as ET
 except:
@@ -252,7 +255,6 @@ class MessageProcessor(object):
                         for courseinfo in data:
                             reply += '-'*40 + '\n'
                             reply += '{}**{}**{}\n'.format(*courseinfo)
-                            reply += '-'*40 + '\n'
                 else:
                     reply = self.text_process('绑定学号')
             ##############################
@@ -280,7 +282,10 @@ class MessageProcessor(object):
             elif content.startswith('课表查询'):
                 user = UserProcessor.get_user()
                 if user is not None:
-                    reply = 'http://newtorn.fastfuck.me/curriculum/' + g.openid
+                    reply = '<a href="{app_domain}public/curriculum?openid={openid}">好好学习，天天向上，HELLO~我是河小博~点击查看课表信息～～</a>'.format(
+                        app_domain = app_config.APP_DOMAIN,
+                        openid = g.openid
+                    )
                 else:
                     reply = self.text_process('绑定学号')
             ##############################
@@ -289,8 +294,9 @@ class MessageProcessor(object):
             elif content.startswith('网上评教'):
                 user = UserProcessor.get_user()
                 if user is not None:
-                    reply = '<a href="http://twwx.hbu.edu.cn/index.php/Evaluate?token={}">好好学习，天天向上，HELLO~我是河小博~点击进入网上评教</a>'.format(
-                        g.openid
+                    reply = '<a href="{app_domain}public/evaluate?openid={openid}">好好学习，天天向上，HELLO~我是河小博~点击进入网上评教</a>'.format(
+                        app_domain = app_config.APP_DOMAIN,
+                        openid = g.openid
                     )
                 else:
                     reply = self.text_process('绑定学号')
@@ -302,8 +308,11 @@ class MessageProcessor(object):
                 if len(grp) != 2:
                     reply = self.text_process('图书信息')
                 else:
-                    reply = '~~~查询的图书信息如下'
-
+                    reply = '<a href="{app_domain}public/book?openid={openid}&book_name={book_name}">好好学习，天天向上，HELLO~我是河小博~点击进入网上评教</a>'.format(
+                        app_domain = app_config.APP_DOMAIN,
+                        openid = g.openid,
+                        book_name = grp[1]
+                    )
             #__________________________________________________
             # 河小知
             #__________________________________________________
@@ -316,7 +325,15 @@ class MessageProcessor(object):
                 if len(grp) != 2:
                     reply = self.text_process('天气预报')
                 else:
-                    reply = '【城市】' + grp[1]
+                    res = getWeather(grp[1])
+                    if res['code'] == status.CODE_SUCCESS:
+                        reply = '查询结果如下\n'
+                        for item in res['data'].values():
+                            reply +=  item + '\n'
+                    elif res['code'] == status.CODE_NOT_EXIST:
+                        reply = '查询的城市不存在哦～～～'
+                    else:
+                        reply = '服务器资源错误，联系管理员修复~~~'
             ##############################
             # 公交查询
             ##############################
@@ -334,25 +351,40 @@ class MessageProcessor(object):
             ##############################
             # 快递查询
             ##############################
-            elif content.startswith('快递公司'):
-                reply = '~~~支持的快递公司如下哦'
-            elif content.startswith('快递'):
+            if content.startswith('快递'):
                 grp = content.split(' ')
-                if len(grp) != 3:
+                if len(grp) != 2:
                     reply = self.text_process('快递查询')
                 else:
-                    reply = '~~~查到的快递信息如下'
+                    res = express_query(grp[1])
+                    if res['code'] == status.CODE_SUCCESS:
+                        reply = '查到的快递信息如下\n'
+                        for item in res['data']:
+                            reply += '-'*40 + '\n'
+                            reply +=  '{} : {}\n'.format(item['time'], item['context'])
+                    elif res['code'] == status.CODE_NOT_EXIST:
+                        reply = '查询城市可能不在哦～～～'
+                    else:
+                        reply = '服务器资源错误，请联系管理员修复～～～'
             ##############################
-            # 快递查询
+            # 电话查询
             ##############################
-            elif content.startswith('办公电话'):
-                reply = '~~~所有办公机构名称如下'
+            elif content.startswith('办公机构'):
+                reply = '<a href="{app_domain}public/phone?openid={openid}">点我即可查看所有办公机构哦～～～</a>'.format(
+                        app_domain = app_config.APP_DOMAIN,
+                        openid = g.openid
+                    )
             elif content.startswith('电话'):
                 grp = content.split(' ')
                 if len(grp) != 2:
                     reply = self.text_process('办公电话')
                 else:
-                    reply = '~~~办公电话'
+                    phone = PhoneList.query.filter(PhoneList.address.like('%{}%'.format(grp[1]))).first()
+                    if phone:
+                        reply = '查询的电话如下\n'
+                        reply += '{} {}'.format(phone.address, phone.phone)
+                    else:
+                        reply = '暂时没有你要查询的办公电话\n请检查你输入的办公机构名称'
             ##############################
             # 社团活动
             ##############################
@@ -366,10 +398,10 @@ class MessageProcessor(object):
             # 意见反馈
             ##############################
             elif content.startswith('意见反馈'):
-                reply = '<a href="http://twwx.hbu.edu.cn/index.php/Feedback?token={}">点击便可访问反馈页面</a>'.format(
-                    g.openid
+                reply = '<a href="{app_domain}public/feedback?openid={openid}">点击便可访问反馈页面</a>'.format(
+                    app_domain = app_config.APP_DOMAIN,
+                    openid = g.openid
                 )
-
 
         if reply == "":
             reply = self.text_process('留言')

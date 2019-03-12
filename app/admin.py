@@ -298,9 +298,17 @@ def keyword_data():
 # @admin.route('/add_text')
 # def add_text():
 #     textmaterial = TextMaterial(
-#         keyword = 'hello',
-#         content = '欢迎关注河大青年~~~'
-#     )
+#         keyword = '我的学业',
+#         content = '''好好学习，天天向上
+# HELLO~我是河小博~发送：
+# 【成绩查询】
+# 【选课信息】
+# 【我的课表】
+# 【我的学籍】
+# 【修改密码】
+# 【绑定学号】
+# 【解除绑定】
+# 即可查询''')
 #     db.session.add(textmaterial)
 #     db.session.commit()
 #     return 'Okay'

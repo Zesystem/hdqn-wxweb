@@ -16,13 +16,37 @@ class User(db.Model):
         return '<User %r>' % self.openid
 
 
+class PhoneList(db.Model):
+    """电话模型"""
+    __tablename__ = 'phones'
+    pid = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    address = db.Column(db.String(40), nullable=False)
+    phone = db.Column(db.String(16), nullable=False)
+
+    def __repr__(self):
+        return '<PhoneList %r>' % self.address
+
+
+class FeedBack(db.Model):
+    """反馈模型"""
+    __tablename__ = 'feedbacks'
+    fid = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    openid = db.Column(db.String(50), nullable=False)
+    phone = db.Column(db.String(12), nullable=False)
+    content = db.Column(db.Text, nullable=False)
+    navtype = db.Column(db.String(20), nullable=False)
+    time = db.Column(db.DateTime, index=True, default=datetime.now)
+
+    def __repr__(self):
+        return '<FeedBack %r>' % self.openid
+
 class TextMaterial(db.Model):
     """回复文本素材模型"""
     __tablename__ = 'textmaterials'
     tmid = db.Column(db.Integer, primary_key=True, autoincrement=True)
     add_time = db.Column(db.DateTime, index=True, default=datetime.now)
     keyword = db.Column(db.String(50), unique=True, nullable=False)
-    content = db.Column(db.Text)
+    content = db.Column(db.Text, nullable=False)
 
     def __repr__(self):
         return '<TextMaterial %r>' % self.tmid
@@ -34,10 +58,10 @@ class NewsMaterial(db.Model):
     nmid = db.Column(db.Integer, primary_key=True, autoincrement=True)
     add_time = db.Column(db.DateTime, index=True, default=datetime.now)
     keyword = db.Column(db.String(50), unique=True, nullable=False)
-    title = db.Column(db.String(60))
-    description = db.Column(db.String(100))
-    pic_url = db.Column(db.String(2000))
-    url = db.Column(db.String(2000))
+    title = db.Column(db.String(60), nullable=False)
+    description = db.Column(db.String(100), nullable=False)
+    pic_url = db.Column(db.String(2000), nullable=False)
+    url = db.Column(db.String(2000), nullable=False)
 
     def __repr__(self):
         return '<NewsMaterial %r>' % self.nmid
@@ -49,7 +73,7 @@ class VoiceMaterial(db.Model):
     vomid = db.Column(db.Integer, primary_key=True, autoincrement=True)
     add_time = db.Column(db.DateTime, index=True, default=datetime.now)
     keyword = db.Column(db.String(50), unique=True, nullable=False)
-    media_id = db.Column(db.String(50))
+    media_id = db.Column(db.String(50), nullable=False)
 
     def __repr__(self):
         return '<VoiceMaterial %r>' % self.vomid
@@ -61,9 +85,9 @@ class VideoMaterial(db.Model):
     vimid = db.Column(db.Integer, primary_key=True, autoincrement=True)
     add_time = db.Column(db.DateTime, index=True, default=datetime.now)
     keyword = db.Column(db.String(50), unique=True, nullable=False)
-    media_id = db.Column(db.String(50))
-    title = db.Column(db.String(60))
-    description = db.Column(db.String(100))
+    media_id = db.Column(db.String(50), nullable=False)
+    title = db.Column(db.String(60), nullable=False)
+    description = db.Column(db.String(100), nullable=False)
 
     def __repr__(self):
         return '<VideoMaterial %r>' % self.vimid
@@ -75,10 +99,10 @@ class MusicMaterial(db.Model):
     mmid = db.Column(db.Integer, primary_key=True, autoincrement=True)
     add_time = db.Column(db.DateTime, index=True, default=datetime.now)
     keyword = db.Column(db.String(50), unique=True, nullable=False)
-    title = db.Column(db.String(60))
-    description = db.Column(db.String(100))
-    music_url = db.Column(db.String(2000))
-    hqmusic_url = db.Column(db.String(2000))
+    title = db.Column(db.String(60), nullable=False)
+    description = db.Column(db.String(100), nullable=False)
+    music_url = db.Column(db.String(2000), nullable=False)
+    hqmusic_url = db.Column(db.String(2000), nullable=False)
 
     def __repr__(self):
         return '<MusicMaterial %r>' % self.mmid
@@ -91,7 +115,7 @@ class ImageMaterial(db.Model):
     imid = db.Column(db.Integer, primary_key=True, autoincrement=True)
     add_time = db.Column(db.DateTime, index=True, default=datetime.now)
     keyword = db.Column(db.String(50), unique=True, nullable=False)
-    media_id = db.Column(db.String(50))
+    media_id = db.Column(db.String(50), nullable=False)
 
     def __repr__(self):
         return '<ImageMaterial %r>' % self.imid

@@ -38,7 +38,7 @@
 	    	<ul>
 	    		<li><h3><img id="hideMenu" src="{{url_for('static',filename='wxweb/images/menu.png')}}">选择项目</h3></li>
 	    		<li><a class="slideItem" href="{{url_for('wxweb.phone')}}">办公电话</a></li>
-	    		<li><a class="slideItem" href="{{url_for('wxweb.wether')}}">天气查询</a></li>
+	    		<li><a class="slideItem" href="{{url_for('wxweb.weather')}}">天气查询</a></li>
 	    		<li><a class="slideItem" href="{{url_for('wxweb.express')}}">快递查询</a></li>
 	    		<li><a class="slideItem" href="{{url_for('wxweb.bus')}}">公交线路</a></li>
 	    	</ul>
@@ -52,7 +52,8 @@
 				<input type="search" name="weth" data-inline="true" value="保定">
 				<input type="button" data-inline="true" value="搜索" />
 			</div>
-			<div id="result" style="margin-top: 40px;">
+            <div id="result" style="margin-top: 40px;">
+
 			</div>
         </div>
 	    {% include 'wxweb/footnav.html' %}
@@ -83,8 +84,51 @@ hidemenu.addEventListener('touchstart',function(){
 },false)
 
 $('input[type=button]').click(function(){
-	$.mobile.changePage('#pagetwo', 'pop', true, true);
+    var city_name = $('input[name=weth]').val();
+    if (city_name.trim() == ''){
+        $('#tipMsg').html('城市输入不能为空')
+        $.mobile.changePage('#pagetwo', 'pop', true, true);
+    }
+    showLoader();
+	$.ajax({
+        url: "{{ url_for('wxweb.weather') }}",
+        data: {"city_name": city_name},
+        type: 'post',
+        success: function(data){
+            hideLoader();
+            if(data['code'] == 4007) {
+                $('#tipMsg').html('未知的城市');
+                $.mobile.changePage('#pagetwo', 'pop', true, true);                
+            }
+            else if(data['code'] == 4010) {
+                $('#tipMsg').html('城市输入不能为空');
+                $.mobile.changePage('#pagetwo', 'pop', true, true);                
+            }
+            else if(data['code'] != 200){
+                $('#tipMsg').html('服务器资源错误');
+                $.mobile.changePage('#pagetwo', 'pop', true, true);                  
+            }
+            else {
+                var html = '';
+                var res = data['data'];
+                var pfn = function(str) { return '<p>' + str + '</p>'};
+                html += pfn(res['city']) + pfn(res['tempture']);
+                html += pfn(res['time']) + pfn(res['wind']) + pfn(res['weather']);
+                html += pfn(res['rays']) + pfn(res['flud']) + pfn(res['suggest']);
+                $('#result').html(html);
+            }
+        }
+    })
 })
+function showLoader(){
+	$.mobile.loadingMessageTextVisible = true;
+	$.mobile.loadingMessageTheme = 'a';
+	$.mobile.loadingMessage = '加载中。。。';
+	$.mobile.showPageLoadingMsg();
+}
+function hideLoader(){
+	$.mobile.hidePageLoadingMsg();
+}
 </script>
 </body>
 </html>

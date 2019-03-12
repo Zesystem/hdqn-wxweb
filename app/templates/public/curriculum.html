@@ -1,11 +1,11 @@
 
-{% extends 'base.html' %}
+{% extends 'public/base.html' %}
 
 		{% block title %}我的课表{% endblock %}
 
 		{% block link %}
-		<link href="{{ url_for('static', filename='css/phone.css') }}" rel="stylesheet" type="text/css" />
-		<link href="{{ url_for('static', filename='css/common.css') }}" rel="stylesheet" type="text/css" />
+		<link href="{{ url_for('static', filename='public/css/phone.css') }}" rel="stylesheet" type="text/css" />
+		<link href="{{ url_for('static', filename='public/css/common.css') }}" rel="stylesheet" type="text/css" />
 		{% endblock %}
 
 		{% block style %}
@@ -40,7 +40,7 @@
 		<div id="all">
 			<table id="class" border="1">
 				<tr>
-					<th>{{ timeinfo['month'] }}</th>
+					<th>{{ timeinfo['month'] }}月</th>
 					{% for week in timeinfo['weekinfo'] %}
 						<th>{{week['num']}}日<br />{{week['ch']}}</th>
 					{% endfor %}

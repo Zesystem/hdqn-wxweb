@@ -34,13 +34,15 @@
 	.demo{
 		position: absolute;
 		display: none;
-	}
+    }
+    .build-items{
+        display: none;
+    }
 </style>
 <link rel="stylesheet" href="{{url_for('static',filename='wxweb/css/slideMenu.css')}}" />
 </head>
 
 <body>
-
     <div data-role="page" id="pageone">  
         <nav class="slideMenu" id="slideMenu">
         	<ul>
@@ -57,49 +59,66 @@
             <h1>校园漫步</h1>
             <span id="showMenu" class="ui-btn-right"><img src="{{url_for('static',filename='wxweb/images/menu.png')}}"></span>
         </div>
+
         <div data-role="content" id="contOne" style="margin-top: 10px;">
 
         	<div id="nav">
-				<select name="campus" id="campus" data-native-menu="false" onchange="getBuild();">
-	        		<option value="">请选择校区</option>
-	        		<option value="本部">本部</option>
-	        		<option value="新校区">新校区</option>
-	       		</select>
-	        	<div id="build">
-                    <select name="build" id="build" data-native-menu="false" onchange="getUrl();">
-                        <option value="">请选择年级</option>>
-		   				{% for grade in info.grades %}
-		   					<option value="">{{key}}</option>
-		   				{% endfor %}
-		    		</select></div>
-	        		<a href="#" id="butForward" data-role="button" data-icon="forward" data-iconpos="right">查看</a>
-	        	</div>
-        	</div>
+                <li  id="campus-main">
+                    <select name="campus" id="campus" data-native-menu="false" onchange="getBuild()">
+                        <option value="">请选择校区</option>
+                        {% for area in info.senses.area %}
+                            <option value="{{ area }}">{{ area }}</option>
+                        {% endfor %}
+                    </select>
+                </li>
+	        	<div id="build-box">
+                    <li class="build-items">
+                            <select name="build" data-native-menu="false">
+                                <option value="">请选择地点</option>
+                            </select>
+                    </li>
+                    {% for builds in info.senses.build %}
+                        <li class="build-items">
+                            <select name="build" data-native-menu="false" onchange="getUrl()">
+                                <option value="">请选择地点</option>
+                                {% for build in builds %}
+                                    <option value="{{ build }}">{{ build }}</option>
+                                {% endfor %}
+                            </select>
+                        </li>
+                    {% endfor %}
+                </div>
+	        	<a href="#" id="butForward" data-role="button" data-icon="forward" data-iconpos="right">查看</a>
+	        </div>
 			
 			<div  class="ui-content">
 				<div class="demo" id="">洗衣服务
-					{{info.wish}}
+					{{ info.wish | safe }}
 	        	</div>
 	        	<div class="demo" id="">培训信息
-					{{info.train}}
+					{{ info.train | safe }}
 	        	</div>
 	        	<div class="demo" id="">河大驾校
-	        		{{info.drive}}
+	        		{{ info.drive | safe }}
 	        	</div>
 	        	<div class="demo" id="">图书订购
-					{{info.bookorder}}
+					{{ info.bookorder | safe }}
 	        	</div>
 	        	<div class="demo" id="">易百超市
-					{{info.yibaimarket}}
+					{{ info.yibaimarket | safe }}
 	        	</div>
 			</div>
 
         </div>
+
         {% include "wxweb/footnav.html" %}
     </div>
-<script>
+<script type="text/javascript">
+
 var showmenu = document.getElementById('showMenu');
 var hidemenu = document.getElementById('hideMenu');
+$('.build-items')[0].style.display = 'block';
+
 
 showmenu.addEventListener('touchstart',function(){
 	$('#slideMenu').addClass('slideMenu_on');
@@ -116,8 +135,18 @@ $(function(){
 	$('.menu1').click(function(){
 		$('.demo').css('display','none');
 		$('#nav').css('display','block');
-	})
+    })
 })
+
+function getBuild(){
+    $('.build-items').css('display', 'none');
+    $('.build-items')[$('#campus')[0].selectedIndex].style.display = 'block';
+}
+
+function getUrl(){
+    
+}
+
 </script>
 </body>
 </html>

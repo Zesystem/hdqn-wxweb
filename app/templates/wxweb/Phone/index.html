@@ -32,7 +32,7 @@
       <ul>
         <li><h3><img id="hideMenu" src="{{url_for('static',filename='wxweb/images/menu.png')}}">选择项目</h3></li>
         <li><a class="slideItem"  href="{{url_for('wxweb.phone')}}">办公电话</a></li>
-        <li><a class="slideItem"  href="{{url_for('wxweb.wether')}}">天气查询</a></li>
+        <li><a class="slideItem"  href="{{url_for('wxweb.weather')}}">天气查询</a></li>
         <li><a class="slideItem"  href="{{url_for('wxweb.express')}}">快递查询</a></li>
         <li><a class="slideItem"  href="{{url_for('wxweb.bus')}}">公交线路</a></li>
       </ul>
@@ -44,13 +44,12 @@
     <div data-role="main" class="ui-content">
       <ul data-role="listview" data-filter="true" data-input="#myFilter" data-autodividers="true" data-inset="true">
         {% for phone in phones%}
-          <li><a href="#">{{phone}}</a></li>
+          <li><a href="tel://{{ phone.phone }}">{{ phone.address }}</a></li>
         {% endfor %}
       </ul>
     </div>
    {% include "wxweb/footnav.html" %}
 </div>
-<script src="{{url_for('static',filename='wxweb/js/wxShare.js')}}"></script>
 <script>
 $(function(){
   $('input[data-type=search]').attr('placeholder','搜索部门名称...');

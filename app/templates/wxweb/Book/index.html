@@ -23,7 +23,7 @@
 		height:auto;
 		cursor: pointer;
 	}
-	table{ 
+    table{
 		border-collapse:collapse;
 		border:1px solid #999;
 		width:95%;
@@ -32,17 +32,18 @@
 		max-width:640px;
 		min-width:320px;
 		font-size:30px;}
-		table th { text-align:center;
+	table th { text-align:center;
 		border:3px solid #999;
-		line-height:100px;
+		line-height:50px;
 		background-color:#CFF;
 		color:#333;
 		font-weight:bold;
-		font-size:35px;}
-		table td { text-align:center;
+		font-size: 14px;}
+	table td { text-align:center;
 		border:3px solid #999;
 		line-height:80px;
-		color:black
+        color:black;
+        font-size: 14px;
 	}
 </style>
 </head>
@@ -52,9 +53,6 @@
         	<div id="search" data-role="fieldcontain">
 				<input type="search" name="weth" data-inline="true" placeholder="请在此输入图书名称">
 				<input type="button" data-inline="true" value="搜索" />
-			</div>
-			<div id="result" style="margin-top: 40px;">
-
 			</div>
         </div>
         <div data-role="footer" data-position="fixed">
@@ -67,21 +65,97 @@
 			<h1>图书详细信息</h1>
 		</div>
 		<div data-role="content">
-			<table id="detailBook">
-				<tr>
-			    	<th>图书条码</th>
-			        <th>索书号</th>
-			        <th>馆藏部门</th>
-			        <th>流通状态</th>
-			    </tr>
-			</table>
+            <!-- {% for book in books %}
+                <tr class="book-item">
+                    <td>{{ book.name }}</td>
+                    <td>{{ book.code }}</td>
+                    <td>{{ book.total }}</td>
+                    <td>{{ book.borrowable }}</td>
+                </tr>
+            {% endfor %} -->
 		</div>
 		
 	</div>
 <script>
-$('input[type=button]').click(function(){
-	$.mobile.changePage('#pagetwo', 'pop', true, true);
-})
+
+// $('input[type=button]').click(function(){
+// 	$.mobile.changePage('#pagetwo', 'pop', true, true);
+// })
+
+$(document).ready(function(){
+	$('input[type=button]').click(function(){
+        var book_name = $('input[name=weth]').val();
+        getBook(book_name);
+	});
+});
+
+function loadError(){
+    $('div .error').remove();
+	var book = $('input[name=weth]').val();
+    getBook(book);
+}
+
+function returnError(){
+    $('div .error').remove();
+}
+
+function getBook(book_name){
+    if(book_name == ''){
+        if($('div .error').get(0) == undefined){
+            $('#pageone div[data-role=content]').append('<div class="error" onclick="loadError();"><p>书名不能为空</p><h5>点击重新加载...</h5></div>');
+        }
+    }
+    else{
+        showLoader();
+        $.ajax({
+            url: "{{ url_for('wxweb.book') }}",
+            data: {'book_name': book_name },
+            type : 'post',
+            success : function(data) {
+                hideLoader();
+                if(data['code'] == 200)
+                {
+                    var html = '<table id="detailBook"><tr><th width="45%">图书名称</th><th>图书编号</th><th width="15%">馆藏数量</th><th width="15%">可借阅数</th></tr>';
+                    data['data'].forEach(book => {
+                        html += '<tr class="book-item">';
+                        html += '<td>' + book.name + '</td>';
+                        html += '<td>' + book.code + '</td>';
+                        html += '<td>' + book.total + '</td>';
+                        html += '<td>' + book.borrowable + '</td>';
+                        html += '</tr>';
+                    });
+                    html += '</table>';
+                    $('#pagetwo div[data-role=content]').html(html).trigger('create');
+                    $.mobile.changePage('#pagetwo', 'pop', true, true);
+                }
+                else if (data['code'] == 4010)
+                {
+                    $('div .error').remove();
+                    $('#pageone div[data-role=content]').append('<div class="error" onclick="returnError();"><p>图书名称不能为空</p><h5>点击重新加载...</h5></div>');
+                }
+                else if (data['code'] == 4007)
+                {
+                    $('div .error').remove();
+                    $('#pageone div[data-role=content]').append('<div class="error" onclick="loadError();"><p>图书可能不存在</p><h5>点击重新加载...</h5></div>');
+                }
+                else
+                {
+                    $('div .error').remove();
+                    $('#pageone div[data-role=content]').append('<div class="error" onclick="loadError();"><p>服务器资源错误</p><h5>点击重新加载...</h5></div>');
+                }
+            }
+        })
+    }
+}
+function showLoader(){
+	$.mobile.loadingMessageTextVisible = true;
+	$.mobile.loadingMessageTheme = 'a';
+	$.mobile.loadingMessage = '加载中。。。';
+	$.mobile.showPageLoadingMsg();
+}
+function hideLoader(){
+	$.mobile.hidePageLoadingMsg();
+}
 </script>
 </body>
 </html>
