@@ -1,3 +1,13 @@
+##########################################
+#
+# 表单
+# author: TuYaxuan
+# time: 2019/3/14
+# 说明: 前后端登陆以及增删查改交互
+#
+###########################################
+
+
 from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, SubmitField
 from wtforms.validators import DataRequired, ValidationError

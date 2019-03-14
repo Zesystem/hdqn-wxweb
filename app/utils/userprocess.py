@@ -1,3 +1,12 @@
+##########################################
+#
+# 微信用户处理工具类封装
+# author: TuYaxuan
+# time: 2019/3/14
+# 说明: 依赖于User模型
+#
+###########################################
+
 from flask import g
 from app import db
 from app.models import User

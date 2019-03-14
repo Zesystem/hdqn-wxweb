@@ -1,3 +1,12 @@
+##########################################
+#
+# 格式化数据工具函数封装
+# author: TuYaxuan
+# time: 2019/3/14
+# 说明: 依赖app.models
+#
+###########################################
+
 from app.utils.stringutil import strstr, empty
 
 def get_course_table(curArr):

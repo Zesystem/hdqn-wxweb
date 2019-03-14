@@ -1,3 +1,13 @@
+##########################################
+#
+# 数据库工具函数封装
+# author: TuYaxuan
+# time: 2019/3/14
+# 说明: 依赖app.models
+#
+###########################################
+
+
 from app.models import TextMaterial
 
 def text_query(key):

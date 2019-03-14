@@ -1,8 +1,12 @@
-###########################
-#                         #
-# weixin interface        #
-#                         #
-###########################
+##########################################
+#
+# 微信后台验证路由 inter
+# author: TuYaxuan
+# time: 2019/3/14
+# 说明: 用于公众号验证
+#
+###########################################
+
 from app.wxapi import wxinter
 from flask import render_template, Blueprint
 

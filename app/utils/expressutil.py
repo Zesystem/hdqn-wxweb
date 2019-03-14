@@ -1,3 +1,12 @@
+##########################################
+#
+# 快递查询工具函数封装
+# author: TuYaxuan
+# time: 2019/3/14
+# 说明: requests库请求
+#
+###########################################
+
 import requests
 from app.utils import status
 

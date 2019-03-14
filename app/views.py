@@ -1,3 +1,12 @@
+##########################################
+#
+# 视图
+# author: TuYaxuan
+# time: 2019/3/14
+# 说明: import views
+#
+###########################################
+
 from app import app
 from .inter import inter
 from .admin import admin

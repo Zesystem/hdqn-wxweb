@@ -1,9 +1,19 @@
+##########################################
+#
+# 文件操作工具函数封装
+# author: TuYaxuan
+# time: 2019/3/14
+# 说明: 文件上传验证
+#
+###########################################
+
+
 import os
 from datetime import datetime
 from app.utils import status
 
 HOSTNAME = 'localhost'
-FILE_PATH = "/Users/torn/Desktop/hdqn-wxweb"
+FILE_PATH = "/Users/torn/WorkSpace/hdqn-wxweb"
 
 ALLOWED_EXTENSIONS = set(['png', 'jpg', 'jpeg', 'mp3', 'mp4', 'amr', 'JPG', 'PNG', 'JPEG', 'MP3', 'MP4', 'AMR'])
  

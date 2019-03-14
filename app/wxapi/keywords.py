@@ -160,7 +160,7 @@ HELLO~我是河小博~
 
 
     '公交查询' : '''目前只提供保定市公交线路查询哦~~~
-1.发送"公交路线"即可查询保定市的所有公交路线
+1.发送"附近公交+空格+当前位置"如："河北大学"即可查询附近的所有站点
 2.发送"公交+空格+公交线路"如："公交 27"即可查询该线路所有站点
 3.发送"公交+空格+起点+空格+终点"即可查询可乘坐的公交线路，如"公交 河北大学 火车站"''',
 
@@ -368,106 +368,3 @@ Email: kjy@hbu.edu.cn
     '新生' : '''<a href="http://h.eqxiu.com/s/bCG5asAT">hello！欢迎新童鞋！点击即可查询新生板块。河大青年在手中，学习生活很轻松！（建议在wifi环境下打开）</a>
 '''
 }
-
-
-image_process = [
-    {
-        'keyword' : '',
-        'media_id' : ''
-    },
-    {
-        'keyword' : '',
-        'media_id' : ''
-    },
-    {
-        'keyword' : '',
-        'media_id' : ''
-    }
-]
-
-voice_process = [
-    {
-        'keyword' : '',
-        'media_id' : ''
-    },
-    {
-        'keyword' : '',
-        'media_id' : ''
-    },
-    {
-        'keyword' : '',
-        'media_id' : ''
-    }
-]
-
-video_process = [
-    {
-        'keyword' : '',
-        'media_id' : '',
-        'title' : '',
-        'description': ''
-    },
-    {
-        'keyword' : '',
-        'media_id' : '',
-        'title' : '',
-        'description': ''
-    },
-    {
-        'keyword' : '',
-        'media_id' : '',
-        'title' : '',
-        'description': ''
-    }
-]
-
-music_process = [
-    {
-        'keyword' : '',
-        'thumb_media_id' : '',
-        'title' : '',
-        'description': '',
-        'music_url' : '',
-        'hq_music_url' : ''
-    },
-    {
-        'keyword' : '',
-        'thumb_media_id' : '',
-        'title' : '',
-        'description': '',
-        'music_url' : '',
-        'hq_music_url' : ''
-    },
-    {
-        'keyword' : '',
-        'thumb_media_id' : '',
-        'title' : '',
-        'description': '',
-        'music_url' : '',
-        'hq_music_url' : ''
-    }
-]
-
-news_process = [
-    {
-        'keyword' : '',
-        'title' : '',
-        'description': '',
-        'pic_url' : '',
-        'url' : ''
-    },
-    {
-        'keyword' : '',
-        'title' : '',
-        'description': '',
-        'pic_url' : '',
-        'url' : ''
-    },
-    {
-        'keyword' : '',
-        'title' : '',
-        'description': '',
-        'pic_url' : '',
-        'url' : ''
-    }
-]

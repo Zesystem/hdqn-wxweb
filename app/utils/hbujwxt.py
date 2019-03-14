@@ -1,3 +1,13 @@
+##########################################
+#
+# 教务系统工具类封装
+# author: TuYaxuan
+# time: 2019/3/14
+# 说明: 依赖bs4解析,pytesseract验证码识别
+#
+###########################################
+
+
 import io
 import os
 import PIL
@@ -235,8 +245,8 @@ class HbuJwxt(object):
 if __name__ == '__main__':
     hbujwxt = HbuJwxt()
     userinfo = {'username':'20171004113', 'password':'199892.lw'}
-    # print(hbujwxt.query_schoolrool(userinfo))
-    # print(hbujwxt.query_this_term_score(userinfo))
-    # print(hbujwxt.query_each_term_score(userinfo))
-    # print(hbujwxt.query_course_table(userinfo))
+    print(hbujwxt.query_schoolrool(userinfo))
+    print(hbujwxt.query_this_term_score(userinfo))
+    print(hbujwxt.query_each_term_score(userinfo))
+    print(hbujwxt.query_course_table(userinfo))
 

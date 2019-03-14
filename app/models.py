@@ -1,3 +1,12 @@
+##########################################
+#
+# 数据库模型
+# author: TuYaxuan
+# time: 2019/3/14
+# 说明: 依赖于appg配置的SQLAlchemy配置的实例db
+#
+###########################################
+
 from app import db
 from datetime import datetime
 
@@ -188,23 +197,23 @@ class OperateLog(db.Model):
     def __repr__(self):
         return '<OperateLog %r>' % self.oid
 
-def create_admin():
-    # 添加角色
-    role = Role(
-        name="超级管理员",
-        auths="",
-    )
-    db.session.add(role)
-    db.session.commit()
+# def create_admin():
+#     # 添加角色
+#     role = Role(
+#         name="超级管理员",
+#         auths="",
+#     )
+#     db.session.add(role)
+#     db.session.commit()
 
-    # 添加管理员
-    from werkzeug.security import generate_password_hash
+#     # 添加管理员
+#     from werkzeug.security import generate_password_hash
 
-    admin = Admin(
-        account = 'admin',
-        password = generate_password_hash('hbutwwx,,,'),
-        is_super = 0,
-        rid = role.rid,
-    )
-    db.session.add(admin)
-    db.session.commit()
+#     admin = Admin(
+#         account = 'admin',
+#         password = generate_password_hash('hbutwwx,,,'),
+#         is_super = 0,
+#         rid = role.rid,
+#     )
+#     db.session.add(admin)
+#     db.session.commit()

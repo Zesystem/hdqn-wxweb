@@ -1,3 +1,12 @@
+##########################################
+#
+# 图书查询工具函数封装
+# author: TuYaxuan
+# time: 2019/3/14
+# 说明: requests库请求、bs4解析
+#
+###########################################
+
 import requests
 import urllib.parse
 from app.utils import status

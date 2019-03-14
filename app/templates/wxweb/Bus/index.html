@@ -61,8 +61,8 @@
 			    </div>
 			</div>
 			<div id="search2">
-			    <input type="text" name="startdir" placeholder="请输入起始站,例如:河北大学"> 
-			    <input type="text" name="enddir" placeholder="请输入重点站,例如：火车站">
+			    <input type="text" name="startdir" placeholder="请输入起始站,例如:河北大学北院"> 
+			    <input type="text" name="enddir" placeholder="请输入重点站,例如：火车站西广场">
 			    <input type="button" name="seaBut2" value="搜索" data-inline="true">
 			</div>
 			<div id="result">
@@ -101,8 +101,86 @@ function showSearch(id){
 	}
 }
 $('input[type=button]').click(function(){
-	$.mobile.changePage('#pagetwo', 'pop', true, true);
+    if(this['name'] == 'seaBut1')
+    {
+        bus_line = $('input[name=busnum]').val();
+        if(bus_line.trim() == '')
+        {
+            $('#tipMsg').html('公交路线不能为空');
+            $.mobile.changePage('#pagetwo', 'pop', true, true);
+        }
+        else{
+            showLoader();
+            $.ajax({
+                url : "{{ url_for('wxweb.bus') }}",
+                data : {'mt' : 'l', 'lineno' : bus_line},
+                type : 'POST',
+                success : function(data){
+                    hideLoader();
+                    if(data['code'] != 200) {
+                        $('#tipMsg').html('没有你要查询的路线信息');
+                        $.mobile.changePage('#pagetwo', 'pop', true, true);
+                    } 
+                    else {
+                        var html = '';
+                        data = data['data'];
+                        for(var num = 0; num < data.length; ++num){
+                            html += '<p>【' + (num+1) + '】' + data[num] + '</p><br>';
+                        }
+                        $('#result').html(html);
+                    }
+                }
+            });
+        }
+    }
+    else if(this['name'] == 'seaBut2')
+    {
+        bus_start = $('input[name=startdir]').val();
+        bus_end = $('input[name=enddir]').val();
+        if (bus_start.trim() == ''){
+            $('#tipMsg').html(' 起点不能为空');
+            $.mobile.changePage('#pagetwo', 'pop', true, true);
+        }
+        else if(bus_end.trim() == ''){
+            $('#tipMsg').html('终点不能为空');
+            $.mobile.changePage('#pagetwo', 'pop', true, true);
+        }
+        else {
+            showLoader();
+            $.ajax({
+                url : "{{ url_for('wxweb.bus') }}",
+                data : {'mt' : 't', 'start' : bus_start, 'end' : bus_end},
+                type : 'POST',
+                success : function(data){
+                    hideLoader();
+                    if(data['code'] != 200) {
+                        $('#tipMsg').html('没有你要查询的换乘信息');
+                        $.mobile.changePage('#pagetwo', 'pop', true, true);
+                    } 
+                    else {
+                        var html = '';
+                        data = data['data'];
+                        for(var num = 0; num < data.length; ++num){
+                            html += '<p>【' + (num+1) + '】' + data[num] + '</p><br>';
+                        }
+                        $('#result').html(html);
+                    }
+                }
+            });            
+        }
+    }
 })
+
+function showLoader(){
+	$.mobile.loadingMessageTextVisible = true;
+	$.mobile.loadingMessageTheme = 'a';
+	$.mobile.loadingMessage = '加载中。。。';
+	$.mobile.showPageLoadingMsg();
+}
+
+function hideLoader(){
+	$.mobile.hidePageLoadingMsg();
+}
 </script>
 </body>
 </html>

@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=0.5, minimum-scale=0.3, maximum-scale=2.0, user-scalable=yes" />
+        <meta content="yes" name="apple-mobile-web-app-capable" />
+        <meta content="black" name="apple-mobile-web-app-status-bar-style" />
+        <meta content="telephone=no" name="format-detection" />
+
+        <link rel="stylesheet" href="{{url_for('static',filename='wxweb/css/jquery.mobile-1.3.2.min.css')}}">
+        <script src="{{url_for('static',filename='wxweb/js/jquery-1.8.3.min.js')}}"> </script>
+        <script src="{{url_for('static',filename='wxweb/js/jquery.mobile-1.3.2.min.js')}}"> </script>
+
+        <link href="{{ url_for('static', filename='public/css/phone.css') }}" rel="stylesheet" type="text/css" />
+        <link href="{{ url_for('static', filename='public/css/common.css') }}" rel="stylesheet" type="text/css" />
+        <title>空闲自习室</title>
+        <style>
+        	.error{
+                display:block;
+                top:50%;
+                position: relative;
+                z-index: 1000;
+                width:100%;
+                text-align:center;
+                height:auto;
+                cursor: pointer;
+            }
+        </style>
+    </head>
+<body>
+    <div data-role="page" id="pageone">  
+            <div data-role="header">
+                <h1>空闲自习室</h1>
+            </div>
+            <div data-role="content" id="contOne" style="margin-top: 10px;">
+                <div id="nav">
+                    {% if spareinfo.code == 200 %}
+                    <li  id="eduweek-main">
+                        <select name="eduweek" id="eduweek" data-native-menu="false" >
+                            <option value="seltit">请选择周次</option>
+                            {% for eduweek in spareinfo.data.eduweek[1] %}
+                                {% if eduweek == spareinfo.data.eduweek[0]  %}
+                                    <option value="{{ eduweek }}" selected="selected">{{ eduweek }}</option>
+                                {% else %}
+                                    <option value="{{ eduweek }}">{{ eduweek }}</option>
+                                {% endif %}
+                            {% endfor %}
+                        </select>
+                    </li>
+                    <li id="campus-main">
+                        <select name="campus" id="campus" data-native-menu="false" onchange="generateBuilding()">
+                            <option value="seltit">请选择校区</option>
+                            {% for campus in spareinfo.data.campus[1] %}
+                                <option value="{{ campus }}">{{ campus }}</option>
+                            {% endfor %}
+                        </select>
+                    </li>
+                    <li  id="building-main">
+                        <select name="building" id="building" data-native-menu="false" >
+                            <option selected="selected" value="seltit">请选择教学楼</option>
+                            <!-- {% for building in spareinfo.data.building[1] %}
+                                {% if building == spareinfo.data.building[0]  %}
+                                    <option value="{{ building }}" selected="selected">{{ building }}</option>
+                                {% else %}
+                                    <option value="{{ building }}">{{ building }}</option>
+                                {% endif %}
+                            {% endfor %} -->
+                        </select>
+                    </li>
+                    <li  id="week-main">
+                        <select name="week" id="week" data-native-menu="false" >
+                            <option value="seltit">请选择日期</option>
+                            {% for week in spareinfo.data.week[1] %}
+                                <option value="{{ week }}">{{ week }}</option>
+                            {% endfor %}
+                        </select>
+                    </li>
+                    <li  id="time-main">
+                        <select name="time" id="time" data-native-menu="false" >
+                            <option value="seltit">请选择节次</option>
+                            {% for time in spareinfo.data.time[1] %}
+                                <option value="{{ time }}">{{ time }}</option>
+                            {% endfor %}
+                        </select>
+                    </li>
+                    <a href="#" id="butForward" data-role="button" data-icon="forward" data-iconpos="right">查看</a>
+                    {% else %}
+                        <p>服务器资源错误s</p>
+                    {% endif %}
+                </div>
+                <div id="result">
+					
+                </div>
+            </div>
+    </div>
+    <div data-role="dialog" id="pagetwo">
+        <div data-role="header">
+            <h1>提示信息</h1>
+        </div>
+        <div data-role="content">
+            <p id="tipMsg"></p>
+        <a class="btn" href="#pageone" data-inline="true" data-role="button">确定</a>
+        </div>
+        <div data-role="footer">
+            <h1>河大青年</h1>
+        </div>
+    </div>
+</body>
+<script>
+    function splitArray(arr){
+        arr.sort();
+        var cid = -1;
+        var res = [];
+        var flag = [];
+        for(var idx=0;idx<arr.length;++idx){
+            if(flag[arr[idx][0]] == undefined){
+                cid += 1;
+                flag[arr[idx][0]] = cid;
+                res.push([arr[idx]]);
+            }
+            else {
+                res[cid].push(arr[idx]);
+            }
+        }
+        return res;
+    }
+    function selectChange(cid, items) {
+        var html = '';
+        if(cid == 'building'){
+            $("#building option:eq(0)").remove();
+            html += '<option selected="selected" value="seltit">请选择教学楼</option>';
+        }
+        for(var idx = 0; idx < items.length; ++idx){
+            html += '<option value="' + items[idx] + '">' + items[idx] + '</option>';
+        }
+        $('#'+cid).html(html);
+        $('#'+cid).selectmenu("refresh");
+    }
+
+    function generateBuilding(){
+            var selectnum = $('#campus').get(0).selectedIndex;
+            if(selectnum == '1'){
+                var bds = ['A1', 'A2', 'A3', 'A4', 'A5', 'A6'];
+                selectChange('building', bds);
+            }
+            else if(selectnum == '2'){
+                var bds = ['一教', '七教', '八教', '九教'];
+                selectChange('building', bds);
+            }
+            else if(selectnum == '3'){
+                var bds = ['综合教学楼', '基础医学院楼', '新医学教学楼'];
+                selectChange('building', bds);
+            }
+            else{
+                var bds = ['一教', '七教', '八教', '九教'];
+                selectChange('building', bds);
+            }
+    }
+
+    function checkParams(){
+        items = ['eduweek', 'campus', 'building', 'week', 'time'];
+        tipmsg = ['周次', '校区', '教学楼', '日期', '节次'];
+        for(var idx =0; idx < items.length; ++idx){
+            if($('#'+items[idx]).get(0).selectedIndex == 0){
+                $('#tipMsg').html('请选择' + tipmsg[idx]);
+                $.mobile.changePage('#pagetwo', 'pop', true, true);
+                return false;
+            }
+        }
+        return true;
+    }
+
+    $('#butForward').click(function(){
+        if(!checkParams()){ return; }
+        var eduweek = $('#eduweek').val();
+        var campus = $('#campus').get(0).selectedIndex;
+        var building =  $('#building').val();
+        var week = $('#week').get(0).selectedIndex;
+        var time = $('#time').get(0).selectedIndex;
+        showLoader();
+        $.ajax({
+            url: "{{ url_for('public.spareclassroom') }}",
+            data: {'eduweek' : eduweek, 'campus' : campus, 'building' : building, 'week' : week, 'time' : time},
+            type: 'POST',
+            success: function(data){
+                hideLoader();
+                if(data['code'] == 200){
+                    var html = '<h2 style="font-size:30px; height:50px;">查询结果如下</h2>';
+                    var res = splitArray(["119", "203", "204", "206", "209", "217", "219", "203", "204", "206", "209", "217", "219", "203", "204", "206", "209", "217", "219", "203", "204", "206", "209", "217", "219", "203", "204", "206", "209", "217", "219", "203", "204", "206", "209", "217", "219", "313", "320", "322", "403", "418", "420", "421", "502", "503", "一阶", "学前舞蹈房", "电教"]);
+                    res.forEach(item => {
+                        html += '<p style="padding-left: 10px; padding-right: 10px; min-height: 50px; font-size: 24px; border: 1px solid black; word-wrap:break-word; word-break:break-all; overflow: hidden;">'
+                        for(var idxc=0; idxc<item.length; ++idxc){
+                            html += item[idxc] + ' ';
+                        }
+                        html += '</p><br/>';                        
+                    });
+                    $('#result').html(html);
+                }
+                else{
+                    $('#result').html('暂时没有空闲的自习室供使用');
+                }
+            }
+        });
+    });
+    function showLoader(){
+        $.mobile.loadingMessageTextVisible = true;
+        $.mobile.loadingMessageTheme = 'a';
+        $.mobile.loadingMessage = '加载中。。。';
+        $.mobile.showPageLoadingMsg();
+    }
+
+    function hideLoader(){
+        $.mobile.hidePageLoadingMsg();
+    }
+</script>
+</html>

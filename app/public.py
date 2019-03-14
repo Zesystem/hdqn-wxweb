@@ -1,9 +1,21 @@
+##########################################
+#
+# 公有路由 public
+# author: TuYaxuan
+# time: 2019/3/14
+# 说明: 可以无需依赖验证登陆，快速链接使用的路由
+#
+###########################################
+
+
 from app.exts import hbujwxt
 from app.utils import status
 from app.utils.bookutil import book_query
 from app.utils.formatutil import get_course_table
 from app.utils.userprocess import UserProcessor
-from flask import render_template, Blueprint, request, abort, session
+from app.utils.spareclassroomutil import spare_params, spare_classroom
+from flask import render_template, Blueprint, request, abort
+from flask import session, url_for, jsonify
 from app.models import User, PhoneList
 from app.utils.timeutil import week_now, month_now, day_after, get_week_day
 
@@ -70,4 +82,20 @@ def evaluate():
             # } 
             return render_template('/public/evaluate_detail.html', course=course)
     else:
-        return "<script>alert('请填写完整数据！');window.history.back();</script>";
+        return "<script>alert('请填写完整数据！');window.history.back();</script>"
+
+@public.route('/spareclassroom', methods=['GET', 'POST'])
+def spareclassroom():
+    if request.method == 'GET':
+        return render_template('public/spareclassroom.html', spareinfo=spare_params())
+    else:
+        eduweek = request.form.get('eduweek')
+        campus = request.form.get('campus')
+        building = request.form.get('building')
+        week = request.form.get('week')
+        time = request.form.get('time')
+        print(eduweek, campus, building, week, time)
+        if eduweek and campus and building and week and time:
+            return jsonify(spare_classroom(eduweek, campus, building, week, time))
+        else:
+            return jsonify({'code' : status.CODE_FAILED})

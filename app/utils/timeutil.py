@@ -1,5 +1,14 @@
+##########################################
+#
+# 时间处理工具类封装
+# author: TuYaxuan
+# time: 2019/3/14
+#
+###########################################
+
 import time
 from datetime import datetime, timedelta
+
 def time_afterday(n):
     if n < 0:
         n = abs(n)
@@ -22,3 +31,6 @@ def get_week_day():
         week[i]['num'] = day_after(t)
         t += 1
     return week
+
+def week_to_num(ch_week):
+    return ['周一', '周二', '周三', '周四', '周五', '周六', '周日'].index(ch_week)

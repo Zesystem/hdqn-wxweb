@@ -1,3 +1,13 @@
+##########################################
+#
+# 扩展
+# author: TuYaxuan
+# time: 2019/3/14
+# 说明: 防循环引用
+#
+###########################################
+
+
 from app.utils.hbujwxt import HbuJwxt
 hbujwxt = HbuJwxt()
 

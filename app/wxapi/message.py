@@ -1,12 +1,22 @@
+##########################################
+#
+# 微信信息处理工具类封装
+# author: TuYaxuan
+# time: 2019/3/14
+# 说明: 整个微信公众号内的消息回复处理
+#
+###########################################
+
 from flask import g, make_response, session
 from app import db, app_config
 from app.exts import hbujwxt
+from app.models import User, TextMaterial, PhoneList
 from app.utils import status
+from app.utils.userprocess import UserProcessor 
 from app.utils.weatherutil import getWeather
 from app.utils.bookutil import book_query
 from app.utils.expressutil import express_query
-from app.utils.userprocess import UserProcessor 
-from app.models import User, TextMaterial, PhoneList
+from app.utils.busutil import nearbystation_query, line_query, transfer_query
 try:
     import xml.etree.cElementTree as ET
 except:
@@ -188,7 +198,7 @@ class MessageProcessor(object):
             ##############################
             if content.startswith('绑定'):
                 grp = content.split(' ')
-                if len(grp) != 3:
+                if len(grp) != 3 or grp[2].isspace():
                     reply = self.text_process('绑定格式')
                 else:
                     g.userinfo = {'username':grp[1], 'password':grp[2]}
@@ -214,7 +224,7 @@ class MessageProcessor(object):
                 user = User.query.filter(User.openid == g.openid).first()
                 if user is not None:
                     grp = content.split(' ')
-                    if len(grp) != 2:
+                    if len(grp) != 2 or grp[1].isspace():
                         reply = self.text_process('改密格式')
                     else:
                         g.userinfo = {'username':user.studentID, 'password':grp[1]}
@@ -235,7 +245,7 @@ class MessageProcessor(object):
                     reply = ''
                     res = hbujwxt.query_schoolrool(g.userinfo)
                     if res['code'] == status.CODE_SUCCESS:
-                        data = res['data']      
+                        data = res['data']
                         for k,v in data.items():
                             reply += '{} {}\n'.format(k, v)
                 else:
@@ -305,14 +315,22 @@ class MessageProcessor(object):
             ##############################
             elif content.startswith('图书'):
                 grp = content.split(' ')
-                if len(grp) != 2:
+                if len(grp) != 2 or grp[1].isspace():
                     reply = self.text_process('图书信息')
                 else:
-                    reply = '<a href="{app_domain}public/book?openid={openid}&book_name={book_name}">好好学习，天天向上，HELLO~我是河小博~点击进入网上评教</a>'.format(
+                    reply = '<a href="{app_domain}public/book?openid={openid}&book_name={book_name}">好好学习，天天向上，HELLO~我是河小博~点击查看图书详情</a>'.format(
                         app_domain = app_config.APP_DOMAIN,
                         openid = g.openid,
                         book_name = grp[1]
                     )
+            ##############################
+            # 空闲自习室
+            ##############################
+            elif content.startswith('空闲自习室'):
+                reply = '<a href="{app_domain}public/spareclassroom?openid={openid}">好好学习，天天向上，HELLO~我是河小博~点击进入查询空闲自习室</a>'.format(
+                    app_domain = app_config.APP_DOMAIN,
+                    openid = g.openid
+                )
             #__________________________________________________
             # 河小知
             #__________________________________________________
@@ -322,7 +340,7 @@ class MessageProcessor(object):
             ##############################
             elif content.startswith('天气'):
                 grp = content.split(' ')
-                if len(grp) != 2:
+                if len(grp) != 2 or grp[1].isspace():
                     reply = self.text_process('天气预报')
                 else:
                     res = getWeather(grp[1])
@@ -337,15 +355,37 @@ class MessageProcessor(object):
             ##############################
             # 公交查询
             ##############################
-            elif content.startswith('公交路线'):
-                reply = '~~~公交路线如下'
+            elif content.startswith('附近公交'):
+                grp = content.split(' ')
+                if len(grp) != 2 or grp[1].isspace():
+                    reply = self.text_process('公交查询')
+                else:
+                    res = nearbystation_query(grp[1])
+                    if res['code'] == status.CODE_SUCCESS:
+                        reply = '附近的公交站点如下\n'
+                        for num, item in enumerate(res['data']):
+                            reply += '【{}】{}\n'.format(num, item)
+                    else:
+                        reply = '没有查询到该地点附近公交\n请检查地点是否输入有误～～～'
             elif content.startswith('公交'):
                 grp = content.split(' ')
                 grp_len = len(grp)
-                if grp_len == 2:
-                    reply = '~~~根据路线查询'
-                elif grp_len == 3:
-                    reply = '~~~根据起始站查询'
+                if grp_len == 2 and not grp[1].isspace():
+                    res = line_query(grp[1])
+                    if res['code'] == status.CODE_SUCCESS:
+                        reply = '路线查询结果如下\n'
+                        for num, item in enumerate(res['data']):
+                            reply += '({}){}\n'.format(num, item)
+                    else:
+                        reply = '没有你要查询的路线\n请检查路线是否输入有误～～～'
+                elif grp_len == 3 and not grp[2].isspace():
+                    res = transfer_query(*grp[1:])
+                    if res['code'] == status.CODE_SUCCESS:
+                        reply = '换乘路线查询结果如下\n'
+                        for num, item in enumerate(res['data']):
+                            reply += '【{}】{}\n'.format(num, item)
+                    else:
+                        reply = '没有你要查询的换乘信息\n请检查换乘起始地点是否输入有误～～～'
                 else:
                     reply = self.text_process('公交查询')
             ##############################
@@ -353,7 +393,7 @@ class MessageProcessor(object):
             ##############################
             if content.startswith('快递'):
                 grp = content.split(' ')
-                if len(grp) != 2:
+                if len(grp) != 2 or grp[1].isspace():
                     reply = self.text_process('快递查询')
                 else:
                     res = express_query(grp[1])
@@ -376,7 +416,7 @@ class MessageProcessor(object):
                     )
             elif content.startswith('电话'):
                 grp = content.split(' ')
-                if len(grp) != 2:
+                if len(grp) != 2 or grp[1].isspace():
                     reply = self.text_process('办公电话')
                 else:
                     phone = PhoneList.query.filter(PhoneList.address.like('%{}%'.format(grp[1]))).first()
