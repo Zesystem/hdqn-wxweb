@@ -31,7 +31,7 @@ CREATE TABLE `adminlogs` (
   KEY `aid` (`aid`),
   KEY `ix_adminlogs_add_time` (`add_time`),
   CONSTRAINT `adminlogs_ibfk_1` FOREIGN KEY (`aid`) REFERENCES `admins` (`aid`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -62,7 +62,7 @@ CREATE TABLE `admins` (
   KEY `rid` (`rid`),
   KEY `ix_admins_add_time` (`add_time`),
   CONSTRAINT `admins_ibfk_1` FOREIGN KEY (`rid`) REFERENCES `roles` (`rid`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -114,7 +114,7 @@ CREATE TABLE `auths` (
   UNIQUE KEY `name` (`name`),
   UNIQUE KEY `url` (`url`),
   KEY `ix_auths_add_time` (`add_time`)
-) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -170,7 +170,7 @@ CREATE TABLE `imagematerials` (
   PRIMARY KEY (`imid`),
   UNIQUE KEY `keyword` (`keyword`),
   KEY `ix_imagematerials_add_time` (`add_time`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -201,7 +201,7 @@ CREATE TABLE `musicmaterials` (
   PRIMARY KEY (`mmid`),
   UNIQUE KEY `keyword` (`keyword`),
   KEY `ix_musicmaterials_add_time` (`add_time`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -232,7 +232,7 @@ CREATE TABLE `newsmaterials` (
   PRIMARY KEY (`nmid`),
   UNIQUE KEY `keyword` (`keyword`),
   KEY `ix_newsmaterials_add_time` (`add_time`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -262,7 +262,7 @@ CREATE TABLE `operatelogs` (
   KEY `aid` (`aid`),
   KEY `ix_operatelogs_add_time` (`add_time`),
   CONSTRAINT `operatelogs_ibfk_1` FOREIGN KEY (`aid`) REFERENCES `admins` (`aid`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -314,7 +314,7 @@ CREATE TABLE `roles` (
   PRIMARY KEY (`rid`),
   UNIQUE KEY `name` (`name`),
   KEY `ix_roles_add_time` (`add_time`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -342,7 +342,7 @@ CREATE TABLE `textmaterials` (
   PRIMARY KEY (`tmid`),
   UNIQUE KEY `keyword` (`keyword`),
   KEY `ix_textmaterials_add_time` (`add_time`)
-) ENGINE=InnoDB AUTO_INCREMENT=53 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=53 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -371,7 +371,7 @@ CREATE TABLE `users` (
   `leftTime` date NOT NULL,
   PRIMARY KEY (`uid`),
   UNIQUE KEY `openid` (`openid`)
-) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -401,7 +401,7 @@ CREATE TABLE `videomaterials` (
   PRIMARY KEY (`vimid`),
   UNIQUE KEY `keyword` (`keyword`),
   KEY `ix_videomaterials_add_time` (`add_time`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -429,7 +429,7 @@ CREATE TABLE `voicematerials` (
   PRIMARY KEY (`vomid`),
   UNIQUE KEY `keyword` (`keyword`),
   KEY `ix_voicematerials_add_time` (`add_time`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
