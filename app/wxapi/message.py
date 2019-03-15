@@ -480,7 +480,7 @@ class MessageProcessor(object):
             reply = self.text_process('后勤报修')
         elif event == 'event7':
             reply = self.text_process('河大全景')
-        return reply
+        return  self.mb.build_text_msg(self.from_user, self.to_user, self.create_time, self.msg_id, reply)
 
     def image_reply(self):
         """处理图片内容回复"""
