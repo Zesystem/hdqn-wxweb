@@ -9,15 +9,6 @@
 
 import os, redis
 
-DIALECT = 'mysql'
-DRIVER = 'mysqlconnector'
-USERNAME = 'root'
-PASSWORD = '199892.lw'
-MYSQL_HOST = '127.0.0.1'
-MYSQL_PORT = '3306'
-DATABASE = 'app_wechat'
-DB_URI = "{}+{}://{}:{}@{}:{}/{}?charset=utf8".format(DIALECT, DRIVER, USERNAME, PASSWORD, MYSQL_HOST, MYSQL_PORT, DATABASE)
-
 class Config:
     CSRF_ENABLED = True
     SESSION_USE_SIGNER = True
@@ -55,7 +46,7 @@ class DevelopmentConfig(Config):
         'mysql',
         'mysqlconnector',
         'root',
-        '199892.lw',
+        '',
         '127.0.0.1',
         '3306',
         'app_wechat'
