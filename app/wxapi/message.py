@@ -466,10 +466,10 @@ class MessageProcessor(object):
         elif event_key == 'event2':
             reply = self.text_process('图书信息')
         elif event_key == 'event3':
-            reply = '<a href="{app_domain}public/book?openid={openid}&book_name={book_name}">好好学习，天天向上，HELLO~我是河小博~点击查看图书详情</a>'.format(
+            reply = '<a href="{app_domain}public/spareclassroom?openid={openid}">好好学习，天天向上，HELLO~我是河小博~点击进入查询空闲自习室</a>'.format(
                 app_domain = app_config.APP_DOMAIN,
-                openid = g.openid,
-                book_name = grp[1])
+                openid = g.openid
+            )
         elif event_key == 'event4':
             reply = '<a href="{app_domain}public/evaluate?openid={openid}">好好学习，天天向上，HELLO~我是河小博~点击进入网上评教</a>'.format(
                 app_domain = app_config.APP_DOMAIN,
