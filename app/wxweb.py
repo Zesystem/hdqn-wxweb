@@ -22,6 +22,7 @@ from app.utils.expressutil import express_query
 from app.utils.bookutil import book_query
 from app.utils.formatutil import get_course_table
 from app.utils.busutil import line_query, transfer_query, nearbystation_query
+import urllib.parse
 
 wxweb = Blueprint('wxweb', __name__)
 
@@ -37,7 +38,6 @@ def user_before_request():
 
 @wxweb.route('/')
 def home():
-    import urllib.parse
     redirect_uri = urllib.parse.urlencode({'redirect_uri':'{app_domain}wxweb/code'.format(app_domain=app_config.APP_DOMAIN)})
     return  redirect('https://open.weixin.qq.com/connect/oauth2/authorize?appid={appid}&{redirect_uri}&response_type=code&scope=snsapi_base&state=123#wechat_redirect'.format(
             appid = app_config.APPID,

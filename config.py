@@ -17,9 +17,9 @@ class Config:
     SQLALCHEMY_TRACK_MODIFICATIONS = True
     SECRET_KEY = os.environ.get('SECRET_KEY') or 'ae03e9376259cbb9aec32cf4e1c96489d76129f1f6440f3d'
 
-    SESSION_TYPE = 'redis'
-    SESSION_KEY_PREFIX = 'app_wechat:' 
-    SESSION_REDIS = redis.StrictRedis(host='127.0.0.1', port='6379', db=0)
+    # SESSION_TYPE = 'redis'
+    # SESSION_KEY_PREFIX = 'app_wechat:' 
+    # SESSION_REDIS = redis.StrictRedis(host='127.0.0.1', port='6379', db=0)
 
     WXWEB_REDIS = redis.StrictRedis(host='127.0.0.1', port='6379', db=0)
 
