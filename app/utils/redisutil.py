@@ -7,13 +7,13 @@
 #
 ###########################################
 
-from app import app_config
+# from app import app_config
 
-class RedisUtil:
-    @staticmethod
-    def redis_get():
-        app_config.WXWEB_REDIS.get('account')
+# class RedisUtil:
+#     @staticmethod
+#     def redis_get():
+#         app_config.WXWEB_REDIS.get('account')
 
-    @staticmethod
-    def redis_set():
-        app_config.WXWEB_REDIS.get('account')
+#     @staticmethod
+#     def redis_set():
+#         app_config.WXWEB_REDIS.get('account')

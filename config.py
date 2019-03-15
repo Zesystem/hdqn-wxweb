@@ -21,7 +21,7 @@ class Config:
     SESSION_KEY_PREFIX = 'app_wechat:' 
     SESSION_REDIS = redis.StrictRedis(host='127.0.0.1', port='6379', db=0)
 
-    WXWEB_REDIS = redis.StrictRedis(host='127.0.0.1', port='6379', db=0)
+    #WXWEB_REDIS = redis.StrictRedis(host='127.0.0.1', port='6379', db=0)
 
     # CACHE_TYPE = 'redis'
     # CACHE_REDIS_HOST = '127.0.0.1'
@@ -46,7 +46,7 @@ class DevelopmentConfig(Config):
         'mysql',
         'mysqlconnector',
         'root',
-        '',
+        '199892.lw',
         '127.0.0.1',
         '3306',
         'app_wechat'
