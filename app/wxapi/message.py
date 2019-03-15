@@ -7,8 +7,8 @@
 #
 ###########################################
 
-from flask import g, make_response, session
-from app import db, app_config, lock
+from flask import make_response, session
+from app import db, app_config
 from app.exts import hbujwxt
 from app.models import User, TextMaterial, PhoneList
 from app.utils import status
@@ -136,7 +136,7 @@ class MessageBuilder(object):
 
 class MessageProcessor(object):
     """信息处理器"""
-    __slots__ = ['mb', 'xml_rec', 'to_user', 'from_user', 'create_time', 'msg_id', 'msg_type']
+    __slots__ = ['mb', 'xml_rec', 'to_user', 'from_user', 'create_time', 'msg_id', 'msg_type', 'openid']
     def __init__(self, mb):
         self.mb = mb
 
@@ -145,7 +145,7 @@ class MessageProcessor(object):
         lock.aquire()
         self.xml_rec = ET.fromstring(receieve)
         self.to_user = self.xml_rec.find('ToUserName').text
-        g.openid = self.from_user = self.xml_rec.find('FromUserName').text
+        self.openid = self.from_user = self.xml_rec.find('FromUserName').text
         self.create_time = int(time.time()) # int(self.xml_rec.find('CreateTime').text)
         self.msg_type = self.xml_rec.find('MsgType').text
         self.msg_id = self.xml_rec.find('MsgId')
@@ -200,8 +200,8 @@ class MessageProcessor(object):
                 if len(grp) != 3 or grp[2].isspace():
                     reply = self.text_process('绑定格式')
                 else:
-                    g.userinfo = {'username':grp[1], 'password':grp[2]}
-                    code = UserProcessor.bind_user()
+                    userinfo = {'username':grp[1], 'password':grp[2]}
+                    code = UserProcessor.bind_user(self.openid, userinfo)
                     if code == status.CODE_SUCCESS:
                         reply = self.text_process('绑定成功')
                     elif code == status.CODE_EXIST:
@@ -209,7 +209,7 @@ class MessageProcessor(object):
                     else:
                         reply = self.text_process('绑定失败')
             elif content.startswith('确认解绑'):
-                code = UserProcessor.unbind_user()
+                code = UserProcessor.unbind_user(self.openid)
                 if code == status.CODE_SUCCESS:
                     reply = self.text_process('解绑成功')
                 elif code == status.CODE_NOT_EXIST:
@@ -226,8 +226,8 @@ class MessageProcessor(object):
                     if len(grp) != 2 or grp[1].isspace():
                         reply = self.text_process('改密格式')
                     else:
-                        g.userinfo = {'username':user.studentID, 'password':grp[1]}
-                        code = UserProcessor.update_user()
+                        userinfo = {'username':user.studentID, 'password':grp[1]}
+                        code = UserProcessor.update_user(self.openid, userinfo)
                         if code == status.CODE_SUCCESS:
                             reply = self.text_process('改密成功')
                         else:
@@ -238,11 +238,11 @@ class MessageProcessor(object):
             # 查询学籍处理
             ##############################
             elif content.startswith('我的学籍'):
-                user = UserProcessor.get_user()
+                user = UserProcessor.get_user(self.openid)
                 if user is not None:
-                    g.userinfo = {'username':user.studentID, 'password':user.studentPWD}
+                    userinfo = {'username':user.studentID, 'password':user.studentPWD}
                     reply = ''
-                    res = hbujwxt.query_schoolrool(g.userinfo)
+                    res = hbujwxt.query_schoolrool(userinfo)
                     if res['code'] == status.CODE_SUCCESS:
                         data = res['data']
                         for k,v in data.items():
@@ -253,11 +253,11 @@ class MessageProcessor(object):
             # 查询本学期成绩处理
             ##############################
             elif content.startswith('我的成绩'):
-                user = UserProcessor.get_user()
+                user = UserProcessor.get_user(self.openid)
                 if user is not None:
-                    g.userinfo = {'username':user.studentID, 'password':user.studentPWD}
-                    reply = '学号: {}\n'.format(g.userinfo['username'])
-                    res = hbujwxt.query_this_term_score(g.userinfo)
+                    userinfo = {'username':user.studentID, 'password':user.studentPWD}
+                    reply = '学号: {}\n'.format(userinfo['username'])
+                    res = hbujwxt.query_this_term_score(userinfo)
                     reply += '课程名********成绩********排名\n'
                     if res['code'] == status.CODE_SUCCESS:
                         data = res['data']   
@@ -270,11 +270,11 @@ class MessageProcessor(object):
             # 查询所有成绩处理
             ##############################
             elif content.startswith('所有成绩'):
-                user = UserProcessor.get_user()
+                user = UserProcessor.get_user(self.openid)
                 if user is not None:
-                    g.userinfo = {'username':user.studentID, 'password':user.studentPWD}    
+                    userinfo = {'username':user.studentID, 'password':user.studentPWD}    
                     reply = '学号: {}\n'.format(g.userinfo['username'])      
-                    res = hbujwxt.query_each_term_score(g.userinfo)
+                    res = hbujwxt.query_each_term_score(userinfo)
                     if res['code'] == status.CODE_SUCCESS:
                         data = res['data']
                         for term in data:
@@ -289,11 +289,11 @@ class MessageProcessor(object):
             # 查询课表处理
             ##############################
             elif content.startswith('课表查询'):
-                user = UserProcessor.get_user()
+                user = UserProcessor.get_user(self.openid)
                 if user is not None:
                     reply = '<a href="{app_domain}public/curriculum?openid={openid}">好好学习，天天向上，HELLO~我是河小博~点击查看课表信息～～</a>'.format(
                         app_domain = app_config.APP_DOMAIN,
-                        openid = g.openid
+                        openid = self.openid
                     )
                 else:
                     reply = self.text_process('绑定学号')
@@ -301,11 +301,11 @@ class MessageProcessor(object):
             # 网上评教
             ##############################
             elif content.startswith('网上评教'):
-                user = UserProcessor.get_user()
+                user = UserProcessor.get_user(self.openid)
                 if user is not None:
                     reply = '<a href="{app_domain}public/evaluate?openid={openid}">好好学习，天天向上，HELLO~我是河小博~点击进入网上评教</a>'.format(
                         app_domain = app_config.APP_DOMAIN,
-                        openid = g.openid
+                        openid = self.openid
                     )
                 else:
                     reply = self.text_process('绑定学号')
@@ -319,7 +319,7 @@ class MessageProcessor(object):
                 else:
                     reply = '<a href="{app_domain}public/book?openid={openid}&book_name={book_name}">好好学习，天天向上，HELLO~我是河小博~点击查看图书详情</a>'.format(
                         app_domain = app_config.APP_DOMAIN,
-                        openid = g.openid,
+                        openid = self.openid,
                         book_name = grp[1]
                     )
             ##############################
@@ -328,7 +328,7 @@ class MessageProcessor(object):
             elif content.startswith('空闲自习室'):
                 reply = '<a href="{app_domain}public/spareclassroom?openid={openid}">好好学习，天天向上，HELLO~我是河小博~点击进入查询空闲自习室</a>'.format(
                     app_domain = app_config.APP_DOMAIN,
-                    openid = g.openid
+                    openid = self.openid
                 )
             #__________________________________________________
             # 河小知
@@ -411,7 +411,7 @@ class MessageProcessor(object):
             elif content.startswith('办公机构'):
                 reply = '<a href="{app_domain}public/phone?openid={openid}">点我即可查看所有办公机构哦～～～</a>'.format(
                         app_domain = app_config.APP_DOMAIN,
-                        openid = g.openid
+                        openid = self.openid
                     )
             elif content.startswith('电话'):
                 grp = content.split(' ')
@@ -439,7 +439,7 @@ class MessageProcessor(object):
             elif content.startswith('意见反馈'):
                 reply = '<a href="{app_domain}public/feedback?openid={openid}">点击便可访问反馈页面</a>'.format(
                     app_domain = app_config.APP_DOMAIN,
-                    openid = g.openid
+                    openid = self.openid
                 )
 
         if reply == "":
@@ -466,12 +466,12 @@ class MessageProcessor(object):
         elif event_key == 'event3':
             reply = '<a href="{app_domain}public/spareclassroom?openid={openid}">好好学习，天天向上，HELLO~我是河小博~点击进入查询空闲自习室</a>'.format(
                 app_domain = app_config.APP_DOMAIN,
-                openid = g.openid
+                openid = self.openid
             )
         elif event_key == 'event4':
             reply = '<a href="{app_domain}public/evaluate?openid={openid}">好好学习，天天向上，HELLO~我是河小博~点击进入网上评教</a>'.format(
                 app_domain = app_config.APP_DOMAIN,
-                openid = g.openid
+                openid = self.openid
             )
         elif event_key == 'event5':
             reply = self.text_process('创业就业')

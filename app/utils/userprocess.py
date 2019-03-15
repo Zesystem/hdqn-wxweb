@@ -15,28 +15,27 @@ from app.utils.hbujwxt import HbuJwxt
 
 class UserProcessor(object):
     @staticmethod
-    def get_user(openid=None):
-        openid = openid if openid is not None else g.get('openid')
+    def get_user(openid):
         if openid is not None:
             return User.query.filter(User.openid == openid).first()
         return None
 
     @staticmethod
-    def bind_user(user=None):
-        user = user if user is not None else UserProcessor.get_user()
+    def bind_user(openid, userinfo, user=None):
+        user = user if user is not None else UserProcessor.get_user(openid)
         if user is not None:
         	return status.CODE_EXIST
         elif HbuJwxt().jw_login(g.userinfo, until=False):
-            db.session.add(User(openid = g.openid, 
-            	studentID = g.userinfo['username'], 
-            	studentPWD = g.userinfo['password']))
+            db.session.add(User(openid = openid, 
+            	studentID = userinfo['username'], 
+            	studentPWD = userinfo['password']))
             db.session.commit()
             return status.CODE_SUCCESS
         return status.CODE_FAILED
     
     @staticmethod
-    def unbind_user(user=None):
-        user = user if user is not None else UserProcessor.get_user()
+    def unbind_user(openid, user=None):
+        user = user if user is not None else UserProcessor.get_user(openid)
         if user is not None:
             db.session.delete(user)
             db.session.commit()
@@ -44,11 +43,11 @@ class UserProcessor(object):
         return status.CODE_NOT_EXIST
 
     @staticmethod
-    def update_user(user=None):
-        user = user if user is not None else UserProcessor.get_user()
+    def update_user(openid, userinfo, user=None):
+        user = user if user is not None else UserProcessor.get_user(openid)
         if user is not None:
             if HbuJwxt().jw_login(g.userinfo, until=False):
-                user.password = g.userinfo['password']
+                user.password = userinfo['password']
                 db.session.commit()
                 return status.CODE_SUCCESS
             else:
