@@ -460,9 +460,9 @@ class MessageProcessor(object):
             if user is not None:
                 db.session.delete(user)
                 db.session.commit()
-        
-        elif event == 'event1':
-            reply = self.text_process('成绩查询')
+        reply += '|{}'.format(event)
+        # elif event == 'event1':
+        #     reply = self.text_process('成绩查询')
         # elif event == 'event2':
         #     reply = self.text_process('图书信息')
         # elif event == 'event3':
