@@ -38,8 +38,8 @@ db.create_all()
 # 关闭推送
 app_ctx.pop()
 
-
-
+from threading import Lock
+lock = Lock()
 
 
 
