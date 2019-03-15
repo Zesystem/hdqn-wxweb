@@ -12,6 +12,7 @@ from app import db, app_config
 from app.exts import hbujwxt
 from app.models import User, TextMaterial, PhoneList
 from app.utils import status
+from app.wxapi import wxevent
 from app.utils.userprocess import UserProcessor 
 from app.utils.weatherutil import getWeather
 from app.utils.bookutil import book_query
@@ -459,7 +460,27 @@ class MessageProcessor(object):
             if user is not None:
                 db.session.delete(user)
                 db.session.commit()
-        return 'success'
+        elif event == 'event1':
+            reply = self.text_process('成绩查询')
+        elif event == 'event2':
+            reply = self.text_process('图书信息')
+        elif event == 'event3':
+            reply = '<a href="{app_domain}public/book?openid={openid}&book_name={book_name}">好好学习，天天向上，HELLO~我是河小博~点击查看图书详情</a>'.format(
+                app_domain = app_config.APP_DOMAIN，
+                openid = g.openid,
+                book_name = grp[1])
+        elif event == 'event4':
+            reply = '<a href="{app_domain}public/evaluate?openid={openid}">好好学习，天天向上，HELLO~我是河小博~点击进入网上评教</a>'.format(
+                app_domain = app_config.APP_DOMAIN,
+                openid = g.openid
+            )
+        elif event == 'event5':
+            reply = self.text_process('创业就业')
+        elif event == 'event6':
+            reply = self.text_process('后勤报修')
+        elif event == 'event7':
+            reply = self.text_process('河大全景')
+        return reply
 
     def image_reply(self):
         """处理图片内容回复"""
