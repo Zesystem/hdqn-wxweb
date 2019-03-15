@@ -243,10 +243,11 @@ class HbuJwxt(object):
             return {'code': status.CODE_FAILED}
 
 if __name__ == '__main__':
-    hbujwxt = HbuJwxt()
-    userinfo = {'username':'20171004113', 'password':'199892.lw'}
-    print(hbujwxt.query_schoolrool(userinfo))
-    print(hbujwxt.query_this_term_score(userinfo))
-    print(hbujwxt.query_each_term_score(userinfo))
-    print(hbujwxt.query_course_table(userinfo))
+    pass
+    #hbujwxt = HbuJwxt()
+    #userinfo = {'username':'20171004113', 'password':'199892.lw'}
+    #print(hbujwxt.query_schoolrool(userinfo))
+    #print(hbujwxt.query_this_term_score(userinfo))
+    #print(hbujwxt.query_each_term_score(userinfo))
+    #print(hbujwxt.query_course_table(userinfo))
 

@@ -144,16 +144,16 @@ class MessageProcessor(object):
         """消息内容验证回复处理"""
         self.xml_rec = ET.fromstring(receieve)
         self.to_user = self.xml_rec.find('ToUserName').text
-        self.openid = self.from_user = self.xml_rec.find('FromUserName').text
+        openid = self.from_user = self.xml_rec.find('FromUserName').text
         self.create_time = int(time.time()) # int(self.xml_rec.find('CreateTime').text)
         self.msg_type = self.xml_rec.find('MsgType').text
         self.msg_id = self.xml_rec.find('MsgId')
         self.msg_id = int(self.msg_id.text) if self.msg_id is not None else 0
 
         if self.msg_type == 'text':
-            return self.text_reply()
+            return self.text_reply(openid)
         if self.msg_type == 'event':
-            return self.event_reply()
+            return self.event_reply(openid)
         elif self.msg_type == 'image':
             pass
         elif self.msg_type == 'voice':
@@ -181,7 +181,7 @@ class MessageProcessor(object):
         return ''
 
 
-    def text_reply(self):
+    def text_reply(self, openid):
         """处理文本内容回复"""
         content = self.xml_rec.find('Content').text
         reply = self.text_process(content)
@@ -199,7 +199,7 @@ class MessageProcessor(object):
                     reply = self.text_process('绑定格式')
                 else:
                     userinfo = {'username':grp[1], 'password':grp[2]}
-                    code = UserProcessor.bind_user(self.openid, userinfo)
+                    code = UserProcessor.bind_user(openid, userinfo)
                     if code == status.CODE_SUCCESS:
                         reply = self.text_process('绑定成功')
                     elif code == status.CODE_EXIST:
@@ -207,7 +207,7 @@ class MessageProcessor(object):
                     else:
                         reply = self.text_process('绑定失败')
             elif content.startswith('确认解绑'):
-                code = UserProcessor.unbind_user(self.openid)
+                code = UserProcessor.unbind_user(openid)
                 if code == status.CODE_SUCCESS:
                     reply = self.text_process('解绑成功')
                 elif code == status.CODE_NOT_EXIST:
@@ -218,14 +218,14 @@ class MessageProcessor(object):
             # 修改密码处理
             ##############################
             elif content.startswith('改密'):
-                user = User.query.filter(User.openid == g.openid).first()
+                user = User.query.filter(User.openid == openid).first()
                 if user is not None:
                     grp = content.split(' ')
                     if len(grp) != 2 or grp[1].isspace():
                         reply = self.text_process('改密格式')
                     else:
                         userinfo = {'username':user.studentID, 'password':grp[1]}
-                        code = UserProcessor.update_user(self.openid, userinfo)
+                        code = UserProcessor.update_user(openid, userinfo)
                         if code == status.CODE_SUCCESS:
                             reply = self.text_process('改密成功')
                         else:
@@ -236,7 +236,7 @@ class MessageProcessor(object):
             # 查询学籍处理
             ##############################
             elif content.startswith('我的学籍'):
-                user = UserProcessor.get_user(self.openid)
+                user = UserProcessor.get_user(openid)
                 if user is not None:
                     userinfo = {'username':user.studentID, 'password':user.studentPWD}
                     reply = ''
@@ -251,7 +251,7 @@ class MessageProcessor(object):
             # 查询本学期成绩处理
             ##############################
             elif content.startswith('我的成绩'):
-                user = UserProcessor.get_user(self.openid)
+                user = UserProcessor.get_user(openid)
                 if user is not None:
                     userinfo = {'username':user.studentID, 'password':user.studentPWD}
                     reply = '学号: {}\n'.format(userinfo['username'])
@@ -268,10 +268,10 @@ class MessageProcessor(object):
             # 查询所有成绩处理
             ##############################
             elif content.startswith('所有成绩'):
-                user = UserProcessor.get_user(self.openid)
+                user = UserProcessor.get_user(openid)
                 if user is not None:
                     userinfo = {'username':user.studentID, 'password':user.studentPWD}    
-                    reply = '学号: {}\n'.format(g.userinfo['username'])      
+                    reply = '学号: {}\n'.format(userinfo['username'])      
                     res = hbujwxt.query_each_term_score(userinfo)
                     if res['code'] == status.CODE_SUCCESS:
                         data = res['data']
@@ -287,11 +287,11 @@ class MessageProcessor(object):
             # 查询课表处理
             ##############################
             elif content.startswith('课表查询'):
-                user = UserProcessor.get_user(self.openid)
+                user = UserProcessor.get_user(openid)
                 if user is not None:
                     reply = '<a href="{app_domain}public/curriculum?openid={openid}">好好学习，天天向上，HELLO~我是河小博~点击查看课表信息～～</a>'.format(
                         app_domain = app_config.APP_DOMAIN,
-                        openid = self.openid
+                        openid = openid
                     )
                 else:
                     reply = self.text_process('绑定学号')
@@ -299,11 +299,11 @@ class MessageProcessor(object):
             # 网上评教
             ##############################
             elif content.startswith('网上评教'):
-                user = UserProcessor.get_user(self.openid)
+                user = UserProcessor.get_user(openid)
                 if user is not None:
                     reply = '<a href="{app_domain}public/evaluate?openid={openid}">好好学习，天天向上，HELLO~我是河小博~点击进入网上评教</a>'.format(
                         app_domain = app_config.APP_DOMAIN,
-                        openid = self.openid
+                        openid = openid
                     )
                 else:
                     reply = self.text_process('绑定学号')
@@ -317,7 +317,7 @@ class MessageProcessor(object):
                 else:
                     reply = '<a href="{app_domain}public/book?openid={openid}&book_name={book_name}">好好学习，天天向上，HELLO~我是河小博~点击查看图书详情</a>'.format(
                         app_domain = app_config.APP_DOMAIN,
-                        openid = self.openid,
+                        openid = openid,
                         book_name = grp[1]
                     )
             ##############################
@@ -326,7 +326,7 @@ class MessageProcessor(object):
             elif content.startswith('空闲自习室'):
                 reply = '<a href="{app_domain}public/spareclassroom?openid={openid}">好好学习，天天向上，HELLO~我是河小博~点击进入查询空闲自习室</a>'.format(
                     app_domain = app_config.APP_DOMAIN,
-                    openid = self.openid
+                    openid = openid
                 )
             #__________________________________________________
             # 河小知
@@ -409,7 +409,7 @@ class MessageProcessor(object):
             elif content.startswith('办公机构'):
                 reply = '<a href="{app_domain}public/phone?openid={openid}">点我即可查看所有办公机构哦～～～</a>'.format(
                         app_domain = app_config.APP_DOMAIN,
-                        openid = self.openid
+                        openid = openid
                     )
             elif content.startswith('电话'):
                 grp = content.split(' ')
@@ -437,14 +437,14 @@ class MessageProcessor(object):
             elif content.startswith('意见反馈'):
                 reply = '<a href="{app_domain}public/feedback?openid={openid}">点击便可访问反馈页面</a>'.format(
                     app_domain = app_config.APP_DOMAIN,
-                    openid = self.openid
+                    openid = openid
                 )
 
         if reply == "":
             reply = self.text_process('留言')
         return self.mb.build_text_msg(self.from_user, self.to_user, self.create_time, self.msg_id, reply)            
 
-    def event_reply(self):
+    def event_reply(self, openid):
         """处理事件内容回复"""
         reply = ''
         event = self.xml_rec.find('Event').text
@@ -453,7 +453,7 @@ class MessageProcessor(object):
             reply = self.text_process('关注')
         elif event == 'unsubscribe':
             reply = 'success'
-            user = User.query.filter(User.openid == g.openid).first()
+            user = User.query.filter(User.openid == openid).first()
             if user is not None:
                 db.session.delete(user)
                 db.session.commit()
@@ -464,12 +464,12 @@ class MessageProcessor(object):
         elif event_key == 'event3':
             reply = '<a href="{app_domain}public/spareclassroom?openid={openid}">好好学习，天天向上，HELLO~我是河小博~点击进入查询空闲自习室</a>'.format(
                 app_domain = app_config.APP_DOMAIN,
-                openid = self.openid
+                openid = openid
             )
         elif event_key == 'event4':
             reply = '<a href="{app_domain}public/evaluate?openid={openid}">好好学习，天天向上，HELLO~我是河小博~点击进入网上评教</a>'.format(
                 app_domain = app_config.APP_DOMAIN,
-                openid = self.openid
+                openid = openid
             )
         elif event_key == 'event5':
             reply = self.text_process('创业就业')
@@ -479,23 +479,23 @@ class MessageProcessor(object):
             reply = self.text_process('河大全景')
         return self.mb.build_text_msg(self.from_user, self.to_user, self.create_time, self.msg_id, reply)
 
-    def image_reply(self):
+    def image_reply(self, openid):
         """处理图片内容回复"""
         pass           
 
-    def voice_reply(self):
+    def voice_reply(self, openid):
         """处理语音内容回复"""
         pass
 
-    def video_reply(self):
+    def video_reply(self, openid):
         """处理视频内容回复"""
         pass 
 
-    def music_reply(self):
+    def music_reply(self, openid):
         """处理音乐内容回复"""
         pass
 
-    def news_reply(self):
+    def news_reply(self, openid):
         """处理图文内容回复"""
         pass
 
