@@ -450,6 +450,7 @@ class MessageProcessor(object):
 
     def event_reply(self):
         """处理事件内容回复"""
+        reply = ''
         event = self.xml_rec.find('Event').text
         if event == 'subscribe':
             reply = self.text_process('关注')
@@ -459,26 +460,27 @@ class MessageProcessor(object):
             if user is not None:
                 db.session.delete(user)
                 db.session.commit()
+        
         elif event == 'event1':
             reply = self.text_process('成绩查询')
-        elif event == 'event2':
-            reply = self.text_process('图书信息')
-        elif event == 'event3':
-            reply = '<a href="{app_domain}public/book?openid={openid}&book_name={book_name}">好好学习，天天向上，HELLO~我是河小博~点击查看图书详情</a>'.format(
-                app_domain = app_config.APP_DOMAIN,
-                openid = g.openid,
-                book_name = grp[1])
-        elif event == 'event4':
-            reply = '<a href="{app_domain}public/evaluate?openid={openid}">好好学习，天天向上，HELLO~我是河小博~点击进入网上评教</a>'.format(
-                app_domain = app_config.APP_DOMAIN,
-                openid = g.openid
-            )
-        elif event == 'event5':
-            reply = self.text_process('创业就业')
-        elif event == 'event6':
-            reply = self.text_process('后勤报修')
-        elif event == 'event7':
-            reply = self.text_process('河大全景')
+        # elif event == 'event2':
+        #     reply = self.text_process('图书信息')
+        # elif event == 'event3':
+        #     reply = '<a href="{app_domain}public/book?openid={openid}&book_name={book_name}">好好学习，天天向上，HELLO~我是河小博~点击查看图书详情</a>'.format(
+        #         app_domain = app_config.APP_DOMAIN,
+        #         openid = g.openid,
+        #         book_name = grp[1])
+        # elif event == 'event4':
+        #     reply = '<a href="{app_domain}public/evaluate?openid={openid}">好好学习，天天向上，HELLO~我是河小博~点击进入网上评教</a>'.format(
+        #         app_domain = app_config.APP_DOMAIN,
+        #         openid = g.openid
+        #     )
+        # elif event == 'event5':
+        #     reply = self.text_process('创业就业')
+        # elif event == 'event6':
+        #     reply = self.text_process('后勤报修')
+        # elif event == 'event7':
+        #     reply = self.text_process('河大全景')
         return self.mb.build_text_msg(self.from_user, self.to_user, self.create_time, self.msg_id, reply)
 
     def image_reply(self):
