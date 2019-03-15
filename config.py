@@ -23,11 +23,11 @@ class Config:
 
     WXWEB_REDIS = redis.StrictRedis(host='127.0.0.1', port='6379', db=0)
 
-    CACHE_TYPE = 'redis'
-    CACHE_REDIS_HOST = '127.0.0.1'
-    CACHE_REDIS_PORT = 6379
-    CACHE_REDIS_DB =  ''
-    CACHE_REDIS_PASSWORD = ''
+    # CACHE_TYPE = 'redis'
+    # CACHE_REDIS_HOST = '127.0.0.1'
+    # CACHE_REDIS_PORT = 6379
+    # CACHE_REDIS_DB =  ''
+    # CACHE_REDIS_PASSWORD = ''
 
     UPLOAD_FOLDER = os.environ.get('UPLOAD_FOLDER', 'app/static/upload')
     ALLOWED_EXTENSIONS = set(['png', 'jpg', 'jpeg', 'mp3', 'mp4', 'amr', 'JPG', 'PNG', 'JPEG', 'MP3', 'MP4', 'AMR'])

@@ -58,7 +58,7 @@ def code():
     return redirect(url_for('wxweb.index'))
 
 @wxweb.route('/index')
-@cache.cached(timeout=60*2, key_prefix='views_%s')
+# @cache.cached(timeout=60*2, key_prefix='views_%s')
 def index():
     return render_template('/wxweb/index.html')
  
@@ -85,7 +85,7 @@ def bus():
             return jsonify({'code' : status.CODE_FAILED})
 
 @wxweb.route('/job')
-@cache.cached(timeout=60*2, key_prefix='views_%s')
+# @cache.cached(timeout=60*2, key_prefix='views_%s')
 def job():
     try:
         business = {
@@ -131,7 +131,7 @@ def evaluate():
 
 
 @wxweb.route('/family')
-@cache.cached(timeout=60*2, key_prefix='views_%s')
+# @cache.cached(timeout=60*2, key_prefix='views_%s')
 def family():
     try:
         info = {
@@ -148,12 +148,12 @@ def family():
     return render_template('/wxweb/Family/index.html', info=info)
 
 @wxweb.route('/feedback', methods=['GET', 'POST'])
-@cache.cached(timeout=60*2, key_prefix='views_%s')
+# @cache.cached(timeout=60*2, key_prefix='views_%s')
 def feedback():
     return render_template('/wxweb/Feedback/index.html')
 
 @wxweb.route('/food')
-@cache.cached(timeout=60*2, key_prefix='views_%s')
+# @cache.cached(timeout=60*2, key_prefix='views_%s')
 def food():
     schoolfood = {
         'specious' : '',
@@ -163,7 +163,7 @@ def food():
     return render_template('/wxweb/Food/index.html', schoolfood=schoolfood)
 
 @wxweb.route('/phone')
-@cache.cached(timeout=60*2, key_prefix='views_%s')
+# @cache.cached(timeout=60*2, key_prefix='views_%s')
 def phone():
     try:
         phones = [ {'address' : phone.address, 'phone' : phone.phone } for phone in PhoneList.query.all()]
@@ -172,7 +172,7 @@ def phone():
     return render_template('/wxweb/Phone/index.html', phones=phones)
 
 @wxweb.route('/school')
-@cache.cached(timeout=60*2, key_prefix='views_%s')
+# @cache.cached(timeout=60*2, key_prefix='views_%s')
 def school():
     try:
         info = {
@@ -194,7 +194,7 @@ def school():
     return render_template('/wxweb/School/index.html', info=info)
 
 @wxweb.route('/welfare')
-@cache.cached(timeout=60*2, key_prefix='views_%s')
+# @cache.cached(timeout=60*2, key_prefix='views_%s')
 def welfare():
     try:
         content = text_query('公益河大')
@@ -255,6 +255,6 @@ def express():
         return jsonify(express_query(request.form.get('express_number')))
 
 @wxweb.route('/seat')
-@cache.cached(timeout=60*2, key_prefix='views_%s')
+# @cache.cached(timeout=60*2, key_prefix='views_%s')
 def seat():
     return render_template('/wxweb/Seat/index.html')
