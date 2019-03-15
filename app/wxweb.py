@@ -39,8 +39,9 @@ def user_before_request():
 def home():
     import urllib.parse
     redirect_uri = urllib.parse.urlencode({'redirect_uri':'{app_domain}wxweb/code'.format(app_domain=app_config.APP_DOMAIN)})
-    return  redirect('https://open.weixin.qq.com/connect/oauth2/authorize?appid=wxc26075c6f39886a3&{redirect_uri}&response_type=code&scope=snsapi_base&state=123#wechat_redirect'.format(
-        redirect_uri = redirect_uri))
+    return  redirect('https://open.weixin.qq.com/connect/oauth2/authorize?appid={appid}&{redirect_uri}&response_type=code&scope=snsapi_base&state=123#wechat_redirect'.format(
+            appid = app_config.APPID,
+            redirect_uri = redirect_uri))
 
 @wxweb.route('/code')
 def code():

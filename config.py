@@ -73,8 +73,8 @@ class TestingConfig(Config):
 class ProductionConfig(Config):
     DEBUG = False
     APP_DOMAIN = 'http://twwx.hbu.edu.cn/'
-    APPID = 'wxc0eb1bc035f33f2e'
-    APPSECRET = 'e7d864d5a694045387bad0b77321b17b'
+    APPID = 'wx4f8c3ea1b0707296'
+    APPSECRET = '9dc17aaa34b373d748724a114fdac01d'
 
     SQLALCHEMY_DATABASE_URI = "{}+{}://{}:{}@{}:{}/{}?charset=utf8".format(
         'mysql',

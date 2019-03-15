@@ -403,7 +403,7 @@ class MessageProcessor(object):
                             reply += '-'*40 + '\n'
                             reply +=  '{} : {}\n'.format(item['time'], item['context'])
                     elif res['code'] == status.CODE_NOT_EXIST:
-                        reply = '查询城市可能不在哦～～～'
+                        reply = '查询快递单号可能不在哦～～～'
                     else:
                         reply = '服务器资源错误，请联系管理员修复～～～'
             ##############################
