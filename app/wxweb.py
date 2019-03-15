@@ -50,7 +50,6 @@ def code():
         return redirect(url_for('wxweb.home'))
     if not session.get('openid'):
         try:
-            print('hello')
             openid = api.get_web_auth_token(wxcode).get('openid')
             session['openid'] = openid
         except:
