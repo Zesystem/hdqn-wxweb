@@ -147,12 +147,8 @@ class MessageProcessor(object):
         g.openid = self.from_user = self.xml_rec.find('FromUserName').text
         self.create_time = int(time.time()) # int(self.xml_rec.find('CreateTime').text)
         self.msg_type = self.xml_rec.find('MsgType').text
-
         self.msg_id = self.xml_rec.find('MsgId')
-        if self.msg_id is not None:
-            self.msg_id = int(self.msg_id.text)
-        else:
-            self.msg_id = 0
+        self.msg_id = int(self.msg_id.text) if self.msg_id is not None else 0
 
         if self.msg_type == 'text':
             return self.text_reply()
