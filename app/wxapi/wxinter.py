@@ -9,8 +9,7 @@
 
 import time
 import hashlib
-from app import lock
-from app.exts import mp
+from app.exts import mp, lock
 from flask import request, make_response, render_template
 
 def wx_check():
