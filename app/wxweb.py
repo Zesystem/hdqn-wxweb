@@ -225,6 +225,8 @@ def score():
             idx = 0
             while idx < granum:
                 scores[idx].extend(resp.pop(0)['scores'])
+                if len(resp) > 0:
+                    scores[idx].extend(resp.pop(0)['scores'])
                 idx += 1
             user = {
                 'grades' : grades[:granum],
