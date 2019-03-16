@@ -35,6 +35,9 @@ from app import views
 from app import models
 db.create_all()
 
+from multiprocessing import Lock
+lock = Lock()
+
 # 关闭推送
 app_ctx.pop()
 
