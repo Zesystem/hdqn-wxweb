@@ -220,15 +220,15 @@ def score():
         resp = hbujwxt.query_each_term_score({'username': session['user'].studentID, 'password': session['user'].studentPWD})
         if resp['code'] == status.CODE_SUCCESS:
             resp = resp['data']
-            grades = int((len(resp)+1)/2)
-            scores = [[] for idx in range(grades)]
+            granum = int((len(resp)+1)/2)
+            scores = [[] for idx in range(granum)]
             idx = 0
-            while idx < grades:
-                scores[idx].extend(resp.pop(0))
+            while idx < granum:
+                scores[idx].extend(resp.pop(0)['scores'])
                 idx += 1
             user = {
-                'grades' : grades[:grades],
-                'scores' : [term['scores'] for term in resp]
+                'grades' : grades[:granum],
+                'scores' : scores
             }
     except:
         user = {'grades':[], 'scores':[]}
