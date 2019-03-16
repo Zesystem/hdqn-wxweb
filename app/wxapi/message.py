@@ -143,37 +143,39 @@ class MessageProcessor(object):
     def check_reply(self, receieve):
         """消息内容验证回复处理"""
         lock.acquire()
-        self.xml_rec = ET.fromstring(receieve)
-        self.to_user = self.xml_rec.find('ToUserName').text
-        openid = self.from_user = self.xml_rec.find('FromUserName').text
-        self.create_time = int(time.time()) # int(self.xml_rec.find('CreateTime').text)
-        self.msg_type = self.xml_rec.find('MsgType').text
-        self.msg_id = self.xml_rec.find('MsgId')
-        self.msg_id = int(self.msg_id.text) if self.msg_id is not None else 0
+        try:
+            self.xml_rec = ET.fromstring(receieve)
+            self.to_user = self.xml_rec.find('ToUserName').text
+            openid = self.from_user = self.xml_rec.find('FromUserName').text
+            self.create_time = int(time.time()) # int(self.xml_rec.find('CreateTime').text)
+            self.msg_type = self.xml_rec.find('MsgType').text
+            self.msg_id = self.xml_rec.find('MsgId')
+            self.msg_id = int(self.msg_id.text) if self.msg_id is not None else 0
 
-        if self.msg_type == 'text':
-            return self.text_reply(openid)
-        if self.msg_type == 'event':
-            return self.event_reply(openid)
-        elif self.msg_type == 'image':
-            pass
-        elif self.msg_type == 'voice':
-            pass
-        elif self.msg_type == 'video':
-            pass
-        elif self.msg_type == 'location':
-            pass
-        elif self.msg_type == 'link':
-            pass
-        else:
-            xml_msg = '欢迎使用河大青年!'
+            if self.msg_type == 'text':
+                return self.text_reply(openid)
+            if self.msg_type == 'event':
+                return self.event_reply(openid)
+            elif self.msg_type == 'image':
+                pass
+            elif self.msg_type == 'voice':
+                pass
+            elif self.msg_type == 'video':
+                pass
+            elif self.msg_type == 'location':
+                pass
+            elif self.msg_type == 'link':
+                pass
+            else:
+                xml_msg = '欢迎使用河大青年!'
 
-        if self.msg_type != 'text':
-            xml_msg = '欢迎使用河大青年!'
-        response = make_response(xml_msg)
-        response.content_type = 'application/xml'
-        lock.release()
-        return response
+            if self.msg_type != 'text':
+                xml_msg = '欢迎使用河大青年!'
+            response = make_response(xml_msg)
+            response.content_type = 'application/xml'
+            return response
+        finally:
+            lock.release() 
     
     def text_process(self, keyword):
         """文本关键字数据库查询"""
