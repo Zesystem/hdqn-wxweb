@@ -23,9 +23,6 @@ class HbuJwxt(object):
     '''
     河北大学综合教务系统
     '''
-    def __init__(self):
-        self.init()
-    
     def init(self):
         self.session = requests.Session()
         self.session.mount('http://', HTTPAdapter(max_retries=3))
