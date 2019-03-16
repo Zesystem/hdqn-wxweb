@@ -21,11 +21,19 @@ from app.utils.weatherutil import getWeather
 from app.utils.expressutil import express_query
 from app.utils.bookutil import book_query
 from app.utils.formatutil import get_course_table
+from app.utils.userprocess import UserProcessor
 from app.utils.busutil import line_query, transfer_query, nearbystation_query
 import urllib.parse
 
 wxweb = Blueprint('wxweb', __name__)
 
+def get_auth_to_uri(url_route):
+    redirect_uri = urllib.parse.urlencode({'redirect_uri':'{app_domain}{url_route}'.format(app_domain=app_config.APP_DOMAIN)})
+    redirect_url = 'https://open.weixin.qq.com/connect/oauth2/authorize?appid={appid}&{redirect_uri}&response_type=code&scope=snsapi_base&state=123#wechat_redirect'.format(
+            url_route = url_route,
+            appid = app_config.APPID,
+            redirect_uri = redirect_uri)
+    return redirect_url
 
 @wxweb.context_processor
 def user_context_processor():
@@ -212,8 +220,14 @@ def score():
         resp = hbujwxt.query_each_term_score({'username': session['user'].studentID, 'password': session['user'].studentPWD})
         if resp['code'] == status.CODE_SUCCESS:
             resp = resp['data']
+            grades = int((len(resp)+1)/2)
+            scores = [[] for idx in range(grades)]
+            idx = 0
+            while idx < grades:
+                scores[idx].extend(resp.pop(0))
+                idx += 1
             user = {
-                'grades' : grades[:int((len(resp)+1)/2)],
+                'grades' : grades[:grades],
                 'scores' : [term['scores'] for term in resp]
             }
     except:
