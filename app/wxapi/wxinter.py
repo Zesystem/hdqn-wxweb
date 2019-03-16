@@ -9,7 +9,7 @@
 
 import time
 import hashlib
-from app.exts import mp, lock
+from app.exts import mp
 from flask import request, make_response, render_template
 
 def wx_check():
@@ -36,8 +36,6 @@ def wx_check():
         except:
             return render_template('public/404.html')
     else:
-        lock.acquire()
         rec = request.stream.read()
         rep = mp.check_reply(rec)
-        lock.release()
         return rep

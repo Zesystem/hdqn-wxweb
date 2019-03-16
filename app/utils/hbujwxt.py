@@ -24,6 +24,9 @@ class HbuJwxt(object):
     河北大学综合教务系统
     '''
     def __init__(self):
+        self.init()
+    
+    def init(self):
         self.session = requests.Session()
         self.session.mount('http://', HTTPAdapter(max_retries=3))
         self.session.mount('https://', HTTPAdapter(max_retries=3))
@@ -87,6 +90,7 @@ class HbuJwxt(object):
             res = self.session.request(
                 'POST', url, headers=self.headers, data=data)
             return res.content.decode('GBK', 'ignore')
+        self.init()
         self.headers['Referer'] = 'http://{ip}/'.format(ip=self.ip)
         cnt = 0
         while cnt < 6:

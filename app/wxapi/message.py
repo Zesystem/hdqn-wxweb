@@ -9,7 +9,7 @@
 
 from flask import make_response, session
 from app import db, app_config
-from app.exts import hbujwxt
+from app.exts import hbujwxt, lock
 from app.models import User, TextMaterial, PhoneList
 from app.utils import status
 from app.wxapi import wxevent
@@ -142,6 +142,7 @@ class MessageProcessor(object):
 
     def check_reply(self, receieve):
         """消息内容验证回复处理"""
+        lock.acquire()
         self.xml_rec = ET.fromstring(receieve)
         self.to_user = self.xml_rec.find('ToUserName').text
         openid = self.from_user = self.xml_rec.find('FromUserName').text
@@ -171,6 +172,7 @@ class MessageProcessor(object):
             xml_msg = '欢迎使用河大青年!'
         response = make_response(xml_msg)
         response.content_type = 'application/xml'
+        lock.release()
         return response
     
     def text_process(self, keyword):
