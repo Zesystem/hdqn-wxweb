@@ -186,7 +186,7 @@
                 hideLoader();
                 if(data['code'] == 200){
                     var html = '<h2 style="font-size:30px; height:50px;">查询结果如下</h2>';
-                    var res = splitArray(["119", "203", "204", "206", "209", "217", "219", "203", "204", "206", "209", "217", "219", "203", "204", "206", "209", "217", "219", "203", "204", "206", "209", "217", "219", "203", "204", "206", "209", "217", "219", "203", "204", "206", "209", "217", "219", "313", "320", "322", "403", "418", "420", "421", "502", "503", "一阶", "学前舞蹈房", "电教"]);
+                    var res = splitArray(data['data']);
                     res.forEach(item => {
                         html += '<p style="padding-left: 10px; padding-right: 10px; min-height: 50px; font-size: 24px; border: 1px solid black; word-wrap:break-word; word-break:break-all; overflow: hidden;">'
                         for(var idxc=0; idxc<item.length; ++idxc){

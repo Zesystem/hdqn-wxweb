@@ -94,7 +94,7 @@ def spareclassroom():
         building = request.form.get('building')
         week = request.form.get('week')
         time = request.form.get('time')
-        print(eduweek, campus, building, week, time)
+        #print(eduweek, campus, building, week, time)
         if eduweek and campus and building and week and time:
             return jsonify(spare_classroom(eduweek, campus, building, week, time))
         else:
