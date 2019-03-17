@@ -1,4 +1,7 @@
 #!/bin/bash
+
+export FLASK_CONFIG=production
+
 if [ ! -n "$1" ];then
     echo "Usages: sh appctl.sh [start|stop|restart]"
     exit 0
