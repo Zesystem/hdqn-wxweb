@@ -1,7 +1,7 @@
 #!/bin/bash
 
 if [ ! -n "$1" ];then
-    echo "Usages: sh appctl.sh [start|stop|restart]"
+    echo "Usages: sh hdqnwxweb.sh [start|stop|restart]"
     exit 0
 fi
 
@@ -11,7 +11,7 @@ if [ $1 = start ];then
         echo "uwsgi is running!"
         exit 0 
     else
-        /root/.pyenv/shims/uwsgi /root/hdqn-wxweb/uwsgi.ini
+        /root/.pyenv/shims/uwsgi /root/hdqn-wxweb/conf/uwsgi.ini
         echo "Start uwsgi service [OK]"
     fi
 elif [ $1 = stop ];then
@@ -19,8 +19,8 @@ elif [ $1 = stop ];then
     echo "Stop uwsgi service [OK]"
 elif [ $1 = restart ];then
     killall -9 uwsgi
-    /root/.pyenv/shims/uwsgi /root/hdqn-wxweb/uwsgi.ini
+    /root/.pyenv/shims/uwsgi /root/hdqn-wxweb/conf/uwsgi.ini
     echo "Restart uwsgi service [OK]"
 else
-    echo "Usages: sh appctl.sh [start|stop|restart]"
+    echo "Usages: sh hdqnwxweb.sh [start|stop|restart]"
 fi
