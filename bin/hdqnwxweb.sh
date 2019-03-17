@@ -1,5 +1,7 @@
 #!/bin/bash
 
+cd /root/hdqn-wxweb
+
 if [ ! -n "$1" ];then
     echo "Usages: sh hdqnwxweb.sh [start|stop|restart]"
     exit 0
