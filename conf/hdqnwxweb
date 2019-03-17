@@ -1,0 +1,12 @@
+#!/bin/bash
+#chkconfig: 345 99 90
+#description: hdqnwxeb server
+#processname: hdqnwxeb
+HDQNWXWEB_HOME = /root/hdqn-wxweb
+export FLASK_CONFIG=production
+case $1 in
+    start)su root $HDQNWXWEB_HOME/bin/hdqnwxeb.sh start;;
+    stop)su root $HDQNWXWEB_HOME/bin/hdqnwxeb.sh stop;;
+    restart)su root $HDQNWXWEB_HOME/bin/hdqnwxeb.sh restart;;
+    *)echo "require start|stop|restart";;
+esac
