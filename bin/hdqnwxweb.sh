@@ -9,7 +9,7 @@ fi
 
 if [ $1 = start ];then
     psid=`ps aux | grep "uwsgi" | grep -v "grep" | wc -l`        
-    if [$psid -gt 4];then
+    if [ $psid -gt 4 ];then
         echo "uwsgi is running!"
         exit 0 
     else
