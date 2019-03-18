@@ -20,5 +20,8 @@ echo 'Add service to system ...'
 chkconfig --add hdqnwxweb
 chkconfig --level 345 hdqnwxweb on
 chkconfig --list hdqnwxweb
+echo 'Timing restart service is being add ...'
+crontab $BASEPATH/conf/rootcron
+crontab -l
 echo 'Successfully deploy hdqnwxweb!'
 echo 'Use `service hdqnwxweb start` to start service.'
