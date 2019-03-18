@@ -3,10 +3,6 @@
 echo 'Starting to deploy hdqnwxweb service ...'
 BASEPATH=$(cd `dirname $0`; pwd)
 echo '==>Deploying from path: $BASHPATH ...'
-echo '==>Create usergroup gid:1001 ...'
-groupadd -g 1001 uwsgigroup
-echo '==>Create user uid: 1001 ...'
-useradd -u 1001 -g uwsgigroup uwsgi
 echo '==>Copying file: $BASEPATH/conf/default.conf to: /etc/nginx/conf.d/default.conf ...'
 cp $BASEPATH/conf/default.conf /etc/nginx/conf.d/default.conf
 echo '==>Copying file: $BASEPATH/conf/hdqnwxwe to: /etc/init.d/hdqnwxweb ...'
