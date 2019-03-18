@@ -1,5 +1,6 @@
-wx4f8c3ea1b0707296
-9dc17aaa34b373d748724a114fdac01d
+···
+APPID: wx4f8c3ea1b0707296
+APPSECRET: 9dc17aaa34b373d748724a114fdac01d
 
 {
     "button": [
@@ -111,3 +112,4 @@ wx4f8c3ea1b0707296
     ]
 }
 
+···
