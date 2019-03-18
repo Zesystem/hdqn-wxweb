@@ -13,6 +13,8 @@ echo '==>Copying file: $BASEPATH/conf/default.conf to: /etc/nginx/conf.d/default
 cp $BASEPATH/conf/default.conf /etc/nginx/conf.d/default.conf
 echo '==>Copying file: $BASEPATH/conf/hdqnwxwe to: /etc/init.d/hdqnwxweb ...'
 cp $BASEPATH/conf/hdqnwxweb /etc/init.d/hdqnwxweb
+echo 'Installing dependency packages ...'
+pip install -r $BASEPATH/requirements.txt
 echo 'Modifying the authority of deploy files ...'
 chmod +x /etc/init.d/hdqnwxweb
 chmod +x /etc/nginx/conf.d/default.conf
