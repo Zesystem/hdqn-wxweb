@@ -6,6 +6,7 @@ bs4==0.0.1
 certifi==2018.11.29
 chardet==3.0.4
 Click==7.0
+Django==2.1.7
 Flask==1.0.2
 Flask-Caching==1.6.0
 Flask-Migrate==2.4.0
@@ -29,9 +30,11 @@ Pillow==5.4.1
 pylint==2.3.1
 pylint-flask==0.6
 pylint-plugin-utils==0.5
+PyMySQL==0.9.3
 pytesseract==0.2.6
 python-dateutil==2.8.0
 python-editor==1.0.4
+pytz==2018.9
 redis==3.2.0
 requests==2.21.0
 six==1.12.0
