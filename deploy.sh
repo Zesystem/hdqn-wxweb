@@ -3,15 +3,9 @@
 echo 'Starting to deploy hdqnwxweb service ...'
 BASEPATH=$(cd `dirname $0`; pwd)
 echo '==>Deploying from path: $BASHPATH ...'
-# echo '==>Making usergroup `www` ...'
-# groupadd www
-# grp=`cat /etc/group | grep 'www'` && echo $grp 'add successfully'
-# echo '==>Making user `www` ...'
-# useradd www
-# usr=`cat /etc/passwd | grep '^www'` && echo $usr 'add successfully!'
 echo '==>Copying file: $BASEPATH/conf/default.conf to: /etc/nginx/conf.d/default.conf ...'
 cp $BASEPATH/conf/default.conf /etc/nginx/conf.d/default.conf
-echo '==>Copying file: $BASEPATH/conf/hdqnwxwe to: /etc/init.d/hdqnwxweb ...'
+echo '==>Copying file: $BASEPATH/conf/hdqnwxweb to: /etc/init.d/hdqnwxweb ...'
 cp $BASEPATH/conf/hdqnwxweb /etc/init.d/hdqnwxweb
 echo 'Installing dependency packages ...'
 pip install -r $BASEPATH/requirements.txt
