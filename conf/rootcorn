@@ -1,0 +1,1 @@
+00 2 * * * /usr/sbin/service hdqnwxweb restart
