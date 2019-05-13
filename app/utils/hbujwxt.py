@@ -243,12 +243,140 @@ class HbuJwxt(object):
         except:
             return {'code': status.CODE_FAILED}
 
+    def evaluation_get_courses(self, userinfo):
+        '''获取课程列表
+        '''
+        try:
+            if not self.jw_login(userinfo):
+                return {'code': status.CODE_FAILED}
+            self.headers['Referer'] = 'http://{ip}/jxpgXsAction.do?oper=listWj'.format(ip=self.ip)
+            url = 'http://{ip}/jxpgXsAction.do?oper=listWj'.format(ip=self.ip)
+            res = self.session.request('GET', url, headers=self.headers)
+            soup = BeautifulSoup(res.content.decode('GBK', 'ignore'), features='lxml')
+            table = soup.find('table', attrs={
+                'class': "titleTop2",
+                'width':"100%",
+                'cellspacing':"0",
+                'cellpadding':"0",
+                'border':"0"
+            })
+            table = table.find('table', attrs={
+                'class':"displayTag",
+                'id':"user",
+                'width':"100%",
+                'cellspacing':"1",
+                'cellpadding':"0",
+                'border':"0"
+            })
+            head = []
+            for th in table.thead.tr.find_all('th'):
+                head.append(th.get_text().replace('\r\n', '').strip())
+            courses = {
+                'head' : head[0:-1],
+                'course' : []
+            }
+            for tr in table.find_all('tr', recursive=False)[1:]:
+                item = []
+                tds = tr.find_all('td', recursive=False)
+                for td in tds[0:-1]:
+                    item.append(td.get_text().replace('\r\n', '').strip())
+                data = tds[-1].img.attrs.get('name').split('#@')
+                item.append(
+                    {
+                        'wjbm':	data[0],
+                        'bpr': data[1],
+                        'pgnr': data[-1],
+                        'oper': 'wjShow',
+                        'wjmc': data[3],
+                        'bprm': data[2],
+                        'pgnrm': data[4],
+                        'wjbz': None,
+                        'pageSize': '20',
+                        'page': '1',
+                        'currentPage': '1',
+                        'pageNo': ''
+                    }
+                )
+                courses['course'].append(item)
+            return {'code' : status.CODE_SUCCESS, 'data' : courses}
+        except:
+            return {'code': status.CODE_FAILED}
+
+    def evaluation_get_detail(self, course):
+        '''获取评教详情页
+        '''
+        try:
+            data = urllib.parse.urlencode(course[-1], encoding='gb2312')
+            url = 'http://{ip}/jxpgXsAction.do'.format(ip=self.ip)
+            rep = self.session.request('POST', url, data, headers=self.headers)
+            soup = BeautifulSoup(rep.content.decode('GBK'), features='lxml')
+            table = soup.find('table',attrs={
+                    'id':"tblView",
+                    'cellspacing':"0",
+                    'cellpadding':"0",
+                    'border':"1"
+            })
+
+            content = {
+                'selection' : [
+                    ('(A)', '很满意', '10_1'),
+                    ('(A)', '满意', '10_0.8'),
+                    ('(A)', '基本满意', '10_0.6'),
+                    ('(A)', '不满意', '10_0.2'),
+                    ('(A)', '很不满意', '10_0'),
+                ],
+                'question' : []
+            }
+
+            for tr in table.find_all('tr', recursive=False):
+                tds = tr.find_all('td', recursive=False)
+                item = [tds[0].get_text().replace('\r\n', '').strip(), []]
+                trs = tds[-1].table.find_all('tr')
+                while len(trs) != 0:
+                    question = trs.pop(0).td.get_text().replace('\r\n','').strip()
+                    item[-1].append((question, trs.pop(0).td.input.attrs.get('name')))      
+                content['question'].append(item)
+            return {'code' : status.CODE_SUCCESS, 'data' : content}
+        except:
+            return {'code': status.CODE_FAILED}
+    
+    def evaluation_post(self, data):
+        '''教学评估提交
+        '''
+        try:
+            data = urllib.parse.urlencode(data, encoding='gb2312')
+            url = 'http://{ip}/jxpgXsAction.do?oper=wjpg'.format(ip=self.ip)
+            rep = self.session.request('POST', url, data, headers=self.headers)
+            if '评估成功' in rep.content.decode('GBK'):
+                return {'code' : status.CODE_SUCCESS}
+            return {'code' : status.CODE_FAILED}
+        except:
+            return {'code': status.CODE_FAILED}
+
 if __name__ == '__main__':
     pass
-    #hbujwxt = HbuJwxt()
-    #userinfo = {'username':'20171004113', 'password':'199892.lw'}
-    #print(hbujwxt.query_schoolrool(userinfo))
-    #print(hbujwxt.query_this_term_score(userinfo))
-    #print(hbujwxt.query_each_term_score(userinfo))
-    #print(hbujwxt.query_course_table(userinfo))
-
+    # hbujwxt = HbuJwxt()
+    # userinfo = {'username':'20171004113', 'password':'199892.lw'}
+    # print(hbujwxt.query_schoolrool(userinfo))
+    # print(hbujwxt.query_this_term_score(userinfo))
+    # print(hbujwxt.query_each_term_score(userinfo))
+    # print(hbujwxt.query_course_table(userinfo))
+    # courses = hbujwxt.evaluation_get_courses(userinfo)
+    # print(courses)
+    # detail = hbujwxt.evaluation_get_detail(courses['data']['course'][1])
+    # print(detail)
+    # selection = {}
+    # for item in detail['data']['question']:
+        # for quest in item[-1]:
+            # selection[quest[1]] = '10_1'
+    # course = courses['data']['course'][1]
+    # data = {
+    #         'wjbm': course[-1]['wjbm'],
+    #         'bpr': course[-1]['bpr'],
+    #         'pgnr': course[-1]['pgnr'],
+    #         'xumanyzg': 'zg',
+    #         'wjbz': course[-1]['wjbz'],
+    #         'zgpj': '老师讲的真心不错，课堂氛围活跃'
+    #     }
+    # data.update(selection)
+    # print(hbujwxt.evaluation_post(data))

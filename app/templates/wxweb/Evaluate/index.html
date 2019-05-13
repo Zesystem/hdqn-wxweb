@@ -17,28 +17,30 @@
 <body>
 
 <div data-role="page" id="index">
-	
 	<div data-role="content">
-		<img src="{{url_for('static',filename='wxweb/images/pingjiao.jpg')}}" width="100%" />
+        <img src="{{url_for('static',filename='wxweb/images/pingjiao.jpg')}}" width="100%" />
 		<ul data-role="listview" data-inset="true">
-            <empty name="result">
-                <h2>评教时间未到，或已经结束</h2>
-            </empty>
-            {% for course in courses %}
-                {% if not course.comment %}
-                    <li data-icon="arrow-r">
-                        <a href="{{ url_for('wxweb.evaluate') + '?premsg=0' }}"> {{ course.tname }} <span class="ui-li-count"> {{ course.cname }} </span></a>
-                    </li>
-                {% else %}
-                    <li data-icon="star">
-                        <a href="#" style="color:#999;"> {{ course.tname }} (已评) <span style="color:#999;" class="ui-li-count"> {{ course.cname }} </span><a></a>
-                    </li>
-                {% endif %}
-            {% endfor %}
+            {% if courseinfo.code != 200 %}
+                <empty name="result">
+                    <h2>评教时间未到，或已经结束</h2>
+                </empty>
+            {% else %}
+                {% for course in courseinfo.data.course %}
+                    {% if course[3] == '否' %}
+                        <li data-icon="arrow-r">
+                            <a href="{{ url_for('wxweb.evaluate') + '?premsg=' }}{{ loop.index }}"> {{ course[1] }} <span class="ui-li-count"> {{ course[2] }} </span></a>
+                        </li>
+                    {% else %}
+                        <li data-icon="star">
+                            <a href="#" style="color:#999;"> {{ course[1] }} (已评) <span style="color:#999;" class="ui-li-count"> {{ course[2] }} </span><a></a>
+                        </li>
+                    {% endif %}
+                {% endfor %}
+            {% endif %}
 		</ul>
 	</div>
 	{% include "wxweb/footnav.html" %}
-
 </div>
+
 </body>
 </html>

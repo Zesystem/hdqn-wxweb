@@ -12,7 +12,6 @@ from app import db, app_config
 from app.exts import hbujwxt, lock
 from app.models import User, TextMaterial, PhoneList
 from app.utils import status
-from app.wxapi import wxevent
 from app.utils.userprocess import UserProcessor 
 from app.utils.weatherutil import getWeather
 from app.utils.bookutil import book_query

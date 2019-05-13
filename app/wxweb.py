@@ -112,30 +112,38 @@ def evaluate():
             return redirect(url_for('wxweb.home'))
         if not session.get('user'):
             return render_template('wxweb/Error/index.html')
+        userinfo = {'username': session['user'].studentID, 'password': session['user'].studentPWD}
+        try:
+            courseinfo = hbujwxt.evaluation_get_courses(userinfo)
+        except:
+            courseinfo = {'code' : code.CODE_FAILED}
         if not request.args.get('premsg'):
-            courses = [
-                # {
-                #     'tname' : 'Admin',
-                #     'cname' : 'Admin-Testing',
-                #     'comment' : True
-                # },
-                # {
-                #     'tname' : 'Developer',
-                #     'cname' : 'Develop-Testing',
-                #     'comment' : False
-                # }
-            ]
-            return render_template('/wxweb/Evaluate/index.html', courses=courses)
+            return render_template('/wxweb/Evaluate/index.html', courseinfo=courseinfo)
         else:
-            course = {'tname' : '', 'cname' : ''}
-            # course = {
-            #     'tname' : 'Developer',
-            #     'cname' : 'Develop-Testing'
-            # } 
-            return render_template('/wxweb/Evaluate/detail.html', course=course)
+            try:
+                course = courseinfo['data']['course'][int(request.args.get('premsg'))]
+                courseinfo = hbujwxt.evaluation_get_detail(course)
+            except:
+                courseinfo = {'code' : code.CODE_FAILED}
+            if courseinfo['code'] == status.CODE_SUCCESS:
+                courseinfo['data']['course'] = course
+            return render_template('/wxweb/Evaluate/detail.html', courseinfo=courseinfo)
     else:
-        return "<script>alert('请填写完整数据！');window.history.back();</script>";
-
+        try:
+            data = request.form.to_dict()
+            if data == {}:
+                return "<script>alert('请填写完整数据！');window.history.back();</script>"
+            else:
+                for key in data:
+                    if data[key] is None:
+                        return "<script>alert('请填写完整数据！');window.history.back();</script>"
+                res = hbujwxt.evaluation_post(data)
+                if res['code'] != status.CODE_SUCCESS:
+                    return "<script>alert('评教成功！');window.location.href='/wxweb/evaluate';</script>"
+                else:
+                    return "<script>alert('评教失败！');window.location.href='/wxweb/evaluate';</script>"
+        except:
+            return "<script>alert('非法提交！');window.location.href='/wxweb/evaluate';</script>"
 
 @wxweb.route('/family')
 # @cache.cached(timeout=60*2, key_prefix='views_%s')
@@ -244,7 +252,7 @@ def course():
         if not session.get('user'):
             return render_template('wxweb/Error/index.html')
         curArr = []
-        res = hbujwxt.query_course_table(userinfo = {'username': session['user'].studentID, 'password': session['user'].studentPWD})
+        res = hbujwxt.query_course_table({'username': session['user'].studentID, 'password': session['user'].studentPWD})
         if res['code'] == status.CODE_SUCCESS:
             curArr = res['data']
         courseinfo = {

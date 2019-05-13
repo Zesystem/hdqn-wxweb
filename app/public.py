@@ -60,29 +60,38 @@ def evaluate():
                 return "<script>alert('此账户尚未绑定公众号！');window.history.back();</script>";
         elif not session.get('openid'):
             return render_template('wxweb/Error/index.html')
+        userinfo = {'username': session['user'].studentID, 'password': session['user'].studentPWD}
+        try:
+            courseinfo = hbujwxt.evaluation_get_courses(userinfo)
+        except:
+            courseinfo = {'code' : code.CODE_FAILED}
         if not request.args.get('premsg'):
-            courses = [
-                # {
-                #     'tname' : '赵辰伟',
-                #     'cname' : '团委自习课',
-                #     'comment' : True
-                # },
-                # {
-                #     'tname' : '谢博鋆',
-                #     'cname' : '团委自习课',
-                #     'comment' : False
-                # }
-            ]
-            return render_template('/public/evaluate.html', courses=courses)
+            return render_template('/wxweb/Evaluate/index.html', courseinfo=courseinfo)
         else:
-            course = {'tname' : '', 'cname' : ''}
-            # course = {
-            #     'tname' : '谢博鋆',
-            #     'cname' : '团委自习课'
-            # } 
-            return render_template('/public/evaluate_detail.html', course=course)
+            try:
+                course = courseinfo['data']['course'][int(request.args.get('premsg'))]
+                courseinfo = hbujwxt.evaluation_get_detail(course)
+            except:
+                courseinfo = {'code' : code.CODE_FAILED}
+            if courseinfo['code'] == status.CODE_SUCCESS:
+                courseinfo['data']['course'] = course
+            return render_template('/wxweb/Evaluate/detail.html', courseinfo=courseinfo)
     else:
-        return "<script>alert('请填写完整数据！');window.history.back();</script>"
+        try:
+            data = request.form.to_dict()
+            if data == {}:
+                return "<script>alert('请填写完整数据！');window.history.back();</script>"
+            else:
+                for key in data:
+                    if data[key] is None:
+                        return "<script>alert('请填写完整数据！');window.history.back();</script>"
+                res = hbujwxt.evaluation_post(data)
+                if res['code'] != status.CODE_SUCCESS:
+                    return "<script>alert('评教成功！');window.location.href='/wxweb/evaluate';</script>"
+                else:
+                    return "<script>alert('评教失败！');window.location.href='/wxweb/evaluate';</script>"
+        except:
+            return "<script>alert('非法提交！');window.location.href='/wxweb/evaluate';</script>"
 
 @public.route('/spareclassroom', methods=['GET', 'POST'])
 def spareclassroom():
