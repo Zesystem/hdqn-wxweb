@@ -345,6 +345,8 @@ class HbuJwxt(object):
         '''
         try:
             if not self.jw_login(userinfo):
+                with open('/root/err.log', 'w') as f:
+                    f.wrtie('hello')
                 return {'code': status.CODE_FAILED}
             data = urllib.parse.urlencode(data, encoding='gb2312')
             url = 'http://{ip}/jxpgXsAction.do?oper=wjpg'.format(ip=self.ip)
