@@ -21,9 +21,12 @@
 			<input type="hidden" name="bpr" value="{{ courseinfo.data.course[-1].bpr }}"/>
 			<input type="hidden" name="pgnr" value="{{ courseinfo.data.course[-1].pgnr }}"/>
 			<ul data-role="listview" data-inset="true">
-				<li name="result">
-					<input type="text">
-				</li>
+				{% for item in courseinfo.data.question %}
+					<li name="result">
+						<input type="text">
+						<br><br>
+					</li>
+				{% endfor %}
 			</ul>
 		</form>
 	</div>
