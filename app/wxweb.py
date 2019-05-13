@@ -129,21 +129,21 @@ def evaluate():
                 courseinfo['data']['course'] = course
             return render_template('/wxweb/Evaluate/detail.html', courseinfo=courseinfo)
     else:
-        try:
-            data = request.form.to_dict()
-            if data == {}:
-                return "<script>alert('请填写完整数据！');window.history.back();</script>"
+        # try:
+        data = request.form.to_dict()
+        if data == {}:
+            return "<script>alert('请填写完整数据！');window.history.back();</script>"
+        else:
+            for key in data:
+                if data[key] is None:
+                    return "<script>alert('请填写完整数据！');window.history.back();</script>"
+            res = hbujwxt.evaluation_post(data)
+            if res['code'] == status.CODE_SUCCESS:
+                return "<script>alert('评教成功！');window.location.href='/wxweb/evaluate';</script>"
             else:
-                for key in data:
-                    if data[key] is None:
-                        return "<script>alert('请填写完整数据！');window.history.back();</script>"
-                res = hbujwxt.evaluation_post(data)
-                if res['code'] == status.CODE_SUCCESS:
-                    return "<script>alert('评教成功！');window.location.href='/wxweb/evaluate';</script>"
-                else:
-                    return "<script>alert('评教失败！%r ');window.location.href='/wxweb/evaluate';</script>" % res
-        except:
-            return "<script>alert('非法提交！');window.location.href='/wxweb/evaluate';</script>"
+                return "<script>alert('评教失败！');window.location.href='/wxweb/evaluate';</script>"
+        # except:
+        #     return "<script>alert('非法提交！');window.location.href='/wxweb/evaluate';</script>"
 
 @wxweb.route('/family')
 # @cache.cached(timeout=60*2, key_prefix='views_%s')
