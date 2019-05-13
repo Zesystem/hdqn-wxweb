@@ -141,7 +141,7 @@ def evaluate():
                 if res['code'] == status.CODE_SUCCESS:
                     return "<script>alert('评教成功！');window.location.href='/wxweb/evaluate';</script>"
                 else:
-                    return "<script>alert('评教失败！{}');window.location.href='/wxweb/evaluate';</script>".format(res)
+                    return "<script>alert('评教失败！');window.location.href='/wxweb/evaluate';</script>"
         except:
             return "<script>alert('非法提交！');window.location.href='/wxweb/evaluate';</script>"
 
