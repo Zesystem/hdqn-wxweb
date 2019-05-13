@@ -24,7 +24,7 @@
                 {% for course in courseinfo.data.course %}
                     {% if course[3] == '否' %}
                         <li data-icon="arrow-r">
-                            <a href="{{ url_for('wxweb.evaluate') + '?premsg=' }}{{ loop.index }}"> {{ course[1] }} <span class="ui-li-count"> {{ course[2] }} </span></a>
+                            <a href="{{ url_for('wxweb.evaluate') + '?premsg=' }}{{ loop.index0 }}"> {{ course[1] }} <span class="ui-li-count"> {{ course[2] }} </span></a>
                         </li>
                     {% else %}
                         <li data-icon="star">
