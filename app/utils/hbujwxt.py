@@ -340,7 +340,7 @@ class HbuJwxt(object):
         except:
             return {'code': status.CODE_FAILED}
     
-    def evaluation_post(self, data):
+    def evaluation_post(self, userinfo, data):
         '''教学评估提交
         '''
         try:
