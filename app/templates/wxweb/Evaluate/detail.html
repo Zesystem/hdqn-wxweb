@@ -17,6 +17,9 @@
 	</div>
 	<div data-role="content">
 		<form id="from" action="" method="post" data-ajax="false" >
+			<input type="hidden" name="wjbm" value="{{ courseinfo.data.course[-1].wjbm }}"/>
+			<input type="hidden" name="bpr" value="{{ courseinfo.data.course[-1].bpr }}"/>
+			<input type="hidden" name="pgnr" value="{{ courseinfo.data.course[-1].pgnr }}"/>
 			<input type="text">
 		</form>
 	</div>
