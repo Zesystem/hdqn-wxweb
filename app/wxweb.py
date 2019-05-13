@@ -138,7 +138,7 @@ def evaluate():
                     if data[key] is None:
                         return "<script>alert('请填写完整数据！');window.history.back();</script>"
                 f = open('/root/err.log', 'w')
-                f.write('hello')
+                f.write(str(data))
                 f.close()
                 res = hbujwxt.evaluation_post(userinfo, data)
                 if res['code'] == status.CODE_SUCCESS:
