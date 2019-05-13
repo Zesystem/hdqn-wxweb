@@ -138,11 +138,10 @@ def evaluate():
                     if data[key] is None:
                         return "<script>alert('请填写完整数据！');window.history.back();</script>"
                 res = hbujwxt.evaluation_post(data)
-                return "<script>alert('评教失败！'{});window.location.href='/wxweb/evaluate';</script>".format(res)
                 if res['code'] == status.CODE_SUCCESS:
                     return "<script>alert('评教成功！');window.location.href='/wxweb/evaluate';</script>"
                 else:
-                    return "<script>alert('评教失败！'{});window.location.href='/wxweb/evaluate';</script>".format(res)
+                    return "<script>alert('评教失败！{}');window.location.href='/wxweb/evaluate';</script>".format(res)
         except:
             return "<script>alert('非法提交！');window.location.href='/wxweb/evaluate';</script>"
 
