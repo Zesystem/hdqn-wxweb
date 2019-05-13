@@ -345,7 +345,7 @@ class HbuJwxt(object):
         '''
         # try:
         data = urllib.parse.urlencode(data, encoding='gb2312')
-        # url = 'http://{ip}/jxpgXsAction.do?oper=wjpg'.format(ip=self.ip)
+        url = 'http://{ip}/jxpgXsAction.do?oper=wjpg'.format(ip=self.ip)
         return {'code' : status.CODE_SUCCESS}
         # rep = self.session.request('POST', url, data, headers=self.headers)
         #     if '评估成功' in rep.content.decode('GBK'):
