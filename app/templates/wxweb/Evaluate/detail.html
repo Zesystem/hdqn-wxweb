@@ -36,20 +36,6 @@ WeixinJSBridge.call('hideToolbar');
 			<input type="hidden" name="bpr" value="{{ courseinfo.data.course[-1].bpr }}"/>
 			<input type="hidden" name="pgnr" value="{{ courseinfo.data.course[-1].pgnr }}"/>
 			<ul data-role="listview" data-inset="true">
-				{% for item in courseinfo.data.question %}
-					<li name="result" id="vo">
-						<!-- <h2>{{ item[0] }}</h2> -->
-						{% for question in item[-1] %}
-							<label>{{ question[0] }}</label>
-							<fieldset data-role="controlgroup" data-type="horizontal" data-mini="true">
-								{% for selection in courseinfo.data.selection %}
-									<label>{{ selection[1] }}<input required name="{{ question[-1] }}" type="radio" value="{{ selection[-1] }}"></label>
-								{% endfor %}
-							</fieldset>
-						{% endfor %}
-						<br><br>
-					</li>
-				{% endfor %}
 				<li>
 					<input type="hidden" name="xumanyzg" value="zg"/>
 					<label>主观评价：</label>
