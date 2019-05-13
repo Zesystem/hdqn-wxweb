@@ -25,6 +25,14 @@
 					<li name="result">
 						<h2>{{ item[0] }}</h2>
 						<input type="text">
+						{% for question in item[-1] %}
+						<label>{{ question[0] }}</label>
+						<fieldset data-role="controlgroup" data-type="horizontal" data-mini="true">
+							{% for selection in courseinfo.data.selection %}
+								<label>{{ selection[1] }}<input required name="{{ question[-1] }}" type="radio" value="{{ selection[-1] }}"></label>
+							{% endfor %}
+						</fieldset>
+						{% endfor %}
 						<br><br>
 					</li>
 				{% endfor %}
