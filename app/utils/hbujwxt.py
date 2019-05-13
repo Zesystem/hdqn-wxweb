@@ -344,10 +344,14 @@ class HbuJwxt(object):
         '''教学评估提交
         '''
         try:
+            with open('/root/err.log', 'w') as f:
+                f.write(str(data))
             data = urllib.parse.urlencode(data, encoding='gb2312')
+            with open('/root/err.log', 'wa') as f:
+                f.write(str(data))
             url = 'http://{ip}/jxpgXsAction.do?oper=wjpg'.format(ip=self.ip)
             rep = self.session.request('POST', url, data, headers=self.headers)
-            with open('/root/err.log', 'w') as f:
+            with open('/root/err.log', 'wa') as f:
                 f.write(rep.content.decode('GBK'))
             if '评估成功' in rep.content.decode('GBK'):
                 return {'code' : status.CODE_SUCCESS}
