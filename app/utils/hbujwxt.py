@@ -344,18 +344,16 @@ class HbuJwxt(object):
         '''教学评估提交
         '''
         try:
-            with open('/root/err.log', 'w') as f:
-                f.wrtie('hello')
             if not self.jw_login(userinfo):
-                return {'code': status.CODE_FAILED}
+                return {'code': status.CODE_FAILED, 'status' : 'hello'}
             data = urllib.parse.urlencode(data, encoding='gb2312')
             url = 'http://{ip}/jxpgXsAction.do?oper=wjpg'.format(ip=self.ip)
             rep = self.session.request('POST', url, data, headers=self.headers)
             if '评估成功' in rep.content.decode('GBK'):
                 return {'code' : status.CODE_SUCCESS}
-            return {'code' : status.CODE_FAILED}
+            return {'code' : status.CODE_FAILED, 'status' : rep.content.decode('GBK')}
         except:
-            return {'code': status.CODE_FAILED}
+            return {'code': status.CODE_FAILED, 'status' : 'world'}
 
 if __name__ == '__main__':
     pass
