@@ -20,7 +20,11 @@
 			<input type="hidden" name="wjbm" value="{{ courseinfo.data.course[-1].wjbm }}"/>
 			<input type="hidden" name="bpr" value="{{ courseinfo.data.course[-1].bpr }}"/>
 			<input type="hidden" name="pgnr" value="{{ courseinfo.data.course[-1].pgnr }}"/>
-			<input type="text">
+			<ul data-role="listview" data-inset="true">
+				<li name="result">
+					<input type="text">
+				</li>
+			</ul>
 		</form>
 	</div>
 </div>
