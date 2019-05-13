@@ -1,57 +1,40 @@
-<!-- <script>
-document.addEventListener('WeixinJSBridgeReady', function onBridgeReady() {
-WeixinJSBridge.call('hideOptionMenu');
-WeixinJSBridge.call('hideToolbar');
-});
-</script> -->
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
+<!DOCTYPE html>
+<html>
 <head>
-<script src="{{url_for('static',filename='wxweb/js/jquery-1.10.2.min.js')}}"></script>
-	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
-	<meta name="apple-mobile-web-app-capable" content="yes">
-	<meta name="apple-mobile-web-app-status-bar-style" content="black">
-	<meta name="format-detection" content="telephone=no">
-
-<link rel="stylesheet" href="{{url_for('static',filename='wxweb/css/jquery.mobile-1.3.2.min.css')}}">
-<script src="{{url_for('static',filename='wxweb/js/jquery-1.8.3.min.js')}}"> </script>
-<script src="{{url_for('static',filename='wxweb/js/jquery.mobile-1.3.2.min.js')}}"> </script>
-	
-<title>网上评教</title>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<link rel="stylesheet" href="{{url_for('static',filename='wxweb/css/jquery.mobile-1.3.2.min.css')}}">
+	<script src="{{url_for('static',filename='wxweb/js/jquery-1.8.3.min.js')}}"> </script>
+	<script src="{{url_for('static',filename='wxweb/js/jquery.mobile-1.3.2.min.js')}}"> </script>
+	<title>网上评教</title>
 </head>
-
 <body>
-
-<div data-role="page" id="detail">
-
+<div data-role="page" id="detail">	
 	<div data-role="header">
 		<a href="#pageone" data-rel="back" data-iconpos="left" data-icon="back">返回</a>
 		<h2>{{ courseinfo.data.course[2] }}</h2>
 	</div>
-	
 	<div data-role="content">
 		<form id="from" action="" method="post" data-ajax="false" >
 			<input type="hidden" name="wjbm" value="{{ courseinfo.data.course[-1].wjbm }}"/>
 			<input type="hidden" name="bpr" value="{{ courseinfo.data.course[-1].bpr }}"/>
 			<input type="hidden" name="pgnr" value="{{ courseinfo.data.course[-1].pgnr }}"/>
 			<ul data-role="listview" data-inset="true">
-				<volist name="result" id="vo">	
-				<li>
-					{% for item in courseinfo.data.question %}
+				{% for item in courseinfo.data.question %}
+					<li name="result">
 						<h2>{{ item[0] }}</h2>
 						{% for question in item[-1] %}
-							<label>{{ question[0] }}</label>
-							<fieldset data-role="controlgroup" data-type="horizontal" data-mini="true">
-								{% for selection in courseinfo.data.selection %}
-									<label>{{ selection[1] }}<input required name="{{ question[-1] }}" type="radio" value="{{ selection[-1] }}"></label>
-								{% endfor %}
-							</fieldset>
+						<label>{{ question[0] }}</label>
+						<fieldset data-role="controlgroup" data-type="horizontal" data-mini="true">
+							{% for selection in courseinfo.data.selection %}
+								<label>{{ selection[1] }}<input required name="{{ question[-1] }}" type="radio" value="{{ selection[-1] }}"></label>
+							{% endfor %}
+						</fieldset>
 						{% endfor %}
 						<br><br>
-					{% endfor %}
-				</li>
-				</volist>
+					</li>
+				{% endfor %}
 				<li>
 					<input type="hidden" name="xumanyzg" value="zg"/>
 					<label>主观评价：</label>
@@ -61,10 +44,6 @@ WeixinJSBridge.call('hideToolbar');
 			<input type="submit" value="提交" />
 		</form>
 	</div>
-	
-	{% include "wxweb/footnav.html" %}
-
 </div>
-<script src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
 </body>
 </html>
