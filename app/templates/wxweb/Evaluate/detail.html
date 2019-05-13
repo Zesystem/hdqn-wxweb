@@ -38,18 +38,7 @@ WeixinJSBridge.call('hideToolbar');
 			<ul data-role="listview" data-inset="true">
 				<ul name="result" id="vo">	
 					{% for item in courseinfo.data.question %}
-					<li>
-						<h2>{{ item[0] }}</h2>
-						{% for question in item[-1] %}
-							<label>{{ question[0] }}</label>
-							<fieldset data-role="controlgroup" data-type="horizontal" data-mini="true">
-								{% for selection in courseinfo.data.selection %}
-									<label>{{ selection[1] }}<input required name="{{ question[-1] }}" type="radio" value="{{ selection[-1] }}"></label>
-								{% endfor %}
-							</fieldset>
-						{% endfor %}
-						<br><br>
-					</li>
+
 					{% endfor %}
 				</ul>
 				<li>
@@ -65,6 +54,5 @@ WeixinJSBridge.call('hideToolbar');
 	{% include "wxweb/footnav.html" %}
 
 </div>
-<script src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
 </body>
 </html>
