@@ -37,7 +37,7 @@ WeixinJSBridge.call('hideToolbar');
 			<input type="hidden" name="bpr" value="{{ courseinfo.data.course[-1].bpr }}"/>
 			<input type="hidden" name="pgnr" value="{{ courseinfo.data.course[-1].pgnr }}"/>
 			<ul data-role="listview" data-inset="true">
-				<volist name="result" id="vo">	
+				<ul name="result" id="vo">	
 					{% for item in courseinfo.data.question %}
 					<li>
 						<h2>{{ item[0] }}</h2>
@@ -50,8 +50,9 @@ WeixinJSBridge.call('hideToolbar');
 							</fieldset>
 						{% endfor %}
 						<br><br>
+						{% endfor %}
 					</li>
-					{% endfor %}
+				</ul>
 				<li>
 					<input type="hidden" name="xumanyzg" value="zg"/>
 					<label>主观评价：</label>
