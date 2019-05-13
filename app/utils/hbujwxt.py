@@ -27,7 +27,7 @@ class HbuJwxt(object):
         self.session = requests.Session()
         self.session.mount('http://', HTTPAdapter(max_retries=3))
         self.session.mount('https://', HTTPAdapter(max_retries=3))
-        self.ip = '202.206.1.160'
+        self.ip = 'zhjw.hbu.edu.cn'
         self.headers = {
             'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/70.0.3538.77 Safari/537.36',
             'Connection' : 'keep-alive',
