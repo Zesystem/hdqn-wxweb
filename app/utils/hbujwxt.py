@@ -343,9 +343,9 @@ class HbuJwxt(object):
     def evaluation_post(self, data):
         '''教学评估提交
         '''
-        return {'code' : status.CODE_SUCCESS}
         # try:
-        # data = urllib.parse.urlencode(data, encoding='gb2312')
+        data = urllib.parse.urlencode(data, encoding='gb2312')
+        return {'code' : status.CODE_SUCCESS}
         # url = 'http://{ip}/jxpgXsAction.do?oper=wjpg'.format(ip=self.ip)
         # rep = self.session.request('POST', url, data, headers=self.headers)
         #     if '评估成功' in rep.content.decode('GBK'):
