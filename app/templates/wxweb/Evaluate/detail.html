@@ -10,45 +10,8 @@
 	<title>网上评教</title>
 </head>
 <body>
-		<div data-role="page" id="detail">
-
-				<div data-role="header">
-					<a href="#pageone" data-rel="back" data-iconpos="left" data-icon="back">返回</a>
-					<h2>{{ courseinfo.data.course[2] }}</h2>
-				</div>
-				
-				<div data-role="content">
-					<form id="from" action="" method="post" data-ajax="false" >
-						<input type="hidden" name="wjbm" value="{{ courseinfo.data.course[-1].wjbm }}"/>
-						<input type="hidden" name="bpr" value="{{ courseinfo.data.course[-1].bpr }}"/>
-						<input type="hidden" name="pgnr" value="{{ courseinfo.data.course[-1].pgnr }}"/>
-						<ul data-role="listview" data-inset="true">
-							{% for item in courseinfo.data.question %}
-								<li name="result" id="vo">
-									<h2>{{ item[0] }}</h2>
-									{% for question in item[-1] %}
-										<label>{{ question[0] }}</label>
-										<fieldset data-role="controlgroup" data-type="horizontal" data-mini="true">
-											{% for selection in courseinfo.data.selection %}
-												<label>{{ selection[1] }}<input required name="{{ question[-1] }}" type="radio" value="{{ selection[-1] }}"></label>
-											{% endfor %}
-										</fieldset>
-									{% endfor %}
-									<br><br>
-								</li>
-							{% endfor %}
-							<li>
-								<input type="hidden" name="xumanyzg" value="zg"/>
-								<label>主观评价：</label>
-								<textarea style="height:150px;" name="zgpj" required></textarea>
-							</li>
-						</ul>
-						<input type="submit" value="提交" />
-					</form>
-				</div>
-				
-				{% include "wxweb/footnav.html" %}
-			
-			</div>
+<div data-role="page" id="detail">	
+	<input type="text">
+</div>
 </body>
 </html>
