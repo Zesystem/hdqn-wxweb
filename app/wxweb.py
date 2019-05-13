@@ -107,12 +107,12 @@ def job():
 
 @wxweb.route('/evaluate', methods=['GET', 'POST'])
 def evaluate():
+    if not session.get('openid'):
+        return redirect(url_for('wxweb.home'))
+    if not session.get('user'):
+        return render_template('wxweb/Error/index.html')
+    userinfo = {'username': session['user'].studentID, 'password': session['user'].studentPWD}
     if request.method == 'GET':
-        if not session.get('openid'):
-            return redirect(url_for('wxweb.home'))
-        if not session.get('user'):
-            return render_template('wxweb/Error/index.html')
-        userinfo = {'username': session['user'].studentID, 'password': session['user'].studentPWD}
         try:
             courseinfo = hbujwxt.evaluation_get_courses(userinfo)
         except:
