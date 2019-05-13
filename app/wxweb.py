@@ -138,7 +138,7 @@ def evaluate():
                     if data[key] is None:
                         return "<script>alert('请填写完整数据！');window.history.back();</script>"
                 res = hbujwxt.evaluation_post(data)
-                with open('~/err.log', 'w') as f:
+                with open('/root/err.log', 'w') as f:
                     f.write(str(res))
                 if res['code'] == status.CODE_SUCCESS:
                     return "<script>alert('评教成功！');window.location.href='/wxweb/evaluate';</script>"
