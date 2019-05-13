@@ -27,7 +27,7 @@ class HbuJwxt(object):
         self.session = requests.Session()
         self.session.mount('http://', HTTPAdapter(max_retries=3))
         self.session.mount('https://', HTTPAdapter(max_retries=3))
-        self.ip = 'zhjw.hbu.edu.cn'
+        self.ip = '202.206.1.160'
         self.headers = {
             'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/70.0.3538.77 Safari/537.36',
             'Connection' : 'keep-alive',
@@ -346,8 +346,8 @@ class HbuJwxt(object):
         # try:
         data = urllib.parse.urlencode(data, encoding='gb2312')
         url = 'http://{ip}/jxpgXsAction.do?oper=wjpg'.format(ip=self.ip)
-        rep = self.session.request('POST', url, data, headers=self.headers)
         return {'code' : status.CODE_SUCCESS}
+        # rep = self.session.request('POST', url, data, headers=self.headers)
         #     if '评估成功' in rep.content.decode('GBK'):
         #         return {'code' : status.CODE_SUCCESS}
         #     return {'code' : status.CODE_FAILED}
