@@ -38,7 +38,7 @@ WeixinJSBridge.call('hideToolbar');
 			<ul data-role="listview" data-inset="true">
 				{% for item in courseinfo.data.question %}
 					<li name="result" id="vo">
-						<h2>{{ item[0] }}</h2>
+						<!-- <h2>{{ item[0] }}</h2> -->
 						{% for question in item[-1] %}
 							<label>{{ question[0] }}</label>
 							<fieldset data-role="controlgroup" data-type="horizontal" data-mini="true">
