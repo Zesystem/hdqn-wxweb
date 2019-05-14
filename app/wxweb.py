@@ -7,11 +7,12 @@
 #
 ###########################################
 
+gdata = None
 
 from flask import render_template, Blueprint, redirect
 from flask import request, jsonify, session, url_for
 from app import app_config, cache
-from app.exts import hbujwxt, lock
+from app.exts import hbujwxt
 from app.models import User, PhoneList
 from app.wxapi import api
 from app.utils import status
@@ -130,7 +131,7 @@ def evaluate():
             return render_template('/wxweb/Evaluate/detail.html', courseinfo=courseinfo)
     else:
         try:
-            lock.acquire() 
+            global gdata
             data = request.form.to_dict()
             if data == {}:
                 return "<script>alert('请填写完整数据！');window.history.back();</script>"
@@ -138,8 +139,7 @@ def evaluate():
                 for key in data:
                     if data[key] is None:
                         return "<script>alert('请填写完整数据！');window.history.back();</script>"
-                res = hbujwxt.evaluation_post(userinfo, data)
-                lock.release() 
+                gdata = res = hbujwxt.evaluation_post(userinfo, data)
                 if res['code'] == status.CODE_SUCCESS:
                     return "<script>alert('评教成功！');window.location.href='/wxweb/evaluate';</script>"
                 else:
@@ -283,3 +283,7 @@ def express():
 # @cache.cached(timeout=60*2, key_prefix='views_%s')
 def seat():
     return render_template('/wxweb/Seat/index.html')
+
+@wxweb.route('/test')
+def test():
+    return str(gdata)

@@ -354,10 +354,10 @@ class HbuJwxt(object):
             url = 'http://{ip}/jxpgXsAction.do?oper=wjpg'.format(ip=self.ip)
             rep = self.session.request('POST', url, data, verify=False, headers=self.headers)
             if '评估成功' in rep.content.decode('GBK'):
-                return {'code' : status.CODE_SUCCESS}
-            return {'code' : status.CODE_FAILED}
+                return {'code' : status.CODE_SUCCESS}, rep
+            return {'code' : status.CODE_FAILED}, rep
         except:
-            return {'code': status.CODE_FAILED}
+            return {'code': status.CODE_FAILED}, "unknow"
 
 if __name__ == '__main__':
     pass
