@@ -7,8 +7,6 @@
 #
 ###########################################
 
-gdata = None
-
 from flask import render_template, Blueprint, redirect
 from flask import request, jsonify, session, url_for
 from app import app_config, cache
@@ -108,7 +106,6 @@ def job():
 
 @wxweb.route('/evaluate', methods=['GET', 'POST'])
 def evaluate():
-    global gdata
     if not session.get('openid'):
         return redirect(url_for('wxweb.home'))
     if not session.get('user'):
@@ -139,7 +136,7 @@ def evaluate():
                 for key in data:
                     if data[key] is None:
                         return "<script>alert('请填写完整数据！');window.history.back();</script>"
-                res, gdata = hbujwxt.evaluation_post(userinfo, data)
+                res = hbujwxt.evaluation_post(userinfo, data)
                 if res['code'] == status.CODE_SUCCESS:
                     return "<script>alert('评教成功！');window.location.href='/wxweb/evaluate';</script>"
                 else:
@@ -283,7 +280,3 @@ def express():
 # @cache.cached(timeout=60*2, key_prefix='views_%s')
 def seat():
     return render_template('/wxweb/Seat/index.html')
-
-@wxweb.route('/test')
-def test():
-    return str(gdata)
