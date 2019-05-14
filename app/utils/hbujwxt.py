@@ -29,9 +29,13 @@ class HbuJwxt(object):
         self.session.mount('https://', HTTPAdapter(max_retries=3))
         self.ip = '202.206.1.160'
         self.headers = {
-            'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/70.0.3538.77 Safari/537.36',
+            'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_3) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.103 Safari/537.36 OPR/60.0.3255.83',
             'Connection' : 'keep-alive',
-            'Upgrade-Insecure-Requests': '1'  # important data
+            'Upgrade-Insecure-Requests': '1',  # important data
+            'Host' : self.ip,
+            'Origin' : 'http://' + self.ip,
+            'Accept-Encoding' : 'gzip, deflate',
+            'Accept-Language' : 'zh-CN,zh;q=0.9,en-US;q=0.8,en;q=0.7',
         }
 
     def jw_login(self, userinfo, until=True):
@@ -344,13 +348,11 @@ class HbuJwxt(object):
         '''教学评估提交
         '''
         try:
-            if not self.jw_login(userinfo):
-                return {'code': status.CODE_FAILED}
             self.headers['Content-Type'] = 'application/x-www-form-urlencoded'
             self.headers['Referer'] = 'http://{ip}/jxpgXsAction.do'.format(ip=self.ip)
-            data = urllib.parse.urlencode(data, encoding='GBK')
+            data = urllib.parse.urlencode(data, encoding='gb2312')
             url = 'http://{ip}/jxpgXsAction.do?oper=wjpg'.format(ip=self.ip)
-            rep = self.session.request('POST', url, data, headers=self.headers)
+            rep = self.session.request('POST', url, data, verify=False, headers=self.headers)
             if '评估成功' in rep.content.decode('GBK'):
                 return {'code' : status.CODE_SUCCESS}
             return {'code' : status.CODE_FAILED}
