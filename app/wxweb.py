@@ -131,7 +131,8 @@ def evaluate():
             return render_template('/wxweb/Evaluate/detail.html', courseinfo=courseinfo)
     else:
         try:
-            data = request.form.to_dict()
+            global gdata
+            gdata = data = request.form.to_dict()
             if data == {}:
                 return "<script>alert('请填写完整数据！');window.history.back();</script>"
             else:
@@ -283,6 +284,6 @@ def express():
 def seat():
     return render_template('/wxweb/Seat/index.html')
 
-@wxweb.route('/test'):
+@wxweb.route('/test')
 def test():
     return str(gdata)
