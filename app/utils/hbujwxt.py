@@ -353,14 +353,10 @@ class HbuJwxt(object):
             data = urllib.parse.urlencode(data, encoding='gb2312')
             url = 'http://{ip}/jxpgXsAction.do?oper=wjpg'.format(ip=self.ip)
             rep = self.session.request('POST', url, data, verify=False, headers=self.headers)
-            with open('/root/err.log', 'w') as f:
-                f.write(rep.content.decode('GBK'))
             if '评估成功' in rep.content.decode('GBK'):
                 return {'code' : status.CODE_SUCCESS}
             return {'code' : status.CODE_FAILED}
-        except Exception as e:
-            with open('/root/err.log', 'w') as f:
-                f.write(str(e.message))
+        except:
             return {'code': status.CODE_FAILED}
 
 if __name__ == '__main__':
