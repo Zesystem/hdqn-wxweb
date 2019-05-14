@@ -290,7 +290,7 @@ class HbuJwxt(object):
                         'wjmc': data[3],
                         'bprm': data[2],
                         'pgnrm': data[4],
-                        'wjbz': None,
+                        'wjbz': '',
                         'pageSize': '20',
                         'page': '1',
                         'currentPage': '1',
@@ -306,7 +306,7 @@ class HbuJwxt(object):
         '''获取评教详情页
         '''
         try:
-            data = urllib.parse.urlencode(course[-1], encoding='gb2312')
+            data = urllib.parse.urlencode(course[-1], encoding='GBK')
             url = 'http://{ip}/jxpgXsAction.do'.format(ip=self.ip)
             rep = self.session.request('POST', url, data, headers=self.headers)
             soup = BeautifulSoup(rep.content.decode('GBK'), features='lxml')
@@ -346,9 +346,7 @@ class HbuJwxt(object):
         try:
             self.headers['Content-Type'] = 'application/x-www-form-urlencoded'
             self.headers['Referer'] = 'http://{ip}/jxpgXsAction.do'.format(ip=self.ip)
-            if not self.jw_login(userinfo):
-                return {'code': status.CODE_FAILED}
-            data = urllib.parse.urlencode(data, encoding='gb2312')
+            data = urllib.parse.urlencode(data, encoding='GBK')
             url = 'http://{ip}/jxpgXsAction.do?oper=wjpg'.format(ip=self.ip)
             rep = self.session.request('POST', url, data, headers=self.headers)
             if '评估成功' in rep.content.decode('GBK'):
