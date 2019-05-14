@@ -7,6 +7,7 @@
 #
 ###########################################
 
+gdata = None
 
 from flask import render_template, Blueprint, redirect
 from flask import request, jsonify, session, url_for
@@ -130,7 +131,8 @@ def evaluate():
             return render_template('/wxweb/Evaluate/detail.html', courseinfo=courseinfo)
     else:
         try:
-            data = request.form.to_dict()
+            global gdata
+            gdata = data = request.form.to_dict()
             if data == {}:
                 return "<script>alert('请填写完整数据！');window.history.back();</script>"
             else:
@@ -281,3 +283,7 @@ def express():
 # @cache.cached(timeout=60*2, key_prefix='views_%s')
 def seat():
     return render_template('/wxweb/Seat/index.html')
+
+@wxweb.route('/test'):
+def test():
+    return str(gdata)
