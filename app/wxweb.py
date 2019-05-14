@@ -141,7 +141,9 @@ def evaluate():
                     return "<script>alert('评教成功！');window.location.href='/wxweb/evaluate';</script>"
                 else:
                     return "<script>alert('评教失败！');window.location.href='/wxweb/evaluate';</script>"
-        except:
+        except Exception as e:
+            with open('/root/err.log', 'w') as f:
+                f.write(str(e.message))
             return "<script>alert('非法提交！');window.location.href='/wxweb/evaluate';</script>"
 
 @wxweb.route('/family')
