@@ -7,6 +7,7 @@
 #
 ###########################################
 
+
 from flask import render_template, Blueprint, redirect
 from flask import request, jsonify, session, url_for
 from app import app_config, cache
@@ -141,10 +142,7 @@ def evaluate():
                     return "<script>alert('评教成功！');window.location.href='/wxweb/evaluate';</script>"
                 else:
                     return "<script>alert('评教失败！');window.location.href='/wxweb/evaluate';</script>"
-        except Exception as e:
-            f = open('/root/err.log')
-            f.write(e.message)
-            f.close()
+        except:
             return "<script>alert('非法提交！');window.location.href='/wxweb/evaluate';</script>"
 
 @wxweb.route('/family')
