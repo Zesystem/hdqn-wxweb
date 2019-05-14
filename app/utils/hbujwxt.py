@@ -280,7 +280,7 @@ class HbuJwxt(object):
                 'head' : head[0:-1],
                 'course' : []
             }
-            for tr in table.find_all('tr', recursive=False)[1:]:
+            for tr in table.find_all('tr', recursive=False):
                 item = []
                 tds = tr.find_all('td', recursive=False)
                 for td in tds[0:-1]:
