@@ -12,9 +12,9 @@ import io
 import os
 import PIL
 import random
-from urllib.parse
 import requests
 import pytesseract
+import urllib.parse
 from bs4 import BeautifulSoup
 from requests.adapters import HTTPAdapter
 from app.utils import status
