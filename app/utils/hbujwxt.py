@@ -347,12 +347,13 @@ class HbuJwxt(object):
     def evaluation_post(self, userinfo, data):
         '''教学评估提交
         '''
-        try:
+        try:            
+            proxies = {'http' : 'http://123.169.37.201:9064', 'https' : 'https://123.169.37.201:9064'}
             self.headers['Content-Type'] = 'application/x-www-form-urlencoded'
             self.headers['Referer'] = 'http://{ip}/jxpgXsAction.do'.format(ip=self.ip)
             data = urllib.parse.urlencode(data, encoding='gb2312')
             url = 'http://{ip}/jxpgXsAction.do?oper=wjpg'.format(ip=self.ip)
-            rep = self.session.request('POST', url, data, verify=False, headers=self.headers)
+            rep = self.session.request('POST', url, proxies=proxies, data, verify=False, headers=self.headers)
             if '评估成功' in rep.content.decode('GBK'):
                 return {'code' : status.CODE_SUCCESS}
             return {'code' : status.CODE_FAILED}
