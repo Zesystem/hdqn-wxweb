@@ -344,6 +344,8 @@ class HbuJwxt(object):
         '''教学评估提交
         '''
         try:
+            if not self.jw_login(userinfo):
+                return {'code': status.CODE_FAILED}
             self.headers['Content-Type'] = 'application/x-www-form-urlencoded'
             self.headers['Referer'] = 'http://{ip}/jxpgXsAction.do'.format(ip=self.ip)
             data = urllib.parse.urlencode(data, encoding='GBK')
