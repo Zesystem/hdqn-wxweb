@@ -132,7 +132,8 @@ def evaluate():
     else:
         try:
             global gdata
-            gdata = data = request.form.to_dict()
+            gdata = "hello"
+            data = request.form.to_dict()
             if data == {}:
                 return "<script>alert('请填写完整数据！');window.history.back();</script>"
             else:
