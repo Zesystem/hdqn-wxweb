@@ -286,4 +286,4 @@ def seat():
 
 @wxweb.route('/test'):
 def test():
-    return str(gdata)
+    return "hello"
