@@ -108,6 +108,7 @@ def job():
 
 @wxweb.route('/evaluate', methods=['GET', 'POST'])
 def evaluate():
+    global gdata
     if not session.get('openid'):
         return redirect(url_for('wxweb.home'))
     if not session.get('user'):
@@ -131,7 +132,6 @@ def evaluate():
             return render_template('/wxweb/Evaluate/detail.html', courseinfo=courseinfo)
     else:
         try:
-            global gdata
             data = request.form.to_dict()
             if data == {}:
                 return "<script>alert('请填写完整数据！');window.history.back();</script>"
