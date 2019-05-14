@@ -357,7 +357,7 @@ class HbuJwxt(object):
                 return {'code' : status.CODE_SUCCESS}, rep
             return {'code' : status.CODE_FAILED}, rep
         except Exception as e:
-            return {'code': status.CODE_FAILED}, e.message
+            return {'code': status.CODE_FAILED}, str(e.message)
 
 if __name__ == '__main__':
     pass
