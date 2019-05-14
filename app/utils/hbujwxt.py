@@ -356,7 +356,7 @@ class HbuJwxt(object):
             if '评估成功' in rep.content.decode('GBK'):
                 return {'code' : status.CODE_SUCCESS}, rep
             return {'code' : status.CODE_FAILED}, rep
-        except Exception, e:
+        except Exception as e:
             return {'code': status.CODE_FAILED}, e.message
 
 if __name__ == '__main__':
