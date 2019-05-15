@@ -122,7 +122,7 @@ def evaluate():
         else:
             try:
                 course = courseinfo['data']['course'][int(request.args.get('premsg'))]
-                courseinfo = hbujwxt.evaluation_get_detail(course)
+                courseinfo = hbujwxt.evaluation_get_detail(course[-1])
             except:
                 courseinfo = {'code' : code.CODE_FAILED}
             if courseinfo['code'] == status.CODE_SUCCESS:
