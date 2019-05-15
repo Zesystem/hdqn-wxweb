@@ -48,7 +48,7 @@ class HbuJwxt(object):
         def get_captcha():
             # 教务系统登陆验证码获取
             url = 'http://{ip}/validateCodeAction.do?random={rd}'.format(ip=self.ip, rd=random.random())
-            res = self.session.request('GET', url, headers=self.headers, timeout=5)
+            res = self.session.request('GET', url, headers=self.headers)
             # string--》bytes--》stream
             data_stream = io.BytesIO(res.content)
             im = PIL.Image.open(data_stream)
@@ -92,7 +92,7 @@ class HbuJwxt(object):
             }
             data = urllib.parse.urlencode(data)  # 需要from-urlencode
             res = self.session.request(
-                'POST', url, headers=self.headers, data=data, timeout=(3, 5))
+                'POST', url, headers=self.headers, data=data)
             return res.content.decode('GBK', 'ignore')
         self.init()
         self.headers['Referer'] = 'http://{ip}/'.format(ip=self.ip)
@@ -118,7 +118,7 @@ class HbuJwxt(object):
                     return {'code': status.CODE_FAILED}
             self.headers['Referer'] = 'http://{ip}/menu/menu.jsp?action1=0&index=1'.format(ip=self.ip)
             url = 'http://{ip}/xjInfoAction.do?oper=xjxx'.format(ip=self.ip)
-            res = self.session.request('GET', url, headers=self.headers, timeout=(3, 5))
+            res = self.session.request('GET', url, headers=self.headers)
             baseinfo = {
                 '学号': '',
                 '姓名': '',
@@ -162,7 +162,7 @@ class HbuJwxt(object):
             self.headers.pop('Content-Type')
             self.headers['Referer'] = 'http://{ip}/menu/menu.jsp?action1=0&index=6'.format(ip=self.ip)
             url = 'http://{ip}/bxqcjcxAction.do'.format(ip=self.ip)
-            res = self.session.request('GET', url, headers=self.headers, timeout=(3, 5))
+            res = self.session.request('GET', url, headers=self.headers)
             soup = BeautifulSoup(res.content.decode('GBK', 'ignore'), 'lxml')
             infotbl = soup.find("table", class_="displayTag")
             infotds = infotbl.find_all("td")
@@ -190,12 +190,12 @@ class HbuJwxt(object):
             self.headers.pop('Content-Type')
             self.headers['Referer'] = 'http://{ip}/menu/menu.jsp?action1=0&index=6'.format(ip=self.ip)
             url = 'http://{ip}/gradeLnAllAction.do?type=ln&oper=qb'.format(ip=self.ip)
-            res = self.session.request('GET', url, headers=self.headers, timeout=(3, 5))
+            res = self.session.request('GET', url, headers=self.headers)
             soup = BeautifulSoup(res.content.decode('GBK'), 'lxml')
             iframe = soup.find("iframe")
             url = 'http://{ip}/'.format(ip=self.ip) + iframe.get('src')
             self.headers['Referer'] = 'http://{ip}/gradeLnAllAction.do?type=ln&oper=qb'.format(ip=self.ip)
-            res = self.session.request('GET', url, headers=self.headers, timeout=(3, 5))
+            res = self.session.request('GET', url, headers=self.headers)
             soup = BeautifulSoup(res.content.decode('GBK', 'ignore'), 'lxml')
             term_names = []
             terms = soup.find_all('a')
@@ -232,7 +232,7 @@ class HbuJwxt(object):
                     return {'code': status.CODE_FAILED}
             self.headers['Referer'] = 'http://{ip}/menu/menu.jsp?action1=0&index=2'.format(ip=self.ip)
             url = 'http://{ip}/xkAction.do?actionType=6'.format(ip=self.ip)
-            res = self.session.request('GET', url, headers=self.headers, timeout=(3, 5))
+            res = self.session.request('GET', url, headers=self.headers)
             soup = BeautifulSoup(res.content.decode('GBK', 'ignore'), 'lxml')
             infotds = soup.find('table', class_='displayTag').find_all('td')
             s, e = 9, 9+8*4
@@ -263,7 +263,7 @@ class HbuJwxt(object):
                     return {'code': status.CODE_FAILED}
             self.headers['Referer'] = 'http://{ip}/menu/menu.jsp?action1=0&index=3'.format(ip=self.ip)
             url = 'http://{ip}/jxpgXsAction.do?oper=listWj'.format(ip=self.ip)
-            res = self.session.request('GET', url, headers=self.headers, timeout=(3, 5))
+            res = self.session.request('GET', url, headers=self.headers)
             soup = BeautifulSoup(res.content.decode('GBK', 'ignore'), features='lxml')
             table = soup.find('table', attrs={
                 'class': "titleTop2",
@@ -324,7 +324,7 @@ class HbuJwxt(object):
             self.headers['Referer'] = 'http://{ip}/jxpgXsAction.do?oper=listWj'.format(ip=self.ip)
             data = urllib.parse.urlencode(data, encoding='gb2312')
             url = 'http://{ip}/jxpgXsAction.do'.format(ip=self.ip)
-            rep = self.session.request('POST', url, data, headers=self.headers, timeout=(3, 5))
+            rep = self.session.request('POST', url, data, headers=self.headers)
             soup = BeautifulSoup(rep.content.decode('GBK'), features='lxml')
             table = soup.find('table',attrs={
                     'id':"tblView",
@@ -366,7 +366,7 @@ class HbuJwxt(object):
             self.headers['Referer'] = 'http://{ip}/jxpgXsAction.do'.format(ip=self.ip)
             data = urllib.parse.urlencode(data, encoding='gb2312')
             url = 'http://{ip}/jxpgXsAction.do?oper=wjpg'.format(ip=self.ip)
-            rep = self.session.request('POST', url, data, verify=False, headers=self.headers, timeout=(3, 5))
+            rep = self.session.request('POST', url, data, verify=False, headers=self.headers)
             # print(rep.text)
             if '评估成功' in rep.content.decode('GBK'):
                 return {'code' : status.CODE_SUCCESS}
