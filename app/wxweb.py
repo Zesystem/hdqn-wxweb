@@ -27,6 +27,10 @@ import urllib.parse
 
 wxweb = Blueprint('wxweb', __name__)
 
+def render(file, openid=True):
+    if openid :
+        return render_template(file, openid=request.args.get('openid'))
+    return render_template(file)
 
 def get_auth_to_uri(url_route):
     redirect_uri = urllib.parse.urlencode({'redirect_uri':'{app_domain}{url_route}'.format(app_domain=app_config.APP_DOMAIN)})
@@ -74,19 +78,19 @@ def code():
 @wxweb.route('/index')
 # @cache.cached(timeout=60*2, key_prefix='views_%s')
 def index():
-    return render_template('/wxweb/index.html', openid=request.args.get('openid'))
+    return render('/wxweb/index.html')
  
 @wxweb.route('/book', methods=['GET', 'POST'])
 def book():
     if request.method == 'GET':
-        return render_template('/wxweb/Book/index.html')
+        return render('/wxweb/Book/index.html')
     else:
         return jsonify(book_query(request.form.get('book_name')))
 
 @wxweb.route('/bus', methods=['GET', 'POST'])
 def bus():
     if request.method == 'GET':
-        return render_template('/wxweb/Bus/index.html')
+        return render('/wxweb/Bus/index.html')
     else:
         mt = request.form.get('mt')
         lineno = request.form.get('lineno')
@@ -110,7 +114,7 @@ def job():
         }
     except:
          business = { 'introduce' : '', 'requirement' : '', 'process' : '', 'preferential' : ''}
-    return render_template('/wxweb/CreateJob/index.html', business=business)
+    return render('/wxweb/CreateJob/index.html', business=business)
 
 @wxweb.route('/evaluate', methods=['GET', 'POST'])
 def evaluate():
@@ -119,12 +123,12 @@ def evaluate():
         return redirect(url_for('wxweb.home'))
     user = UserProcessor.get_user(openid)
     if not user:
-        return render_template('wxweb/Error/index.html')
+        return render('wxweb/Error/index.html')
     userinfo = {'username': user.studentID, 'password': user.studentPWD}
     courseinfo = hbujwxt.evaluation_get_courses(userinfo)
     if request.method == 'GET':
         if not request.args.get('premsg'):
-            return render_template('/wxweb/Evaluate/index.html', openid=openid, courseinfo=courseinfo)
+            return render('/wxweb/Evaluate/index.html', courseinfo=courseinfo)
         else:
             try:
                 course = courseinfo['data']['course'][int(request.args.get('premsg'))]
@@ -133,7 +137,7 @@ def evaluate():
                 courseinfo = {'code' : code.CODE_FAILED}
             if courseinfo['code'] == status.CODE_SUCCESS:
                 courseinfo['data']['course'] = course
-            return render_template('/wxweb/Evaluate/detail.html', courseinfo=courseinfo)
+            return render('/wxweb/Evaluate/detail.html', courseinfo=courseinfo)
     else:
         try:
             course = courseinfo['data']['course'][int(request.args.get('premsg'))]
@@ -168,12 +172,12 @@ def family():
         }
     except:
          info = { 'apartment' : { 'phone' : '', 'adjustment' : '', 'checkout' : ''}, 'international' : '', 'logistics' : ''}       
-    return render_template('/wxweb/Family/index.html', info=info)
+    return render('/wxweb/Family/index.html', info=info)
 
 @wxweb.route('/feedback', methods=['GET', 'POST'])
 # @cache.cached(timeout=60*2, key_prefix='views_%s')
 def feedback():
-    return render_template('/wxweb/Feedback/index.html')
+    return render('/wxweb/Feedback/index.html')
 
 @wxweb.route('/food')
 # @cache.cached(timeout=60*2, key_prefix='views_%s')
@@ -183,7 +187,7 @@ def food():
         'order' : '',
         'personal' : ''
     }
-    return render_template('/wxweb/Food/index.html', schoolfood=schoolfood)
+    return render('/wxweb/Food/index.html', schoolfood=schoolfood)
 
 @wxweb.route('/phone')
 # @cache.cached(timeout=60*2, key_prefix='views_%s')
@@ -192,7 +196,7 @@ def phone():
         phones = [ {'address' : phone.address, 'phone' : phone.phone } for phone in PhoneList.query.all()]
     except:
         phones = []
-    return render_template('/wxweb/Phone/index.html', phones=phones)
+    return render('/wxweb/Phone/index.html', phones=phones)
 
 @wxweb.route('/school')
 # @cache.cached(timeout=60*2, key_prefix='views_%s')
@@ -214,7 +218,7 @@ def school():
         }
     except:
         info = {'senses' : {'area' : [], 'build' : [ [],['歌舞厅', '图书馆']] },'wish' : '','train' : '','drive' : '','bookorder' : '','yibaimarket' : ''}
-    return render_template('/wxweb/School/index.html', info=info)
+    return render('/wxweb/School/index.html', info=info)
 
 @wxweb.route('/welfare')
 # @cache.cached(timeout=60*2, key_prefix='views_%s')
@@ -223,7 +227,7 @@ def welfare():
         content = text_query('公益河大')
     except:
         content = ''
-    return render_template('/wxweb/Welfare/index.html',content=content)
+    return render('/wxweb/Welfare/index.html',content=content)
 
 @wxweb.route('/score')
 def score():
@@ -233,7 +237,7 @@ def score():
             return redirect(url_for('wxweb.home'))
         user = UserProcessor.get_user(openid)
         if not user:
-            return render_template('wxweb/Error/index.html')
+            return render('wxweb/Error/index.html')
         userinfo = {'username': user.studentID, 'password': user.studentPWD}
         grades = ['大一', '大二', '大三', '大四', '大五', '大六', '大七', '大八']
         resp = hbujwxt.query_each_term_score(userinfo)
@@ -253,7 +257,7 @@ def score():
             }
     except:
         user = {'grades':[], 'scores':[]}
-    return render_template('/wxweb/Score/index.html',user=user)
+    return render('/wxweb/Score/index.html',user=user)
 
 @wxweb.route('/course')
 def course():
@@ -263,7 +267,7 @@ def course():
             return redirect(url_for('wxweb.home'))
         user = UserProcessor.get_user(openid)
         if not user:
-            return render_template('wxweb/Error/index.html')
+            return render('wxweb/Error/index.html')
         userinfo = {'username': user.studentID, 'password': user.studentPWD}
         curArr = []
         res = hbujwxt.query_course_table(userinfo)
@@ -275,23 +279,23 @@ def course():
         }
     except:
         courseinfo = { 'month' : '', 'curriculuminfo' : ''}
-    return render_template('/wxweb/Course/index.html',courseinfo=courseinfo)
+    return render('/wxweb/Course/index.html', courseinfo=courseinfo)
 
 @wxweb.route('/weather', methods=['GET', 'POST'])
 def weather():
     if request.method == 'GET':
-        return render_template('/wxweb/Weather/index.html')
+        return render('/wxweb/Weather/index.html')
     else:
         return jsonify(getWeather(request.form.get('city_name')))
 
 @wxweb.route('/express', methods=['GET', 'POST'])
 def express():
     if request.method == 'GET':
-        return render_template('/wxweb/Express/index.html')
+        return render('/wxweb/Express/index.html')
     else:
         return jsonify(express_query(request.form.get('express_number')))
 
 @wxweb.route('/seat')
 # @cache.cached(timeout=60*2, key_prefix='views_%s')
 def seat():
-    return render_template('/wxweb/Seat/index.html')
+    return render('/wxweb/Seat/index.html')

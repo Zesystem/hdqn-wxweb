@@ -21,6 +21,11 @@ from app.utils.timeutil import week_now, month_now, day_after, get_week_day
 
 public = Blueprint('public', __name__)
 
+def render(file, openid=True):
+    if openid :
+        return render(file, openid=request.args.get('openid'))
+    return render(file)
+
 @public.route('/curriculum')
 def curriculum():
     openid = request.args.get('openid')
@@ -34,7 +39,7 @@ def curriculum():
             curArr = res['data']
     timeinfo = {'month' : month_now(), 'weekinfo' : get_week_day()}
     curriculuminfo = get_course_table(curArr)
-    return render_template('public/curriculum.html', timeinfo=timeinfo, curriculuminfo = curriculuminfo)
+    return render('public/curriculum.html', timeinfo=timeinfo, curriculuminfo = curriculuminfo)
 
 @public.route('/phone')
 def phone():
@@ -42,12 +47,12 @@ def phone():
         phones = [ {'address' : phone.address, 'phone' : phone.phone } for phone in PhoneList.query.all()]
     except:
         phones = []
-    return render_template('/public/phone.html', phones=phones)
+    return render('/public/phone.html', phones=phones)
 
 @public.route('/book')
 def book():
     try:
-        return render_template('/public/book.html', bookinfo=book_query(request.args.get('book_name')))
+        return render('/public/book.html', bookinfo=book_query(request.args.get('book_name')))
     except:
         return abort(404), 404
 
@@ -62,7 +67,7 @@ def evaluate():
     courseinfo = hbujwxt.evaluation_get_courses(userinfo)
     if request.method == 'GET':
         if not request.args.get('premsg'):
-            return render_template('/wxweb/Evaluate/index.html', openid=openid, courseinfo=courseinfo)
+            return render('/wxweb/Evaluate/index.html', courseinfo=courseinfo)
         else:
             try:
                 course = courseinfo['data']['course'][int(request.args.get('premsg'))]
@@ -71,7 +76,7 @@ def evaluate():
                 courseinfo = {'code' : code.CODE_FAILED}
             if courseinfo['code'] == status.CODE_SUCCESS:
                 courseinfo['data']['course'] = course
-            return render_template('/wxweb/Evaluate/detail.html', courseinfo=courseinfo)
+            return render('/wxweb/Evaluate/detail.html', courseinfo=courseinfo)
     else:
         try:
             course = courseinfo['data']['course'][int(request.args.get('premsg'))]
@@ -94,7 +99,7 @@ def evaluate():
 @public.route('/spareclassroom', methods=['GET', 'POST'])
 def spareclassroom():
     if request.method == 'GET':
-        return render_template('public/spareclassroom.html', spareinfo=spare_params())
+        return render('public/spareclassroom.html', spareinfo=spare_params())
     else:
         eduweek = request.form.get('eduweek')
         campus = request.form.get('campus')
