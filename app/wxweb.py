@@ -62,7 +62,7 @@ def code():
         openid = api.get_web_auth_token(wxcode).get('openid')
     except:
         return redirect(url_for('wxweb.home'))
-    return redirect(url_for('wxweb.index'))
+    return redirect(url_for('wxweb.index') + '?openid=' + openid)
     # if not session.get('openid'):
     #     try:
     #         openid = api.get_web_auth_token(wxcode).get('openid')
