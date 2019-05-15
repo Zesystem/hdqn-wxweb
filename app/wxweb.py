@@ -112,11 +112,8 @@ def evaluate():
     if not session.get('user'):
         return render_template('wxweb/Error/index.html')
     userinfo = {'username': session['user'].studentID, 'password': session['user'].studentPWD}
+    courseinfo = hbujwxt.evaluation_get_courses(userinfo)
     if request.method == 'GET':
-        try:
-            courseinfo = hbujwxt.evaluation_get_courses(userinfo)
-        except:
-            courseinfo = {'code' : code.CODE_FAILED}
         if not request.args.get('premsg'):
             return render_template('/wxweb/Evaluate/index.html', courseinfo=courseinfo)
         else:
