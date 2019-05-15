@@ -51,7 +51,7 @@ def book():
     except:
         return abort(404), 404
 
-@wxweb.route('/evaluate', methods=['GET', 'POST'])
+@public.route('/evaluate')
 def evaluate():
     openid = request.args.get('openid')
     if not openid:
