@@ -62,7 +62,7 @@ def evaluate():
     courseinfo = hbujwxt.evaluation_get_courses(userinfo)
     if request.method == 'GET':
         if not request.args.get('premsg'):
-            return render_template('/wxweb/Evaluate/index.html', courseinfo=courseinfo)
+            return render_template('/wxweb/Evaluate/index.html', openid=openid, courseinfo=courseinfo)
         else:
             try:
                 course = courseinfo['data']['course'][int(request.args.get('premsg'))]
