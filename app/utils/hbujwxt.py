@@ -48,7 +48,7 @@ class HbuJwxt(object):
         def get_captcha():
             # 教务系统登陆验证码获取
             url = 'http://{ip}/validateCodeAction.do?random={rd}'.format(ip=self.ip, rd=random.random())
-            res = self.session.request('GET', url, headers=self.headers, timeout=(3, 5))
+            res = self.session.request('GET', url, headers=self.headers, timeout=5)
             # string--》bytes--》stream
             data_stream = io.BytesIO(res.content)
             im = PIL.Image.open(data_stream)
