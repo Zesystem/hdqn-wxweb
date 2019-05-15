@@ -229,7 +229,7 @@ class MessageProcessor(object):
                     else:
                         userinfo = {'username':user.studentID, 'password':grp[1]}
                         reply = self.text_process('改密成功')
-                        # code = UserProcessor.update_user(openid, userinfo)
+                        code = UserProcessor.update_user(openid, userinfo)
                         # if code == status.CODE_SUCCESS:
                         #     reply = self.text_process('改密成功')
                         # else:
