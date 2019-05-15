@@ -227,7 +227,7 @@ class MessageProcessor(object):
                     if len(grp) != 2 or grp[1].isspace():
                         reply = self.text_process('改密格式')
                     else:
-                        # userinfo = {'username':user.studentID, 'password':grp[1]}
+                        userinfo = {'username':user.studentID, 'password':grp[1]}
                         reply = self.text_process('改密成功')
                         # code = UserProcessor.update_user(openid, userinfo)
                         # if code == status.CODE_SUCCESS:
