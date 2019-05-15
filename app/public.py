@@ -21,10 +21,10 @@ from app.utils.timeutil import week_now, month_now, day_after, get_week_day
 
 public = Blueprint('public', __name__)
 
-def render(file, openid=True):
+def render(file, openid=True, **kwargs):
     if openid :
-        return render(file, openid=request.args.get('openid'))
-    return render(file)
+        return render_template(file, openid=request.args.get('openid'), **kwargs)
+    return render_template(file, **kwargs)
 
 @public.route('/curriculum')
 def curriculum():

@@ -27,10 +27,10 @@ import urllib.parse
 
 wxweb = Blueprint('wxweb', __name__)
 
-def render(file, openid=True):
+def render(file, openid=True, **kwargs):
     if openid :
-        return render_template(file, openid=request.args.get('openid'))
-    return render_template(file)
+        return render_template(file, openid=request.args.get('openid'), **kwargs)
+    return render_template(file, **kwargs)
 
 def get_auth_to_uri(url_route):
     redirect_uri = urllib.parse.urlencode({'redirect_uri':'{app_domain}{url_route}'.format(app_domain=app_config.APP_DOMAIN)})
