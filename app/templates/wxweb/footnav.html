@@ -5,10 +5,10 @@
 			<ul class="box">
 				<li><a href="javascript:;" class=""><span>河小博</span></a>
 					<dl>
-						<dd><a onclick="follow('{{url_for('wxweb.score')}}')"><span>我的成绩</span></a></dd>
-						<dd><a onclick="follow('{{url_for('wxweb.course')}}')"><span>我的课表</span></a></dd>
+						<dd><a onclick="follow('{{url_for('wxweb.score')}}?openid={{openid}}')"><span>我的成绩</span></a></dd>
+						<dd><a onclick="follow('{{url_for('wxweb.course')}}?openid={{openid}}')"><span>我的课表</span></a></dd>
 						<dd><a onclick="follow('{{url_for('wxweb.book')}}')" ><span>图书信息</span></a></dd>
-						<dd><a onclick="follow('{{url_for('wxweb.evaluate')}}')"><span>网上评教</span></a></dd>
+						<dd><a onclick="follow('{{url_for('wxweb.evaluate')}}?openid={{openid}}')"><span>网上评教</span></a></dd>
 						<dd><a onclick="follow('{{url_for('public.spareclassroom')}}')"><span>空自习室</span></a></dd>
 					</dl>
 				</li>
