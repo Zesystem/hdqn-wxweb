@@ -47,7 +47,7 @@ class UserProcessor(object):
         user = user if user is not None else UserProcessor.get_user(openid)
         if user is not None:
             if hbujwxt.jw_login(userinfo, until=False):
-                user.password = userinfo['password']
+                user.studentPWD = userinfo['password']
                 db.session.commit()
                 return status.CODE_SUCCESS
             else:
