@@ -74,9 +74,7 @@ def code():
 @wxweb.route('/index')
 # @cache.cached(timeout=60*2, key_prefix='views_%s')
 def index():
-    request.args.get('openid')
-    return render_template('/wxweb/footnav.html')
-    # return render_template('/wxweb/index.html', openid=request.args.get('openid'))
+    return render_template('/wxweb/index.html', openid=request.args.get('openid'))
  
 @wxweb.route('/book', methods=['GET', 'POST'])
 def book():
