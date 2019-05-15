@@ -27,6 +27,7 @@ import urllib.parse
 
 wxweb = Blueprint('wxweb', __name__)
 
+
 def get_auth_to_uri(url_route):
     redirect_uri = urllib.parse.urlencode({'redirect_uri':'{app_domain}{url_route}'.format(app_domain=app_config.APP_DOMAIN)})
     redirect_url = 'https://open.weixin.qq.com/connect/oauth2/authorize?appid={appid}&{redirect_uri}&response_type=code&scope=snsapi_base&state=123#wechat_redirect'.format(
@@ -41,8 +42,9 @@ def user_context_processor():
 
 @wxweb.before_app_request
 def user_before_request():
-    if session.get('openid') and not session.get('user'):
-        session['user'] = User.query.filter(User.openid == session['openid']).first()
+    pass
+    # if session.get('openid') and not session.get('user'):
+        # session['user'] = User.query.filter(User.openid == session['openid']).first()
 
 @wxweb.route('/')
 def home():
@@ -56,18 +58,23 @@ def code():
     wxcode = request.args.get('code')
     if not wxcode:
         return redirect(url_for('wxweb.home'))
-    if not session.get('openid'):
-        try:
-            openid = api.get_web_auth_token(wxcode).get('openid')
-            session['openid'] = openid
-        except:
-            return redirect(url_for('wxweb.home'))
-    return redirect(url_for('wxweb.index'))
+    try:
+        openid = api.get_web_auth_token(wxcode).get('openid')
+    except:
+        return redirect(url_for('wxweb.home'))
+    return redirect(url_for('wxweb.index') + '?openid=' + openid)
+    # if not session.get('openid'):
+    #     try:
+    #         openid = api.get_web_auth_token(wxcode).get('openid')
+    #         session['openid'] = openid
+    #     except:
+    #         return redirect(url_for('wxweb.home'))
+    # return redirect(url_for('wxweb.index'))
 
 @wxweb.route('/index')
 # @cache.cached(timeout=60*2, key_prefix='views_%s')
 def index():
-    return render_template('/wxweb/index.html')
+    return render_template('/wxweb/index.html', openid=request.args.get('openid'))
  
 @wxweb.route('/book', methods=['GET', 'POST'])
 def book():
@@ -107,11 +114,13 @@ def job():
 
 @wxweb.route('/evaluate', methods=['GET', 'POST'])
 def evaluate():
-    if not session.get('openid'):
+    openid = request.args.get('openid')
+    if not openid:
         return redirect(url_for('wxweb.home'))
-    if not session.get('user'):
+    user = UserProcessor.get_user(openid)
+    if not user:
         return render_template('wxweb/Error/index.html')
-    userinfo = {'username': session['user'].studentID, 'password': session['user'].studentPWD}
+    userinfo = {'username': user.studentID, 'password': user.studentPWD}
     courseinfo = hbujwxt.evaluation_get_courses(userinfo)
     if request.method == 'GET':
         if not request.args.get('premsg'):
@@ -219,12 +228,15 @@ def welfare():
 @wxweb.route('/score')
 def score():
     try:
-        if not session.get('openid'):
+        openid = request.args.get('openid')
+        if not openid:
             return redirect(url_for('wxweb.home'))
-        if not session.get('user'):
+        user = UserProcessor.get_user(openid)
+        if not user:
             return render_template('wxweb/Error/index.html')
+        userinfo = {'username': user.studentID, 'password': user.studentPWD}
         grades = ['大一', '大二', '大三', '大四', '大五', '大六', '大七', '大八']
-        resp = hbujwxt.query_each_term_score({'username': session['user'].studentID, 'password': session['user'].studentPWD})
+        resp = hbujwxt.query_each_term_score(userinfo)
         if resp['code'] == status.CODE_SUCCESS:
             resp = resp['data']
             granum = int((len(resp)+1)/2)
@@ -246,12 +258,15 @@ def score():
 @wxweb.route('/course')
 def course():
     try:
-        if not session.get('openid'):
+        openid = request.args.get('openid')
+        if not openid:
             return redirect(url_for('wxweb.home'))
-        if not session.get('user'):
+        user = UserProcessor.get_user(openid)
+        if not user:
             return render_template('wxweb/Error/index.html')
+        userinfo = {'username': user.studentID, 'password': user.studentPWD}
         curArr = []
-        res = hbujwxt.query_course_table({'username': session['user'].studentID, 'password': session['user'].studentPWD})
+        res = hbujwxt.query_course_table(userinfo)
         if res['code'] == status.CODE_SUCCESS:
             curArr = res['data']
         courseinfo = {
