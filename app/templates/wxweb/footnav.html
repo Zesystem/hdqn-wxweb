@@ -5,28 +5,28 @@
 			<ul class="box">
 				<li><a href="javascript:;" class=""><span>河小博</span></a>
 					<dl>
-						<dd><a onclick="follow('{{url_for('wxweb.score')}}?openid={{openid}}')"><span>我的成绩</span></a></dd>
-						<dd><a onclick="follow('{{url_for('wxweb.course')}}?openid={{openid}}')"><span>我的课表</span></a></dd>
-						<dd><a onclick="follow('{{url_for('wxweb.book')}}')" ><span>图书信息</span></a></dd>
-						<dd><a onclick="follow('{{url_for('wxweb.evaluate')}}?openid={{openid}}')"><span>网上评教</span></a></dd>
-						<dd><a onclick="follow('{{url_for('public.spareclassroom')}}')"><span>空自习室</span></a></dd>
+						<dd><a onclick="follow('{{url_for(\'wxweb.score\')}}')"><span>我的成绩</span></a></dd>
+						<dd><a onclick="follow('{{url_for(\'wxweb.course\')}}')"><span>我的课表</span></a></dd>
+						<dd><a onclick="follow('{{url_for(\'wxweb.book\')}}')" ><span>图书信息</span></a></dd>
+						<dd><a onclick="follow('{{url_for(\'wxweb.evaluate\')}}')"><span>网上评教</span></a></dd>
+						<dd><a onclick="follow('{{url_for(\'public.spareclassroom\')}}')"><span>空自习室</span></a></dd>
 					</dl>
 				</li>
 				<li><a href="javascript:;" class=""><span>河小知</span></a>
 					<dl>
 						<dd><a href="http://mobile.myouth.net/html/activeDetial.html?ids=1551601903035001&ver=1.3&build=2018053101"><span>公共服务</span></a></dd>
 						<dd><a href="http://ciee.hbu.edu.cn/"><span>国际交流</span></a></dd>
-						<dd><a onclick="follow('{{url_for('wxweb.job')}}')"><span>创业就业</span></a></dd>
-						<dd><a onclick="follow('{{url_for('wxweb.welfare')}}')"><span>公益河大</span></a></dd>
+						<dd><a onclick="follow('{{url_for(\'wxweb.job\')}}')"><span>创业就业</span></a></dd>
+						<dd><a onclick="follow('{{url_for(\'wxweb.welfare\')}}')"><span>公益河大</span></a></dd>
 						<dd><a href="http://msite.eol.cn/918/index.shtml"><span>高考招生</span></a></dd>
 					</dl>
 				</li>
 				<li><a href="javascript:;" class=""><span>河掌柜</span></a>
 					<dl>
-						<dd><a onclick="follow('{{url_for('wxweb.family')}}')"><span>温馨家园</span></a></dd>
-						<dd><a onclick="follow('{{url_for('wxweb.food')}}')"><span>校园美食</span></a></dd>
-						<dd><a onclick="follow('{{url_for('wxweb.school')}}')"><span>校园漫步</span></a></dd>
-						<dd><a onclick="follow('{{url_for('wxweb.feedback')}}')"><span>意见反馈</span></a></dd>
+						<dd><a onclick="follow('{{url_for(\'wxweb.family\')}}')"><span>温馨家园</span></a></dd>
+						<dd><a onclick="follow('{{url_for(\'wxweb.food\')}}')"><span>校园美食</span></a></dd>
+						<dd><a onclick="follow('{{url_for(\'wxweb.school\')}}')"><span>校园漫步</span></a></dd>
+						<dd><a onclick="follow('{{url_for(\'wxweb.feedback\')}}')"><span>意见反馈</span></a></dd>
 					</dl>
 				</li>
 			</ul>			
@@ -36,9 +36,18 @@
 	<script src="{{url_for('static',filename='wxweb/js/nav4.js')}}"></script>
 	<script type="text/javascript">
 		nav4.bindClick(document.getElementById("nav4_ul").querySelectorAll("li>a"), document.getElementById("nav4_masklayer"));
-
+		function getQueryVariable(variable)
+		{
+			var query = window.location.search.substring(1);
+			var vars = query.split("&");
+			for (var i=0;i<vars.length;i++) {
+					var pair = vars[i].split("=");
+					if(pair[0] == variable){return pair[1];}
+			}
+			return(false);
+		}
 		function follow(url){
-       		window.location = url;
+       		window.location = url + getQueryVariable('openid');
 		}
 	</script>
 </div>
