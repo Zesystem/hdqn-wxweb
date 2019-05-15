@@ -11,7 +11,7 @@ from flask import g
 from app import db
 from app.models import User
 from app.utils import status
-from app.utils.hbujwxt import HbuJwxt
+from app.exts import hbujwxt
 
 class UserProcessor(object):
     @staticmethod
@@ -46,12 +46,10 @@ class UserProcessor(object):
     def update_user(openid, userinfo, user=None):
         user = user if user is not None else UserProcessor.get_user(openid)
         if user is not None:
-            if HbuJwxt().jw_login(g.userinfo, until=False):
+            if hbujwxt.jw_login(g.userinfo, until=False):
                 user.password = userinfo['password']
                 db.session.commit()
                 return status.CODE_SUCCESS
             else:
                 return status.CODE_FAILED
         return status.CODE_NOT_EXIST
-
-
