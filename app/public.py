@@ -8,7 +8,7 @@
 ###########################################
 
 
-from app.exts import hbujwxt
+from app.exts import hbujwxt, render
 from app.utils import status
 from app.utils.bookutil import book_query
 from app.utils.formatutil import get_course_table

@@ -15,3 +15,9 @@ hbujwxt = HbuJwxt()
 
 from app.wxapi.message import MessageBuilder, MessageProcessor
 mp = MessageProcessor(MessageBuilder())
+
+def render(file, openid=True, **kwargs):
+    from flask import render_template, request
+    if openid :
+        return render_template(file, openid=request.args.get('openid'), **kwargs)
+    return render_template(file, **kwargs)

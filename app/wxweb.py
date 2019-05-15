@@ -11,7 +11,7 @@
 from flask import render_template, Blueprint, redirect
 from flask import request, jsonify, session, url_for
 from app import app_config, cache
-from app.exts import hbujwxt
+from app.exts import hbujwxt, render
 from app.models import User, PhoneList
 from app.wxapi import api
 from app.utils import status
@@ -26,11 +26,6 @@ from app.utils.busutil import line_query, transfer_query, nearbystation_query
 import urllib.parse
 
 wxweb = Blueprint('wxweb', __name__)
-
-def render(file, openid=True, **kwargs):
-    if openid :
-        return render_template(file, openid=request.args.get('openid'), **kwargs)
-    return render_template(file, **kwargs)
 
 def get_auth_to_uri(url_route):
     redirect_uri = urllib.parse.urlencode({'redirect_uri':'{app_domain}{url_route}'.format(app_domain=app_config.APP_DOMAIN)})
