@@ -12,12 +12,12 @@ import io
 import os
 import PIL
 import random
+import urllib
 import requests
 import pytesseract
-import urllib.parse
 from bs4 import BeautifulSoup
 from requests.adapters import HTTPAdapter
-from app.utils import status
+import status
 
 class HbuJwxt(object):
     '''
@@ -29,14 +29,16 @@ class HbuJwxt(object):
         self.session.mount('https://', HTTPAdapter(max_retries=3))
         self.ip = '202.206.1.160'
         self.headers = {
-            'User-Agent': 'Mozilla/5.0 (Windows NT 6.3; WOW64; rv:39.0) Gecko/20100101 Firefox/39.0',
+            'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/70.0.3538.77 Safari/537.36',
             'Connection' : 'keep-alive',
             'Upgrade-Insecure-Requests': '1',  # important data
-            'Host' : self.ip,
-            'Origin' : 'http://' + self.ip,
-            'Accept' : 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
+            'Accept' : 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8',
             'Accept-Encoding' : 'gzip, deflate',
             'Accept-Language' : 'zh-CN,zh;q=0.9,en-US;q=0.8,en;q=0.7',
+            'Cache-Control' : 'max-age=0',
+            'Content-Type' : 'application/x-www-form-urlencoded',
+            'Host' : self.ip,
+            'Origin' : 'http://' + self.ip
         }
 
     def jw_login(self, userinfo, until=True):
@@ -106,13 +108,14 @@ class HbuJwxt(object):
         # print('[-]Failed to login zhjw')
         return False
 
-    def query_schoolrool(self, userinfo):
+    def query_schoolrool(self, userinfo = None):
         '''
         查询学籍
         '''
         try:
-            if not self.jw_login(userinfo):
-                return {'code': status.CODE_FAILED}
+            if userinfo is not None and userinfo != {}:
+                if not self.jw_login(userinfo):
+                    return {'code': status.CODE_FAILED}
             self.headers['Referer'] = 'http://{ip}/menu/menu.jsp?action1=0&index=1'.format(ip=self.ip)
             url = 'http://{ip}/xjInfoAction.do?oper=xjxx'.format(ip=self.ip)
             res = self.session.request('GET', url, headers=self.headers)
@@ -148,13 +151,14 @@ class HbuJwxt(object):
         except:
             return {'code': status.CODE_FAILED}
 
-    def query_this_term_score(self, userinfo):
+    def query_this_term_score(self, userinfo = None):
         '''
         本学期成绩
         '''
         try:
-            if not self.jw_login(userinfo):
-                return {'code': status.CODE_FAILED}
+            if userinfo is not None and userinfo != {}:
+                if not self.jw_login(userinfo):
+                    return {'code': status.CODE_FAILED}
             self.headers.pop('Content-Type')
             self.headers['Referer'] = 'http://{ip}/menu/menu.jsp?action1=0&index=6'.format(ip=self.ip)
             url = 'http://{ip}/bxqcjcxAction.do'.format(ip=self.ip)
@@ -175,13 +179,14 @@ class HbuJwxt(object):
         except:
             return {'code': status.CODE_FAILED}
 
-    def query_each_term_score(self, userinfo):
+    def query_each_term_score(self, userinfo=None):
         '''
         所有成绩
         '''
         try:
-            if not self.jw_login(userinfo):
-                return {'code': status.CODE_FAILED}
+            if userinfo is not None and userinfo != {}:
+                if not self.jw_login(userinfo):
+                    return {'code': status.CODE_FAILED}
             self.headers.pop('Content-Type')
             self.headers['Referer'] = 'http://{ip}/menu/menu.jsp?action1=0&index=6'.format(ip=self.ip)
             url = 'http://{ip}/gradeLnAllAction.do?type=ln&oper=qb'.format(ip=self.ip)
@@ -217,13 +222,14 @@ class HbuJwxt(object):
         except:
             return {'code': status.CODE_FAILED}
 
-    def query_course_table(self, userinfo):
+    def query_course_table(self, userinfo=None):
         '''
         本学期课表
         '''
         try:
-            if not self.jw_login(userinfo):
-                return {'code': status.CODE_FAILED}
+            if userinfo is not None and userinfo != {}:
+                if not self.jw_login(userinfo):
+                    return {'code': status.CODE_FAILED}
             self.headers['Referer'] = 'http://{ip}/menu/menu.jsp?action1=0&index=2'.format(ip=self.ip)
             url = 'http://{ip}/xkAction.do?actionType=6'.format(ip=self.ip)
             res = self.session.request('GET', url, headers=self.headers)
@@ -248,13 +254,14 @@ class HbuJwxt(object):
         except:
             return {'code': status.CODE_FAILED}
 
-    def evaluation_get_courses(self, userinfo):
+    def evaluation_get_courses(self, userinfo=None):
         '''获取课程列表
         '''
         try:
-            if not self.jw_login(userinfo):
-                return {'code': status.CODE_FAILED}
-            self.headers['Referer'] = 'http://{ip}/jxpgXsAction.do?oper=listWj'.format(ip=self.ip)
+            if userinfo is not None and userinfo != {}:
+                if not self.jw_login(userinfo):
+                    return {'code': status.CODE_FAILED}
+            self.headers['Referer'] = 'http://{ip}/menu/menu.jsp?action1=0&index=3'.format(ip=self.ip)
             url = 'http://{ip}/jxpgXsAction.do?oper=listWj'.format(ip=self.ip)
             res = self.session.request('GET', url, headers=self.headers)
             soup = BeautifulSoup(res.content.decode('GBK', 'ignore'), features='lxml')
@@ -307,11 +314,15 @@ class HbuJwxt(object):
         except:
             return {'code': status.CODE_FAILED}
 
-    def evaluation_get_detail(self, course):
+    def evaluation_get_detail(self, data, userinfo = None):
         '''获取评教详情页
         '''
         try:
-            data = urllib.parse.urlencode(course[-1], encoding='GBK')
+            if userinfo is not None and userinfo != {}:
+                if not self.jw_login(userinfo):
+                    return {'code': status.CODE_FAILED}
+            self.headers['Referer'] = 'http://{ip}/jxpgXsAction.do?oper=listWj'.format(ip=self.ip)
+            data = urllib.parse.urlencode(data, encoding='gb2312')
             url = 'http://{ip}/jxpgXsAction.do'.format(ip=self.ip)
             rep = self.session.request('POST', url, data, headers=self.headers)
             soup = BeautifulSoup(rep.content.decode('GBK'), features='lxml')
@@ -345,14 +356,18 @@ class HbuJwxt(object):
         except:
             return {'code': status.CODE_FAILED}
     
-    def evaluation_post(self, userinfo, data):
+    def evaluation_post(self, data, userinfo = None):
         '''教学评估提交
         '''
         try:
+            if userinfo is not None and userinfo != {}:
+                if not self.jw_login(userinfo):
+                    return {'code': status.CODE_FAILED}
             self.headers['Referer'] = 'http://{ip}/jxpgXsAction.do'.format(ip=self.ip)
-            data = urllib.parse.urlencode(data).encode('gb2312')
+            data = urllib.parse.urlencode(data, encoding='gb2312')
             url = 'http://{ip}/jxpgXsAction.do?oper=wjpg'.format(ip=self.ip)
             rep = self.session.request('POST', url, data, verify=False, headers=self.headers)
+            # print(rep.text)
             if '评估成功' in rep.content.decode('GBK'):
                 return {'code' : status.CODE_SUCCESS}
             return {'code' : status.CODE_FAILED}
@@ -362,27 +377,33 @@ class HbuJwxt(object):
 if __name__ == '__main__':
     pass
     # hbujwxt = HbuJwxt()
-    # userinfo = {'username':'20171004113', 'password':'199892.lw'}
-    # print(hbujwxt.query_schoolrool(userinfo))
-    # print(hbujwxt.query_this_term_score(userinfo))
-    # print(hbujwxt.query_each_term_score(userinfo))
-    # print(hbujwxt.query_course_table(userinfo))
+    # userinfo = {'username':'20171004116', 'password':'20171004116'}
+    # # print(hbujwxt.query_schoolrool(userinfo))
+    # # print(hbujwxt.query_this_term_score(userinfo))
+    # # print(hbujwxt.query_each_term_score(userinfo))
+    # # print(hbujwxt.query_course_table(userinfo))
     # courses = hbujwxt.evaluation_get_courses(userinfo)
-    # print(courses)
-    # detail = hbujwxt.evaluation_get_detail(courses['data']['course'][1])
+    # course = courses['data']['course'][3]
+    # # print(courses)
+    # detail = hbujwxt.evaluation_get_detail(course[-1])
     # print(detail)
-    # selection = {}
-    # for item in detail['data']['question']:
-        # for quest in item[-1]:
-            # selection[quest[1]] = '10_1'
-    # course = courses['data']['course'][1]
     # data = {
-    #         'wjbm': course[-1]['wjbm'],
-    #         'bpr': course[-1]['bpr'],
-    #         'pgnr': course[-1]['pgnr'],
-    #         'xumanyzg': 'zg',
-    #         'wjbz': course[-1]['wjbz'],
-    #         'zgpj': '老师讲的真心不错，课堂氛围活跃'
-    #     }
-    # data.update(selection)
+    #     'wjbm': '0000000313',
+    #     'bpr': '30736',
+    #     'pgnr': 'Ty0022',
+    #     'xumanyzg' : 'zg',
+    #     'wjbz': '',
+    #     '0000000008' : '10_1',
+    #     '0000000010' : '10_1',
+    #     '0000000016' : '10_1',
+    #     '0000000017' : '10_1',
+    #     '0000000018' : '10_1',
+    #     '0000000019' : '10_1',
+    #     '0000000020' : '10_1',
+    #     '0000000024' : '10_1',
+    #     '0000000025' : '10_1',
+    #     '0000000026' : '10_1',
+    #     'zgpj': '老师上课认真负责 同学们乐于听讲',
+    # }
     # print(hbujwxt.evaluation_post(data))
+    # print(hbujwxt.session.cookies)
