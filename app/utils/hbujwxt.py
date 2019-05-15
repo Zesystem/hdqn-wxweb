@@ -17,7 +17,7 @@ import requests
 import pytesseract
 from bs4 import BeautifulSoup
 from requests.adapters import HTTPAdapter
-import status
+from app.utils import status
 
 class HbuJwxt(object):
     '''
