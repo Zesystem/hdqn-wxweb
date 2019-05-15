@@ -46,10 +46,11 @@ class UserProcessor(object):
     def update_user(openid, userinfo, user=None):
         user = user if user is not None else UserProcessor.get_user(openid)
         if user is not None:
-            if hbujwxt.jw_login(g.userinfo, until=False):
-                user.password = userinfo['password']
-                db.session.commit()
-                return status.CODE_SUCCESS
-            else:
-                return status.CODE_FAILED
+            # if hbujwxt.jw_login(g.userinfo, until=False):
+            #     user.password = userinfo['password']
+            #     db.session.commit()
+            #     return status.CODE_SUCCESS
+            # else:
+            #     return status.CODE_FAILED
+            return status.CODE_SUCCESS
         return status.CODE_NOT_EXIST
