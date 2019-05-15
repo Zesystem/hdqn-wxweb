@@ -90,11 +90,11 @@ def evaluate():
                         return "<script>alert('请填写完整数据！');window.history.back();</script>"
                 res = hbujwxt.evaluation_post(data)
                 if res['code'] == status.CODE_SUCCESS:
-                    return "<script>alert('评教成功！');window.location.href='/wxweb/evaluate';</script>"
+                    return "<script>alert('评教成功！');window.history.back();</script>"
                 else:
-                    return "<script>alert('评教失败！');window.location.href='/wxweb/evaluate';</script>"
+                    return "<script>alert('评教失败！');window.history.back();</script>"
         except:
-            return "<script>alert('非法提交！');window.location.href='/wxweb/evaluate';</script>"
+            return "<script>alert('非法提交！');window.location.href='/wxweb/index?openid=%s';</script>"%openid
 
 @public.route('/spareclassroom', methods=['GET', 'POST'])
 def spareclassroom():
