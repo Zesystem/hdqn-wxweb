@@ -256,6 +256,7 @@ class HbuJwxt(object):
     def evaluation_get_courses(self, userinfo=None):
         '''获取课程列表
         '''
+        res = None
         try:
             if userinfo is not None and userinfo != {}:
                 if not self.jw_login(userinfo):
@@ -263,7 +264,8 @@ class HbuJwxt(object):
             self.headers['Referer'] = 'http://{ip}/menu/menu.jsp?action1=0&index=3'.format(ip=self.ip)
             url = 'http://{ip}/jxpgXsAction.do?oper=listWj'.format(ip=self.ip)
             res = self.session.request('GET', url, headers=self.headers)
-            soup = BeautifulSoup(res.content.decode('GBK', 'ignore'), features='lxml')
+            res = res.content.decode('GBK', 'ignore')
+            soup = BeautifulSoup(res, features='lxml')
             table = soup.find('table', attrs={
                 'class': "titleTop2",
                 'width':"100%",
@@ -311,7 +313,7 @@ class HbuJwxt(object):
                 courses['course'].append(item)
             return {'code' : status.CODE_SUCCESS, 'data' : courses}
         except:
-            return {'code': status.CODE_FAILED}
+            return {'code': status.CODE_FAILED, 'res' : res}
 
     def evaluation_get_detail(self, data, userinfo = None):
         '''获取评教详情页
