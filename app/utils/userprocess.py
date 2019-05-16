@@ -25,7 +25,7 @@ class UserProcessor(object):
         user = user if user is not None else UserProcessor.get_user(openid)
         if user is not None:
         	return status.CODE_EXIST
-        elif HbuJwxt().jw_login(userinfo, until=False):
+        elif hbujwxt.jw_login(userinfo, until=False):
             db.session.add(User(openid = openid, 
             	studentID = userinfo['username'], 
             	studentPWD = userinfo['password']))
