@@ -90,7 +90,7 @@ class HbuJwxt(object):
                 'mm': userinfo['password'],
                 'v_yzm': captcha
             }
-            data = urllib.parse.urlencode(data, encoding='gb2312')  # 需要from-urlencode
+            data = urllib.parse.urlencode(data, encoding='GBK')  # 需要from-urlencode
             res = self.session.request('POST', url, headers=self.headers, data=data)
             return res.content.decode('GBK', 'ignore')
         self.init()
