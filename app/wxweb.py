@@ -120,16 +120,13 @@ def evaluate():
     if not user:
         return render('wxweb/Error/index.html')
     userinfo = {'username': user.studentID, 'password': user.studentPWD}
-    courseinfo = hbujwxt.evaluation_get_courses(userinfo)
-    i = 0
-    while i < 3 and courseinfo['code'] != code.CODE_SUCCESS:
-        courseinfo = hbujwxt.evaluation_get_courses(userinfo)
-        i += 1
     if request.method == 'GET':
         if not request.args.get('premsg'):
+            courseinfo = hbujwxt.evaluation_get_courses(userinfo)
             return render('/wxweb/Evaluate/index.html', courseinfo=courseinfo)
         else:
             try:
+                courseinfo = hbujwxt.evaluation_get_courses(userinfo)
                 course = courseinfo['data']['course'][int(request.args.get('premsg'))]
                 courseinfo = hbujwxt.evaluation_get_detail(course[-1])
             except:
@@ -139,6 +136,7 @@ def evaluate():
             return render('/wxweb/Evaluate/detail.html', courseinfo=courseinfo)
     else:
         try:
+            courseinfo = hbujwxt.evaluation_get_courses(userinfo)
             course = courseinfo['data']['course'][int(request.args.get('premsg'))]
             courseinfo = hbujwxt.evaluation_get_detail(course[-1])
             data = request.form.to_dict()
