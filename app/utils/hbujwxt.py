@@ -90,7 +90,7 @@ class HbuJwxt(object):
                 'mm': userinfo['password'],
                 'v_yzm': captcha
             }
-            data = urllib.parse.urlencode(data)  # 需要from-urlencode
+            data = urllib.parse.urlencode(data, encoding='GBK')  # 需要from-urlencode
             res = self.session.request('POST', url, headers=self.headers, data=data)
             return res.content.decode('GBK', 'ignore')
         self.init()
@@ -321,7 +321,7 @@ class HbuJwxt(object):
                 if not self.jw_login(userinfo):
                     return {'code': status.CODE_FAILED}
             self.headers['Referer'] = 'http://{ip}/jxpgXsAction.do?oper=listWj'.format(ip=self.ip)
-            data = urllib.parse.urlencode(data, encoding='gb2312')
+            data = urllib.parse.urlencode(data, encoding='GBK')
             url = 'http://{ip}/jxpgXsAction.do'.format(ip=self.ip)
             rep = self.session.request('POST', url, data, headers=self.headers)
             soup = BeautifulSoup(rep.content.decode('GBK'), features='lxml')
@@ -363,7 +363,7 @@ class HbuJwxt(object):
                 if not self.jw_login(userinfo):
                     return {'code': status.CODE_FAILED}
             self.headers['Referer'] = 'http://{ip}/jxpgXsAction.do'.format(ip=self.ip)
-            data = urllib.parse.urlencode(data, encoding='gb2312')
+            data = urllib.parse.urlencode(data, encoding='GBK')
             url = 'http://{ip}/jxpgXsAction.do?oper=wjpg'.format(ip=self.ip)
             rep = self.session.request('POST', url, data, verify=False, headers=self.headers)
             # print(rep.text)
