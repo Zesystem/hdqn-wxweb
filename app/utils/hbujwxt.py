@@ -74,6 +74,8 @@ class HbuJwxt(object):
             '''
             教务系统登陆接口
             '''
+            if type(captcha) != str and len(captcha) != 4:
+                return False
             url = 'http://{ip}/loginAction.do'.format(ip = self.ip)
             self.headers.update({
                 'Content-Type': 'application/x-www-form-urlencoded',
