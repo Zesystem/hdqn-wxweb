@@ -11,7 +11,7 @@
 from flask import render_template, Blueprint, redirect
 from flask import request, jsonify, session, url_for
 from app import app_config, cache
-from app.exts import hbujwxt, render
+from app.exts import hbujwxt, render, lock
 from app.models import User, PhoneList
 from app.wxapi import api
 from app.utils import status
@@ -120,7 +120,9 @@ def evaluate():
     if not user:
         return render('wxweb/Error/index.html')
     userinfo = {'username': user.studentID, 'password': user.studentPWD}
+    lock.acquire()
     courseinfo = hbujwxt.evaluation_get_courses(userinfo)
+    lock.release()
     if request.method == 'GET':
         if not request.args.get('premsg'):
             return render('/wxweb/Evaluate/index.html', courseinfo=courseinfo)

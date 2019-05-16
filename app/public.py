@@ -8,7 +8,7 @@
 ###########################################
 
 
-from app.exts import hbujwxt, render
+from app.exts import hbujwxt, render, lock
 from app.utils import status
 from app.utils.bookutil import book_query
 from app.utils.formatutil import get_course_table
@@ -64,7 +64,9 @@ def evaluate():
     curArr = []
     user = UserProcessor.get_user(openid)
     userinfo = {'username':user.studentID, 'password':user.studentPWD}
+    lock.acquire()
     courseinfo = hbujwxt.evaluation_get_courses(userinfo)
+    lock.release()
     if request.method == 'GET':
         if not request.args.get('premsg'):
             return render('/wxweb/Evaluate/index.html', courseinfo=courseinfo)
