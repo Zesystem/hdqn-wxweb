@@ -19,6 +19,7 @@
             {% if courseinfo.code != 200 %}
                 <empty name="result">
                     <h2>评教时间未到，或已经结束</h2>
+                    {{ error }}
                 </empty>
             {% else %}
                 {% for course in courseinfo.data.course %}

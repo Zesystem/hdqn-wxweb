@@ -120,7 +120,7 @@ def evaluate():
     user = UserProcessor.get_user(openid)
     lock.release()
     if not user:
-        return render('wxweb/Error/index.html')
+        return render('wxweb/Error/index.html', error=openid)
     userinfo = {'username': user.studentID, 'password': user.studentPWD}
     courseinfo = hbujwxt.evaluation_get_courses(userinfo)
     if request.method == 'GET':
