@@ -123,8 +123,8 @@ def evaluate():
         return render('wxweb/Error/index.html')
     userinfo = {'username': user.studentID, 'password': user.studentPWD}
     courseinfo = hbujwxt.evaluation_get_courses(userinfo)
-    courseinfo = hbujwxt.evaluation_get_courses(userinfo)
-    courseinfo = hbujwxt.evaluation_get_courses(userinfo)
+    while courseinfo['code'] != code.CODE_SUCCESS:
+        courseinfo = hbujwxt.evaluation_get_courses(userinfo)
     if request.method == 'GET':
         if not request.args.get('premsg'):
             return render('/wxweb/Evaluate/index.html', courseinfo=courseinfo)
