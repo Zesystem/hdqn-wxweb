@@ -9,8 +9,7 @@
 
 
 import sys
-reload(sys)
-sys.setdefaultencoding('utf8')
+print(sys.stdout.encoding)
 
 import os
 from flask import Flask
