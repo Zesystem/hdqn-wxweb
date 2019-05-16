@@ -258,63 +258,63 @@ class HbuJwxt(object):
     def evaluation_get_courses(self, userinfo=None):
         '''获取课程列表
         '''
-        # try:
-        if userinfo is not None and userinfo != {}:
-            if not self.jw_login(userinfo):
-                return {'code': status.CODE_FAILED}
-        self.headers['Referer'] = 'http://{ip}/menu/menu.jsp?action1=0&index=3'.format(ip=self.ip)
-        url = 'http://{ip}/jxpgXsAction.do?oper=listWj'.format(ip=self.ip)
-        res = self.session.request('GET', url, headers=self.headers)
-        res = res.content.decode('GBK', 'ignore')
-        soup = BeautifulSoup(res, features='lxml')
-        table = soup.find('table', attrs={
-            'class': "titleTop2",
-            'width':"100%",
-            'cellspacing':"0",
-            'cellpadding':"0",
-            'border':"0"
-        })
-        table = table.find('table', attrs={
-            'class':"displayTag",
-            'id':"user",
-            'width':"100%",
-            'cellspacing':"1",
-            'cellpadding':"0",
-            'border':"0"
-        })
-        head = []
-        for th in table.thead.tr.find_all('th'):
-            head.append(th.get_text().replace('\r\n', '').strip())
-        courses = {
-            'head' : head[0:-1],
-            'course' : []
-        }
-        for tr in table.find_all('tr', recursive=False):
-            item = []
-            tds = tr.find_all('td', recursive=False)
-            for td in tds[0:-1]:
-                item.append(td.get_text().replace('\r\n', '').strip())
-            data = tds[-1].img.attrs.get('name').split('#@')
-            item.append(
-                {
-                    'wjbm':	data[0],
-                    'bpr': data[1],
-                    'pgnr': data[-1],
-                    'oper': 'wjShow',
-                    'wjmc': data[3],
-                    'bprm': data[2],
-                    'pgnrm': data[4],
-                    'wjbz': '',
-                    'pageSize': '20',
-                    'page': '1',
-                    'currentPage': '1',
-                    'pageNo': ''
-                }
-            )
-            courses['course'].append(item)
-        return {'code' : status.CODE_SUCCESS, 'data' : courses}
-        # except:
-        #     return {'code': status.CODE_FAILED, 'res' : res}
+        try:
+            if userinfo is not None and userinfo != {}:
+                if not self.jw_login(userinfo):
+                    return {'code': status.CODE_FAILED}
+            self.headers['Referer'] = 'http://{ip}/menu/menu.jsp?action1=0&index=3'.format(ip=self.ip)
+            url = 'http://{ip}/jxpgXsAction.do?oper=listWj'.format(ip=self.ip)
+            res = self.session.request('GET', url, headers=self.headers)
+            res = res.content.decode('GBK', 'ignore')
+            soup = BeautifulSoup(res, features='lxml')
+            table = soup.find('table', attrs={
+                'class': "titleTop2",
+                'width':"100%",
+                'cellspacing':"0",
+                'cellpadding':"0",
+                'border':"0"
+            })
+            table = table.find('table', attrs={
+                'class':"displayTag",
+                'id':"user",
+                'width':"100%",
+                'cellspacing':"1",
+                'cellpadding':"0",
+                'border':"0"
+            })
+            head = []
+            for th in table.thead.tr.find_all('th'):
+                head.append(th.get_text().replace('\r\n', '').strip())
+            courses = {
+                'head' : head[0:-1],
+                'course' : []
+            }
+            for tr in table.find_all('tr', recursive=False):
+                item = []
+                tds = tr.find_all('td', recursive=False)
+                for td in tds[0:-1]:
+                    item.append(td.get_text().replace('\r\n', '').strip())
+                data = tds[-1].img.attrs.get('name').split('#@')
+                item.append(
+                    {
+                        'wjbm':	data[0],
+                        'bpr': data[1],
+                        'pgnr': data[-1],
+                        'oper': 'wjShow',
+                        'wjmc': data[3],
+                        'bprm': data[2],
+                        'pgnrm': data[4],
+                        'wjbz': '',
+                        'pageSize': '20',
+                        'page': '1',
+                        'currentPage': '1',
+                        'pageNo': ''
+                    }
+                )
+                courses['course'].append(item)
+            return {'code' : status.CODE_SUCCESS, 'data' : courses}
+        except:
+            return {'code': status.CODE_FAILED, 'res' : res}
 
     def evaluation_get_detail(self, data, userinfo = None):
         '''获取评教详情页
