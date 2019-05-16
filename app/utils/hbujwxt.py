@@ -90,7 +90,7 @@ class HbuJwxt(object):
                 'mm': userinfo['password'],
                 'v_yzm': captcha
             }
-            data = urllib.parse.urlencode(data, encoding='GBK')  # 需要from-urlencode
+            data = urllib.parse.urlencode(data, encoding='gb2312')  # 需要from-urlencode
             res = self.session.request('POST', url, headers=self.headers, data=data)
             return res.content.decode('GBK', 'ignore')
         self.init()
@@ -262,7 +262,7 @@ class HbuJwxt(object):
                     return {'code': status.CODE_FAILED}
             self.headers['Referer'] = 'http://{ip}/menu/menu.jsp?action1=0&index=3'.format(ip=self.ip)
             url = 'http://{ip}/jxpgXsAction.do?oper=listWj'.format(ip=self.ip)
-            res = self.session.request('GET', url, headers=self.headers, timeout=10)
+            res = self.session.request('GET', url, headers=self.headers)
             soup = BeautifulSoup(res.content.decode('GBK', 'ignore'), features='lxml')
             table = soup.find('table', attrs={
                 'class': "titleTop2",
