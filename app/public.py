@@ -64,9 +64,11 @@ def evaluate():
     curArr = []
     user = UserProcessor.get_user(openid)
     userinfo = {'username':user.studentID, 'password':user.studentPWD}
-    lock.acquire()
     courseinfo = hbujwxt.evaluation_get_courses(userinfo)
-    lock.release()
+    i = 0
+    while i < 3 and courseinfo['code'] != code.CODE_SUCCESS:
+        courseinfo = hbujwxt.evaluation_get_courses(userinfo)
+        i += 1
     if request.method == 'GET':
         if not request.args.get('premsg'):
             return render('/wxweb/Evaluate/index.html', courseinfo=courseinfo)
