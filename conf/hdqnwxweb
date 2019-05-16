@@ -4,6 +4,7 @@
 #processname: hdqnwxeb
 HDQNWXWEB_HOME=/root/hdqn-wxweb
 export FLASK_CONFIG=production
+export PYTHONIOENCODING=utf-8
 case $1 in
     start)su root $HDQNWXWEB_HOME/bin/hdqnwxweb.sh start;;
     stop)su root $HDQNWXWEB_HOME/bin/hdqnwxweb.sh stop;;
