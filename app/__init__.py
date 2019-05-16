@@ -7,6 +7,11 @@
 #
 ###########################################
 
+
+import sys
+reload(sys)
+sys.setdefaultencoding(‘utf8’)
+
 import os
 from flask import Flask
 from config import config
