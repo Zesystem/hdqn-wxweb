@@ -190,7 +190,7 @@ class HbuJwxt(object):
             self.headers['Referer'] = 'http://{ip}/menu/menu.jsp?action1=0&index=6'.format(ip=self.ip)
             url = 'http://{ip}/gradeLnAllAction.do?type=ln&oper=qb'.format(ip=self.ip)
             res = self.session.request('GET', url, headers=self.headers)
-            soup = BeautifulSoup(res.content.decode('GBK'), 'lxml')
+            soup = BeautifulSoup(res.content.decode('GBK', 'ignore'), 'lxml')
             iframe = soup.find("iframe")
             url = 'http://{ip}/'.format(ip=self.ip) + iframe.get('src')
             self.headers['Referer'] = 'http://{ip}/gradeLnAllAction.do?type=ln&oper=qb'.format(ip=self.ip)
@@ -325,7 +325,7 @@ class HbuJwxt(object):
             data = urllib.parse.urlencode(data, encoding='GBK')
             url = 'http://{ip}/jxpgXsAction.do'.format(ip=self.ip)
             rep = self.session.request('POST', url, data, headers=self.headers)
-            soup = BeautifulSoup(rep.content.decode('GBK'), features='lxml')
+            soup = BeautifulSoup(rep.content.decode('GBK', 'ignore'), features='lxml')
             table = soup.find('table',attrs={
                     'id':"tblView",
                     'cellspacing':"0",
@@ -367,8 +367,7 @@ class HbuJwxt(object):
             data = urllib.parse.urlencode(data, encoding='GBK')
             url = 'http://{ip}/jxpgXsAction.do?oper=wjpg'.format(ip=self.ip)
             rep = self.session.request('POST', url, data, verify=False, headers=self.headers)
-            # print(rep.text)
-            if '评估成功' in rep.content.decode('GBK'):
+            if '评估成功' in rep.content.decode('GBK', 'ignore'):
                 return {'code' : status.CODE_SUCCESS}
             return {'code' : status.CODE_FAILED}
         except:
