@@ -125,7 +125,7 @@ def evaluate():
     courseinfo = hbujwxt.evaluation_get_courses(userinfo)
     if request.method == 'GET':
         if not request.args.get('premsg'):
-            return "<script>alert('%s')</script>" % user
+            return "<script>alert('%r')</script>" % userinfo
             # return render('/wxweb/Evaluate/index.html', courseinfo=courseinfo)
         else:
             try:
