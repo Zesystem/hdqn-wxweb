@@ -262,7 +262,7 @@ class HbuJwxt(object):
                     return {'code': status.CODE_FAILED}
             self.headers['Referer'] = 'http://{ip}/menu/menu.jsp?action1=0&index=3'.format(ip=self.ip)
             url = 'http://{ip}/jxpgXsAction.do?oper=listWj'.format(ip=self.ip)
-            res = self.session.request('GET', url, headers=self.headers)
+            res = self.session.request('GET', url, headers=self.headers, timeout=10)
             soup = BeautifulSoup(res.content.decode('GBK', 'ignore'), features='lxml')
             table = soup.find('table', attrs={
                 'class': "titleTop2",
