@@ -32,9 +32,7 @@ def curriculum():
     if not openid:
         return abort(404), 404
     curArr = []
-    lock.acquire()
     user = UserProcessor.get_user(openid)
-    lock.release()
     if user is not None:
         res = hbujwxt.query_course_table(userinfo = {'username':user.studentID, 'password':user.studentPWD})
         if res['code'] == status.CODE_SUCCESS:
@@ -64,9 +62,7 @@ def evaluate():
     if not openid:
         return abort(404), 404
     curArr = []
-    lock.acquire()
     user = UserProcessor.get_user(openid)
-    lock.release()
     userinfo = {'username':user.studentID, 'password':user.studentPWD}
     courseinfo = hbujwxt.evaluation_get_courses(userinfo)
     if request.method == 'GET':
@@ -77,7 +73,7 @@ def evaluate():
                 course = courseinfo['data']['course'][int(request.args.get('premsg'))]
                 courseinfo = hbujwxt.evaluation_get_detail(course[-1])
             except:
-                courseinfo = {'code' : code.CODE_FAILED}
+                courseinfo = {'code' : status.CODE_FAILED}
             if courseinfo['code'] == status.CODE_SUCCESS:
                 courseinfo['data']['course'] = course
             return render('/wxweb/Evaluate/detail.html', courseinfo=courseinfo)

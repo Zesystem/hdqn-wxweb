@@ -116,9 +116,7 @@ def evaluate():
     openid = request.args.get('openid')
     if not openid:
         return redirect(url_for('wxweb.home'))
-    lock.acquire()
     user = UserProcessor.get_user(openid)
-    lock.release()
     if not user:
         return render('wxweb/Error/index.html')
     userinfo = {'username': user.studentID, 'password': user.studentPWD}
@@ -232,9 +230,7 @@ def score():
         openid = request.args.get('openid')
         if not openid:
             return redirect(url_for('wxweb.home'))
-        lock.acquire()
         user = UserProcessor.get_user(openid)
-        lock.release()
         if not user:
             return render('wxweb/Error/index.html')
         userinfo = {'username': user.studentID, 'password': user.studentPWD}
@@ -264,9 +260,7 @@ def course():
         openid = request.args.get('openid')
         if not openid:
             return redirect(url_for('wxweb.home'))
-        lock.acquire()
         user = UserProcessor.get_user(openid)
-        lock.release()
         if not user:
             return render('wxweb/Error/index.html')
         userinfo = {'username': user.studentID, 'password': user.studentPWD}
