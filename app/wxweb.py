@@ -131,7 +131,7 @@ def evaluate():
                 course = courseinfo['data']['course'][int(request.args.get('premsg'))]
                 courseinfo = hbujwxt.evaluation_get_detail(course[-1])
             except:
-                courseinfo = {'code' : code.CODE_FAILED}
+                courseinfo = {'code' : status.CODE_FAILED}
             if courseinfo['code'] == status.CODE_SUCCESS:
                 courseinfo['data']['course'] = course
             return render('/wxweb/Evaluate/detail.html', courseinfo=courseinfo)
