@@ -17,7 +17,7 @@ import requests
 import pytesseract
 from bs4 import BeautifulSoup
 from requests.adapters import HTTPAdapter
-from app.utils import status
+from app.utils import status, useragent
 
 class HbuJwxt(object):
     '''
@@ -29,7 +29,7 @@ class HbuJwxt(object):
         self.session.mount('https://', HTTPAdapter(max_retries=3))
         self.ip = '202.206.1.160'
         self.headers = {
-            'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/70.0.3538.77 Safari/537.36',
+            'User-Agent': useragent.get_rand_ua(),
             'Connection' : 'keep-alive',
             'Upgrade-Insecure-Requests': '1',  # important data
             'Accept' : 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8',
