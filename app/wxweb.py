@@ -146,7 +146,7 @@ def evaluate():
                         return "<script>alert('请填写完整数据！');window.history.back();</script>"
                 res = hbujwxt.evaluation_post(data)
                 if res['code'] == status.CODE_SUCCESS:
-                    return "<script>alert('评教成功！');window.history.back();</script>"
+                    return "<script>alert('评教成功！');window.history.go(-2);window.location.reload(true);</script>"
                 else:
                     return "<script>alert('评教失败！');window.history.back();</script>"
         except:

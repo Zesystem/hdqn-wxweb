@@ -314,7 +314,7 @@ class HbuJwxt(object):
                 courses['course'].append(item)
             return {'code' : status.CODE_SUCCESS, 'data' : courses}
         except:
-            return {'code': status.CODE_FAILED, 'res' : res}
+            return {'code': status.CODE_FAILED}
 
     def evaluation_get_detail(self, data, userinfo = None):
         '''获取评教详情页
