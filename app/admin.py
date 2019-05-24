@@ -160,31 +160,31 @@ def image_view():
 @admin_login_req
 @permission_control
 def text_view():
-	return render_template('admin/replymanage/TextView.html')
+	return render_template('admin/replymanage/textView.html')
 
 @admin.route('/ViewReply/newsView')
 @admin_login_req
 @permission_control
 def news_view():
-	return render_template('admin/replymanage/NewsView.html')
+	return render_template('admin/replymanage/newsView.html')
 
 @admin.route('/ViewReply/musicView')
 @admin_login_req
 @permission_control
 def music_view():
-	return render_template('admin/replymanage/MusicView.html')
+	return render_template('admin/replymanage/musicView.html')
 
 @admin.route('/ViewReply/videoView')
 @admin_login_req
 @permission_control
 def video_view():
-	return render_template('admin/replymanage/VideoView.html')
+	return render_template('admin/replymanage/videoView.html')
 
 @admin.route('/ViewReply/voiceView')
 @admin_login_req
 @permission_control
 def voice_view():
-	return render_template('admin/replymanage/VoiceView.html')
+	return render_template('admin/replymanage/voiceView.html')
 
 ############################
 # 数据统计
