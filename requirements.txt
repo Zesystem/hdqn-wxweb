@@ -25,7 +25,7 @@ MarkupSafe==1.1.0
 mccabe==0.6.1
 meld3==1.0.2
 mysql-connector==2.2.9
-Pillow==5.4.1
+Pillow==9.0.0
 pylint==2.3.1
 pylint-flask==0.6
 pylint-plugin-utils==0.5
